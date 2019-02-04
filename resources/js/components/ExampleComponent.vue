@@ -1,23 +1,26 @@
 <template>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card card-default">
-                    <div class="card-header">Example Component</div>
-
-                    <div class="card-body">
-                        I'm an example component.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+   <div>
+    <section class="landing__navbar">
+        <nav>
+            <ul>
+                
+            </ul>
+        </nav>
+    </section>
+    <section class="landing__content">
+        <router-view></router-view>
+    </section>
+    <footer class="landing__footer"></footer>
+   </div>
 </template>
 
 <script>
     export default {
-        mounted() {
-            console.log('Component mounted.')
-        }
+        name: "app",
+        data(){
+            return 
+        },
+
+
     }
 </script>
