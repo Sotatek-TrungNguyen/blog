@@ -7,8 +7,9 @@
 
 require('./bootstrap');
 import Vue from 'vue';
-import landing from "./components/ExampleComponent.vue";
+import landing from "./components/landing.vue";
 import VueRouter from 'vue-router';
+import router from '../route'
 window.Vue = require('vue');
 
 /**
@@ -22,7 +23,7 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('example-component', require('./components/landing.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -32,5 +33,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const app = new Vue({
     el: '#app',
+    router,
+    VueRouter,
     render: h => h(landing)
 });
