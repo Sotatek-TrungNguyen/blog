@@ -7,9 +7,9 @@
                 <div class="text">Trung Nguyen</div>
             </div>
             <nav class="nav-01">
-                <ul class="nav-list">
+                <ul class="row nav-list">
                     <li 
-                    class="items"
+                    class="col-4 items"
                     v-for="item in menuDatas">
                         <router-link class="menuButton" v-bind:to="item.href">{{item.text}}</router-link>    
                     </li>
@@ -17,6 +17,7 @@
             </nav>
         </div>
     </header>
+    <div class="barrier"></div>
     <section class="landing__content">
         <router-view></router-view>
     </section>
@@ -39,15 +40,15 @@
                         href:'/dashboard',
                     },{
                         text:'Projects',
-                        href:'/project',
+                        href:'/projects',
                         components:[
                             {
                                 name: 'Project 1',
-                                href:'#project1',
+                                href:'/project1',
                             },
                             {
                                 name: 'Project 2',
-                                href: '#project2'
+                                href: '/project2'
                             }
                         ]
                     },{

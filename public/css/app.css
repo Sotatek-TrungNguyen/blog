@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Nunito);@charset "UTF-8";
+@import url(https://fonts.google.com/specimen/Righteous?selection.family=Righteous);@charset "UTF-8";
 
 /*!
  * Bootstrap v4.2.1 (https://getbootstrap.com/)
@@ -10498,7 +10498,7 @@ body {
 }
 
 .landing__header {
-  margin: 2rem 1.5rem;
+  margin: 2rem 1.5rem 2.5rem;
   height: 3rem;
   position: relative;
 }
@@ -10514,7 +10514,7 @@ body {
 
 .landing__header .header-container .header-brand .text {
   font-size: 2rem;
-  font-style: bold;
+  font-weight: bolder;
 }
 
 .landing__header .nav-01 {
@@ -10537,5 +10537,23 @@ body {
 .landing__header .nav-01 .nav-list .items {
   display: inline;
   margin: 0 1.5rem;
+}
+
+.landing__header .nav-01 .nav-list .items .menuButton {
+  font-weight: bold;
+}
+
+.landing__header .nav-01 .nav-list .items .menuButton:hover {
+  font-style: none;
+  color: red;
+}
+
+.barrier {
+  border-bottom: 2px solid blue;
+  margin-bottom: 1rem;
+}
+
+.landing__content {
+  margin: 0 0 2.5rem;
 }
 

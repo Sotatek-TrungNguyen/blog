@@ -1,12 +1,13 @@
 
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url('https://fonts.google.com/specimen/Righteous?selection.family=Righteous');
 
 // Variables
 @import 'variables';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
 
 body {
 	max-width: 1300px;
@@ -16,7 +17,7 @@ body {
 }
 
 .landing__header {
-	margin: 2rem 1.5rem;
+	margin: 2rem 1.5rem 2.5rem;
 	height: 3rem; 
 	position: relative;
 	.header-container {
@@ -30,7 +31,7 @@ body {
 
 			.text {
 				font-size: 2rem;
-				font-style: bold;
+				font-weight: bolder;
 			}
 		}
 	}
@@ -51,7 +52,25 @@ body {
 			.items {
 				display: inline;
 				margin: 0 1.5rem;
+
+				.menuButton {
+					font-weight: bold;
+					
+					&:hover{
+						font-style: none;
+						color: red;
+					}
+				}
 			}
 		}
 	}
+}
+
+.barrier {
+	border-bottom: 2px solid blue;
+	margin-bottom: 1rem;
+}
+
+.landing__content {
+	margin: 0 0 2.5rem;
 }
