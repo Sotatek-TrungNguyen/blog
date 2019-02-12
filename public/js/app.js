@@ -1811,6 +1811,16 @@ __webpack_require__.r(__webpack_exports__);
       for (var x = 0; x < 6; x++) {
         _this.excerpt[x] = _this.rawData[x].excerpt.slice(3, -5);
         _this.content[x] = _this.rawData[x].content;
+        var imagesCount = 0;
+        var imageLink;
+
+        var imagesOrder = _this.content[x].indexOf("<img");
+
+        console.log(imagesOrder);
+
+        if (imagesOrder > 0) {
+          _this.imageLink = _this.content[x].slice; // slice from img just found. try to recognize first img it read and stop there, take src/ url then ignore after that. after read 1 img imgcount may ++.
+        }
 
         var startImgPoint = _this.content[x].search("data-orig-file");
 
@@ -1820,17 +1830,16 @@ __webpack_require__.r(__webpack_exports__);
 
         var endImgSrc = _this.content[x].search("\" alt");
 
-        console.log(startImgPoint);
-        console.log(endImgPoint);
-
-        if (startImgPoint > 0 && endImgPoint > 0) {
+        if (startImgPoint > 0 && endImgPoint > 0 && imagesCount == 0) {
           _this.imagesURL[x] = _this.content[x].slice(startImgPoint + 16, endImgPoint - 2);
           console.log(_this.imagesURL);
+          imagesCount++;
         }
 
-        if (startImgSrc > 0 && endImgSrc > 0) {
+        if (startImgSrc > 0 && endImgSrc > 0 && imagesCount == 0) {
           _this.imagesURL[x] = _this.content[x].slice(startImgSrc + 9, endImgSrc);
           console.log(_this.imagesURL);
+          imagesCount++;
         }
       }
     });

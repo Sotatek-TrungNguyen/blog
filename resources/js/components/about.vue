@@ -49,19 +49,28 @@
             this.excerpt[x]= this.rawData[x].excerpt.slice(3,-5);
             this.content[x]= this.rawData[x].content;
 
+            var imagesCount =0;
+            var imageLink;
+            var imagesOrder=this.content[x].indexOf("<img");
+            console.log(imagesOrder);
+            if(imagesOrder>0){
+              this.imageLink= this.content[x].slice // slice from img just found. try to recognize first img it read and stop there, take src/ url then ignore after that. after read 1 img imgcount may ++.
+            }
             var startImgPoint=this.content[x].search("data-orig-file");
             var endImgPoint= this.content[x].search("data-orig-size");
             var startImgSrc =this.content[x].search("img src");
             var endImgSrc= this.content[x].search("\" alt");
-            console.log(startImgPoint);
-            console.log(endImgPoint);
-            if(startImgPoint >0 && endImgPoint >0){
+            
+
+            if(startImgPoint >0 && endImgPoint >0 && imagesCount==0){
             this.imagesURL[x]= this.content[x].slice(startImgPoint+16,endImgPoint-2);
             console.log(this.imagesURL);
+            imagesCount++;
             }
-            if(startImgSrc >0 && endImgSrc >0){
+            if(startImgSrc >0 && endImgSrc >0 && imagesCount==0){
             this.imagesURL[x]= this.content[x].slice(startImgSrc+9,endImgSrc);
             console.log(this.imagesURL);
+            imagesCount++
             }
           }
         }
