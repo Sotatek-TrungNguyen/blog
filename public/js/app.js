@@ -1763,7 +1763,6 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 //
 //
 //
@@ -1772,11 +1771,69 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "about",
   data: function data() {
-    return {};
+    return {
+      rawData: null,
+      content: [],
+      imagesURL: [],
+      excerpt: []
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    fetch('https://public-api.wordpress.com/rest/v1.1/sites/yesyes248369263.wordpress.com/posts/', {
+      method: 'get'
+    }).then(function (response) {
+      return response.json();
+    }).then(function (response) {
+      _this.rawData = response.posts;
+
+      for (var x = 0; x < 6; x++) {
+        _this.excerpt[x] = _this.rawData[x].excerpt.slice(3, -5);
+        _this.content[x] = _this.rawData[x].content;
+
+        var startImgPoint = _this.content[x].search("data-orig-file");
+
+        var endImgPoint = _this.content[x].search("data-orig-size");
+
+        var startImgSrc = _this.content[x].search("img src");
+
+        var endImgSrc = _this.content[x].search("\" alt");
+
+        console.log(startImgPoint);
+        console.log(endImgPoint);
+
+        if (startImgPoint > 0 && endImgPoint > 0) {
+          _this.imagesURL[x] = _this.content[x].slice(startImgPoint + 16, endImgPoint - 2);
+          console.log(_this.imagesURL);
+        }
+
+        if (startImgSrc > 0 && endImgSrc > 0) {
+          _this.imagesURL[x] = _this.content[x].slice(startImgSrc + 9, endImgSrc);
+          console.log(_this.imagesURL);
+        }
+      }
+    });
   }
 });
 
@@ -6280,6 +6337,25 @@ exports.push([module.i, "@import url(https://fonts.google.com/specimen/Righteous
 
 // module
 exports.push([module.i, "@charset \"UTF-8\";\n/*!\n * Bootstrap v4.2.1 (https://getbootstrap.com/)\n * Copyright 2011-2018 The Bootstrap Authors\n * Copyright 2011-2018 Twitter, Inc.\n * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)\n */\n:root {\n  --blue: #3490dc;\n  --indigo: #6574cd;\n  --purple: #9561e2;\n  --pink: #f66D9b;\n  --red: #e3342f;\n  --orange: #f6993f;\n  --yellow: #ffed4a;\n  --green: #38c172;\n  --teal: #4dc0b5;\n  --cyan: #6cb2eb;\n  --white: #fff;\n  --gray: #6c757d;\n  --gray-dark: #343a40;\n  --primary: #3490dc;\n  --secondary: #6c757d;\n  --success: #38c172;\n  --info: #6cb2eb;\n  --warning: #ffed4a;\n  --danger: #e3342f;\n  --light: #f8f9fa;\n  --dark: #343a40;\n  --breakpoint-xs: 0;\n  --breakpoint-sm: 576px;\n  --breakpoint-md: 768px;\n  --breakpoint-lg: 992px;\n  --breakpoint-xl: 1200px;\n  --font-family-sans-serif: \"Nunito\", sans-serif;\n  --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace;\n}\n*,\n*::before,\n*::after {\n  box-sizing: border-box;\n}\nhtml {\n  font-family: sans-serif;\n  line-height: 1.15;\n  -webkit-text-size-adjust: 100%;\n  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);\n}\narticle, aside, figcaption, figure, footer, header, hgroup, main, nav, section {\n  display: block;\n}\nbody {\n  margin: 0;\n  font-family: \"Nunito\", sans-serif;\n  font-size: 0.9rem;\n  font-weight: 400;\n  line-height: 1.6;\n  color: #212529;\n  text-align: left;\n  background-color: #f8fafc;\n}\n[tabindex=\"-1\"]:focus {\n  outline: 0 !important;\n}\nhr {\n  box-sizing: content-box;\n  height: 0;\n  overflow: visible;\n}\nh1, h2, h3, h4, h5, h6 {\n  margin-top: 0;\n  margin-bottom: 0.5rem;\n}\np {\n  margin-top: 0;\n  margin-bottom: 1rem;\n}\nabbr[title],\nabbr[data-original-title] {\n  text-decoration: underline;\n  -webkit-text-decoration: underline dotted;\n          text-decoration: underline dotted;\n  cursor: help;\n  border-bottom: 0;\n  -webkit-text-decoration-skip-ink: none;\n          text-decoration-skip-ink: none;\n}\naddress {\n  margin-bottom: 1rem;\n  font-style: normal;\n  line-height: inherit;\n}\nol,\nul,\ndl {\n  margin-top: 0;\n  margin-bottom: 1rem;\n}\nol ol,\nul ul,\nol ul,\nul ol {\n  margin-bottom: 0;\n}\ndt {\n  font-weight: 700;\n}\ndd {\n  margin-bottom: 0.5rem;\n  margin-left: 0;\n}\nblockquote {\n  margin: 0 0 1rem;\n}\nb,\nstrong {\n  font-weight: bolder;\n}\nsmall {\n  font-size: 80%;\n}\nsub,\nsup {\n  position: relative;\n  font-size: 75%;\n  line-height: 0;\n  vertical-align: baseline;\n}\nsub {\n  bottom: -0.25em;\n}\nsup {\n  top: -0.5em;\n}\na {\n  color: #3490dc;\n  text-decoration: none;\n  background-color: transparent;\n}\na:hover {\n  color: #1d68a7;\n  text-decoration: underline;\n}\na:not([href]):not([tabindex]) {\n  color: inherit;\n  text-decoration: none;\n}\na:not([href]):not([tabindex]):hover, a:not([href]):not([tabindex]):focus {\n  color: inherit;\n  text-decoration: none;\n}\na:not([href]):not([tabindex]):focus {\n  outline: 0;\n}\npre,\ncode,\nkbd,\nsamp {\n  font-family: SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace;\n  font-size: 1em;\n}\npre {\n  margin-top: 0;\n  margin-bottom: 1rem;\n  overflow: auto;\n}\nfigure {\n  margin: 0 0 1rem;\n}\nimg {\n  vertical-align: middle;\n  border-style: none;\n}\nsvg {\n  overflow: hidden;\n  vertical-align: middle;\n}\ntable {\n  border-collapse: collapse;\n}\ncaption {\n  padding-top: 0.75rem;\n  padding-bottom: 0.75rem;\n  color: #6c757d;\n  text-align: left;\n  caption-side: bottom;\n}\nth {\n  text-align: inherit;\n}\nlabel {\n  display: inline-block;\n  margin-bottom: 0.5rem;\n}\nbutton {\n  border-radius: 0;\n}\nbutton:focus {\n  outline: 1px dotted;\n  outline: 5px auto -webkit-focus-ring-color;\n}\ninput,\nbutton,\nselect,\noptgroup,\ntextarea {\n  margin: 0;\n  font-family: inherit;\n  font-size: inherit;\n  line-height: inherit;\n}\nbutton,\ninput {\n  overflow: visible;\n}\nbutton,\nselect {\n  text-transform: none;\n}\nbutton,\n[type=button],\n[type=reset],\n[type=submit] {\n  -webkit-appearance: button;\n}\nbutton::-moz-focus-inner,\n[type=button]::-moz-focus-inner,\n[type=reset]::-moz-focus-inner,\n[type=submit]::-moz-focus-inner {\n  padding: 0;\n  border-style: none;\n}\ninput[type=radio],\ninput[type=checkbox] {\n  box-sizing: border-box;\n  padding: 0;\n}\ninput[type=date],\ninput[type=time],\ninput[type=datetime-local],\ninput[type=month] {\n  -webkit-appearance: listbox;\n}\ntextarea {\n  overflow: auto;\n  resize: vertical;\n}\nfieldset {\n  min-width: 0;\n  padding: 0;\n  margin: 0;\n  border: 0;\n}\nlegend {\n  display: block;\n  width: 100%;\n  max-width: 100%;\n  padding: 0;\n  margin-bottom: 0.5rem;\n  font-size: 1.5rem;\n  line-height: inherit;\n  color: inherit;\n  white-space: normal;\n}\nprogress {\n  vertical-align: baseline;\n}\n[type=number]::-webkit-inner-spin-button,\n[type=number]::-webkit-outer-spin-button {\n  height: auto;\n}\n[type=search] {\n  outline-offset: -2px;\n  -webkit-appearance: none;\n}\n[type=search]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n::-webkit-file-upload-button {\n  font: inherit;\n  -webkit-appearance: button;\n}\noutput {\n  display: inline-block;\n}\nsummary {\n  display: list-item;\n  cursor: pointer;\n}\ntemplate {\n  display: none;\n}\n[hidden] {\n  display: none !important;\n}\nh1, h2, h3, h4, h5, h6,\n.h1, .h2, .h3, .h4, .h5, .h6 {\n  margin-bottom: 0.5rem;\n  font-family: inherit;\n  font-weight: 500;\n  line-height: 1.2;\n  color: inherit;\n}\nh1, .h1 {\n  font-size: 2.25rem;\n}\nh2, .h2 {\n  font-size: 1.8rem;\n}\nh3, .h3 {\n  font-size: 1.575rem;\n}\nh4, .h4 {\n  font-size: 1.35rem;\n}\nh5, .h5 {\n  font-size: 1.125rem;\n}\nh6, .h6 {\n  font-size: 0.9rem;\n}\n.lead {\n  font-size: 1.125rem;\n  font-weight: 300;\n}\n.display-1 {\n  font-size: 6rem;\n  font-weight: 300;\n  line-height: 1.2;\n}\n.display-2 {\n  font-size: 5.5rem;\n  font-weight: 300;\n  line-height: 1.2;\n}\n.display-3 {\n  font-size: 4.5rem;\n  font-weight: 300;\n  line-height: 1.2;\n}\n.display-4 {\n  font-size: 3.5rem;\n  font-weight: 300;\n  line-height: 1.2;\n}\nhr {\n  margin-top: 1rem;\n  margin-bottom: 1rem;\n  border: 0;\n  border-top: 1px solid rgba(0, 0, 0, 0.1);\n}\nsmall,\n.small {\n  font-size: 80%;\n  font-weight: 400;\n}\nmark,\n.mark {\n  padding: 0.2em;\n  background-color: #fcf8e3;\n}\n.list-unstyled {\n  padding-left: 0;\n  list-style: none;\n}\n.list-inline {\n  padding-left: 0;\n  list-style: none;\n}\n.list-inline-item {\n  display: inline-block;\n}\n.list-inline-item:not(:last-child) {\n  margin-right: 0.5rem;\n}\n.initialism {\n  font-size: 90%;\n  text-transform: uppercase;\n}\n.blockquote {\n  margin-bottom: 1rem;\n  font-size: 1.125rem;\n}\n.blockquote-footer {\n  display: block;\n  font-size: 80%;\n  color: #6c757d;\n}\n.blockquote-footer::before {\n  content: \"\\2014\\A0\";\n}\n.img-fluid {\n  max-width: 100%;\n  height: auto;\n}\n.img-thumbnail {\n  padding: 0.25rem;\n  background-color: #f8fafc;\n  border: 1px solid #dee2e6;\n  border-radius: 0.25rem;\n  max-width: 100%;\n  height: auto;\n}\n.figure {\n  display: inline-block;\n}\n.figure-img {\n  margin-bottom: 0.5rem;\n  line-height: 1;\n}\n.figure-caption {\n  font-size: 90%;\n  color: #6c757d;\n}\ncode {\n  font-size: 87.5%;\n  color: #f66D9b;\n  word-break: break-word;\n}\na > code {\n  color: inherit;\n}\nkbd {\n  padding: 0.2rem 0.4rem;\n  font-size: 87.5%;\n  color: #fff;\n  background-color: #212529;\n  border-radius: 0.2rem;\n}\nkbd kbd {\n  padding: 0;\n  font-size: 100%;\n  font-weight: 700;\n}\npre {\n  display: block;\n  font-size: 87.5%;\n  color: #212529;\n}\npre code {\n  font-size: inherit;\n  color: inherit;\n  word-break: normal;\n}\n.pre-scrollable {\n  max-height: 340px;\n  overflow-y: scroll;\n}\n.container {\n  width: 100%;\n  padding-right: 15px;\n  padding-left: 15px;\n  margin-right: auto;\n  margin-left: auto;\n}\n@media (min-width: 576px) {\n.container {\n    max-width: 540px;\n}\n}\n@media (min-width: 768px) {\n.container {\n    max-width: 720px;\n}\n}\n@media (min-width: 992px) {\n.container {\n    max-width: 960px;\n}\n}\n@media (min-width: 1200px) {\n.container {\n    max-width: 1140px;\n}\n}\n.container-fluid {\n  width: 100%;\n  padding-right: 15px;\n  padding-left: 15px;\n  margin-right: auto;\n  margin-left: auto;\n}\n.row {\n  display: flex;\n  flex-wrap: wrap;\n  margin-right: -15px;\n  margin-left: -15px;\n}\n.no-gutters {\n  margin-right: 0;\n  margin-left: 0;\n}\n.no-gutters > .col,\n.no-gutters > [class*=col-] {\n  padding-right: 0;\n  padding-left: 0;\n}\n.col-xl,\n.col-xl-auto, .col-xl-12, .col-xl-11, .col-xl-10, .col-xl-9, .col-xl-8, .col-xl-7, .col-xl-6, .col-xl-5, .col-xl-4, .col-xl-3, .col-xl-2, .col-xl-1, .col-lg,\n.col-lg-auto, .col-lg-12, .col-lg-11, .col-lg-10, .col-lg-9, .col-lg-8, .col-lg-7, .col-lg-6, .col-lg-5, .col-lg-4, .col-lg-3, .col-lg-2, .col-lg-1, .col-md,\n.col-md-auto, .col-md-12, .col-md-11, .col-md-10, .col-md-9, .col-md-8, .col-md-7, .col-md-6, .col-md-5, .col-md-4, .col-md-3, .col-md-2, .col-md-1, .col-sm,\n.col-sm-auto, .col-sm-12, .col-sm-11, .col-sm-10, .col-sm-9, .col-sm-8, .col-sm-7, .col-sm-6, .col-sm-5, .col-sm-4, .col-sm-3, .col-sm-2, .col-sm-1, .col,\n.col-auto, .col-12, .col-11, .col-10, .col-9, .col-8, .col-7, .col-6, .col-5, .col-4, .col-3, .col-2, .col-1 {\n  position: relative;\n  width: 100%;\n  padding-right: 15px;\n  padding-left: 15px;\n}\n.col {\n  flex-basis: 0;\n  flex-grow: 1;\n  max-width: 100%;\n}\n.col-auto {\n  flex: 0 0 auto;\n  width: auto;\n  max-width: 100%;\n}\n.col-1 {\n  flex: 0 0 8.3333333333%;\n  max-width: 8.3333333333%;\n}\n.col-2 {\n  flex: 0 0 16.6666666667%;\n  max-width: 16.6666666667%;\n}\n.col-3 {\n  flex: 0 0 25%;\n  max-width: 25%;\n}\n.col-4 {\n  flex: 0 0 33.3333333333%;\n  max-width: 33.3333333333%;\n}\n.col-5 {\n  flex: 0 0 41.6666666667%;\n  max-width: 41.6666666667%;\n}\n.col-6 {\n  flex: 0 0 50%;\n  max-width: 50%;\n}\n.col-7 {\n  flex: 0 0 58.3333333333%;\n  max-width: 58.3333333333%;\n}\n.col-8 {\n  flex: 0 0 66.6666666667%;\n  max-width: 66.6666666667%;\n}\n.col-9 {\n  flex: 0 0 75%;\n  max-width: 75%;\n}\n.col-10 {\n  flex: 0 0 83.3333333333%;\n  max-width: 83.3333333333%;\n}\n.col-11 {\n  flex: 0 0 91.6666666667%;\n  max-width: 91.6666666667%;\n}\n.col-12 {\n  flex: 0 0 100%;\n  max-width: 100%;\n}\n.order-first {\n  order: -1;\n}\n.order-last {\n  order: 13;\n}\n.order-0 {\n  order: 0;\n}\n.order-1 {\n  order: 1;\n}\n.order-2 {\n  order: 2;\n}\n.order-3 {\n  order: 3;\n}\n.order-4 {\n  order: 4;\n}\n.order-5 {\n  order: 5;\n}\n.order-6 {\n  order: 6;\n}\n.order-7 {\n  order: 7;\n}\n.order-8 {\n  order: 8;\n}\n.order-9 {\n  order: 9;\n}\n.order-10 {\n  order: 10;\n}\n.order-11 {\n  order: 11;\n}\n.order-12 {\n  order: 12;\n}\n.offset-1 {\n  margin-left: 8.3333333333%;\n}\n.offset-2 {\n  margin-left: 16.6666666667%;\n}\n.offset-3 {\n  margin-left: 25%;\n}\n.offset-4 {\n  margin-left: 33.3333333333%;\n}\n.offset-5 {\n  margin-left: 41.6666666667%;\n}\n.offset-6 {\n  margin-left: 50%;\n}\n.offset-7 {\n  margin-left: 58.3333333333%;\n}\n.offset-8 {\n  margin-left: 66.6666666667%;\n}\n.offset-9 {\n  margin-left: 75%;\n}\n.offset-10 {\n  margin-left: 83.3333333333%;\n}\n.offset-11 {\n  margin-left: 91.6666666667%;\n}\n@media (min-width: 576px) {\n.col-sm {\n    flex-basis: 0;\n    flex-grow: 1;\n    max-width: 100%;\n}\n.col-sm-auto {\n    flex: 0 0 auto;\n    width: auto;\n    max-width: 100%;\n}\n.col-sm-1 {\n    flex: 0 0 8.3333333333%;\n    max-width: 8.3333333333%;\n}\n.col-sm-2 {\n    flex: 0 0 16.6666666667%;\n    max-width: 16.6666666667%;\n}\n.col-sm-3 {\n    flex: 0 0 25%;\n    max-width: 25%;\n}\n.col-sm-4 {\n    flex: 0 0 33.3333333333%;\n    max-width: 33.3333333333%;\n}\n.col-sm-5 {\n    flex: 0 0 41.6666666667%;\n    max-width: 41.6666666667%;\n}\n.col-sm-6 {\n    flex: 0 0 50%;\n    max-width: 50%;\n}\n.col-sm-7 {\n    flex: 0 0 58.3333333333%;\n    max-width: 58.3333333333%;\n}\n.col-sm-8 {\n    flex: 0 0 66.6666666667%;\n    max-width: 66.6666666667%;\n}\n.col-sm-9 {\n    flex: 0 0 75%;\n    max-width: 75%;\n}\n.col-sm-10 {\n    flex: 0 0 83.3333333333%;\n    max-width: 83.3333333333%;\n}\n.col-sm-11 {\n    flex: 0 0 91.6666666667%;\n    max-width: 91.6666666667%;\n}\n.col-sm-12 {\n    flex: 0 0 100%;\n    max-width: 100%;\n}\n.order-sm-first {\n    order: -1;\n}\n.order-sm-last {\n    order: 13;\n}\n.order-sm-0 {\n    order: 0;\n}\n.order-sm-1 {\n    order: 1;\n}\n.order-sm-2 {\n    order: 2;\n}\n.order-sm-3 {\n    order: 3;\n}\n.order-sm-4 {\n    order: 4;\n}\n.order-sm-5 {\n    order: 5;\n}\n.order-sm-6 {\n    order: 6;\n}\n.order-sm-7 {\n    order: 7;\n}\n.order-sm-8 {\n    order: 8;\n}\n.order-sm-9 {\n    order: 9;\n}\n.order-sm-10 {\n    order: 10;\n}\n.order-sm-11 {\n    order: 11;\n}\n.order-sm-12 {\n    order: 12;\n}\n.offset-sm-0 {\n    margin-left: 0;\n}\n.offset-sm-1 {\n    margin-left: 8.3333333333%;\n}\n.offset-sm-2 {\n    margin-left: 16.6666666667%;\n}\n.offset-sm-3 {\n    margin-left: 25%;\n}\n.offset-sm-4 {\n    margin-left: 33.3333333333%;\n}\n.offset-sm-5 {\n    margin-left: 41.6666666667%;\n}\n.offset-sm-6 {\n    margin-left: 50%;\n}\n.offset-sm-7 {\n    margin-left: 58.3333333333%;\n}\n.offset-sm-8 {\n    margin-left: 66.6666666667%;\n}\n.offset-sm-9 {\n    margin-left: 75%;\n}\n.offset-sm-10 {\n    margin-left: 83.3333333333%;\n}\n.offset-sm-11 {\n    margin-left: 91.6666666667%;\n}\n}\n@media (min-width: 768px) {\n.col-md {\n    flex-basis: 0;\n    flex-grow: 1;\n    max-width: 100%;\n}\n.col-md-auto {\n    flex: 0 0 auto;\n    width: auto;\n    max-width: 100%;\n}\n.col-md-1 {\n    flex: 0 0 8.3333333333%;\n    max-width: 8.3333333333%;\n}\n.col-md-2 {\n    flex: 0 0 16.6666666667%;\n    max-width: 16.6666666667%;\n}\n.col-md-3 {\n    flex: 0 0 25%;\n    max-width: 25%;\n}\n.col-md-4 {\n    flex: 0 0 33.3333333333%;\n    max-width: 33.3333333333%;\n}\n.col-md-5 {\n    flex: 0 0 41.6666666667%;\n    max-width: 41.6666666667%;\n}\n.col-md-6 {\n    flex: 0 0 50%;\n    max-width: 50%;\n}\n.col-md-7 {\n    flex: 0 0 58.3333333333%;\n    max-width: 58.3333333333%;\n}\n.col-md-8 {\n    flex: 0 0 66.6666666667%;\n    max-width: 66.6666666667%;\n}\n.col-md-9 {\n    flex: 0 0 75%;\n    max-width: 75%;\n}\n.col-md-10 {\n    flex: 0 0 83.3333333333%;\n    max-width: 83.3333333333%;\n}\n.col-md-11 {\n    flex: 0 0 91.6666666667%;\n    max-width: 91.6666666667%;\n}\n.col-md-12 {\n    flex: 0 0 100%;\n    max-width: 100%;\n}\n.order-md-first {\n    order: -1;\n}\n.order-md-last {\n    order: 13;\n}\n.order-md-0 {\n    order: 0;\n}\n.order-md-1 {\n    order: 1;\n}\n.order-md-2 {\n    order: 2;\n}\n.order-md-3 {\n    order: 3;\n}\n.order-md-4 {\n    order: 4;\n}\n.order-md-5 {\n    order: 5;\n}\n.order-md-6 {\n    order: 6;\n}\n.order-md-7 {\n    order: 7;\n}\n.order-md-8 {\n    order: 8;\n}\n.order-md-9 {\n    order: 9;\n}\n.order-md-10 {\n    order: 10;\n}\n.order-md-11 {\n    order: 11;\n}\n.order-md-12 {\n    order: 12;\n}\n.offset-md-0 {\n    margin-left: 0;\n}\n.offset-md-1 {\n    margin-left: 8.3333333333%;\n}\n.offset-md-2 {\n    margin-left: 16.6666666667%;\n}\n.offset-md-3 {\n    margin-left: 25%;\n}\n.offset-md-4 {\n    margin-left: 33.3333333333%;\n}\n.offset-md-5 {\n    margin-left: 41.6666666667%;\n}\n.offset-md-6 {\n    margin-left: 50%;\n}\n.offset-md-7 {\n    margin-left: 58.3333333333%;\n}\n.offset-md-8 {\n    margin-left: 66.6666666667%;\n}\n.offset-md-9 {\n    margin-left: 75%;\n}\n.offset-md-10 {\n    margin-left: 83.3333333333%;\n}\n.offset-md-11 {\n    margin-left: 91.6666666667%;\n}\n}\n@media (min-width: 992px) {\n.col-lg {\n    flex-basis: 0;\n    flex-grow: 1;\n    max-width: 100%;\n}\n.col-lg-auto {\n    flex: 0 0 auto;\n    width: auto;\n    max-width: 100%;\n}\n.col-lg-1 {\n    flex: 0 0 8.3333333333%;\n    max-width: 8.3333333333%;\n}\n.col-lg-2 {\n    flex: 0 0 16.6666666667%;\n    max-width: 16.6666666667%;\n}\n.col-lg-3 {\n    flex: 0 0 25%;\n    max-width: 25%;\n}\n.col-lg-4 {\n    flex: 0 0 33.3333333333%;\n    max-width: 33.3333333333%;\n}\n.col-lg-5 {\n    flex: 0 0 41.6666666667%;\n    max-width: 41.6666666667%;\n}\n.col-lg-6 {\n    flex: 0 0 50%;\n    max-width: 50%;\n}\n.col-lg-7 {\n    flex: 0 0 58.3333333333%;\n    max-width: 58.3333333333%;\n}\n.col-lg-8 {\n    flex: 0 0 66.6666666667%;\n    max-width: 66.6666666667%;\n}\n.col-lg-9 {\n    flex: 0 0 75%;\n    max-width: 75%;\n}\n.col-lg-10 {\n    flex: 0 0 83.3333333333%;\n    max-width: 83.3333333333%;\n}\n.col-lg-11 {\n    flex: 0 0 91.6666666667%;\n    max-width: 91.6666666667%;\n}\n.col-lg-12 {\n    flex: 0 0 100%;\n    max-width: 100%;\n}\n.order-lg-first {\n    order: -1;\n}\n.order-lg-last {\n    order: 13;\n}\n.order-lg-0 {\n    order: 0;\n}\n.order-lg-1 {\n    order: 1;\n}\n.order-lg-2 {\n    order: 2;\n}\n.order-lg-3 {\n    order: 3;\n}\n.order-lg-4 {\n    order: 4;\n}\n.order-lg-5 {\n    order: 5;\n}\n.order-lg-6 {\n    order: 6;\n}\n.order-lg-7 {\n    order: 7;\n}\n.order-lg-8 {\n    order: 8;\n}\n.order-lg-9 {\n    order: 9;\n}\n.order-lg-10 {\n    order: 10;\n}\n.order-lg-11 {\n    order: 11;\n}\n.order-lg-12 {\n    order: 12;\n}\n.offset-lg-0 {\n    margin-left: 0;\n}\n.offset-lg-1 {\n    margin-left: 8.3333333333%;\n}\n.offset-lg-2 {\n    margin-left: 16.6666666667%;\n}\n.offset-lg-3 {\n    margin-left: 25%;\n}\n.offset-lg-4 {\n    margin-left: 33.3333333333%;\n}\n.offset-lg-5 {\n    margin-left: 41.6666666667%;\n}\n.offset-lg-6 {\n    margin-left: 50%;\n}\n.offset-lg-7 {\n    margin-left: 58.3333333333%;\n}\n.offset-lg-8 {\n    margin-left: 66.6666666667%;\n}\n.offset-lg-9 {\n    margin-left: 75%;\n}\n.offset-lg-10 {\n    margin-left: 83.3333333333%;\n}\n.offset-lg-11 {\n    margin-left: 91.6666666667%;\n}\n}\n@media (min-width: 1200px) {\n.col-xl {\n    flex-basis: 0;\n    flex-grow: 1;\n    max-width: 100%;\n}\n.col-xl-auto {\n    flex: 0 0 auto;\n    width: auto;\n    max-width: 100%;\n}\n.col-xl-1 {\n    flex: 0 0 8.3333333333%;\n    max-width: 8.3333333333%;\n}\n.col-xl-2 {\n    flex: 0 0 16.6666666667%;\n    max-width: 16.6666666667%;\n}\n.col-xl-3 {\n    flex: 0 0 25%;\n    max-width: 25%;\n}\n.col-xl-4 {\n    flex: 0 0 33.3333333333%;\n    max-width: 33.3333333333%;\n}\n.col-xl-5 {\n    flex: 0 0 41.6666666667%;\n    max-width: 41.6666666667%;\n}\n.col-xl-6 {\n    flex: 0 0 50%;\n    max-width: 50%;\n}\n.col-xl-7 {\n    flex: 0 0 58.3333333333%;\n    max-width: 58.3333333333%;\n}\n.col-xl-8 {\n    flex: 0 0 66.6666666667%;\n    max-width: 66.6666666667%;\n}\n.col-xl-9 {\n    flex: 0 0 75%;\n    max-width: 75%;\n}\n.col-xl-10 {\n    flex: 0 0 83.3333333333%;\n    max-width: 83.3333333333%;\n}\n.col-xl-11 {\n    flex: 0 0 91.6666666667%;\n    max-width: 91.6666666667%;\n}\n.col-xl-12 {\n    flex: 0 0 100%;\n    max-width: 100%;\n}\n.order-xl-first {\n    order: -1;\n}\n.order-xl-last {\n    order: 13;\n}\n.order-xl-0 {\n    order: 0;\n}\n.order-xl-1 {\n    order: 1;\n}\n.order-xl-2 {\n    order: 2;\n}\n.order-xl-3 {\n    order: 3;\n}\n.order-xl-4 {\n    order: 4;\n}\n.order-xl-5 {\n    order: 5;\n}\n.order-xl-6 {\n    order: 6;\n}\n.order-xl-7 {\n    order: 7;\n}\n.order-xl-8 {\n    order: 8;\n}\n.order-xl-9 {\n    order: 9;\n}\n.order-xl-10 {\n    order: 10;\n}\n.order-xl-11 {\n    order: 11;\n}\n.order-xl-12 {\n    order: 12;\n}\n.offset-xl-0 {\n    margin-left: 0;\n}\n.offset-xl-1 {\n    margin-left: 8.3333333333%;\n}\n.offset-xl-2 {\n    margin-left: 16.6666666667%;\n}\n.offset-xl-3 {\n    margin-left: 25%;\n}\n.offset-xl-4 {\n    margin-left: 33.3333333333%;\n}\n.offset-xl-5 {\n    margin-left: 41.6666666667%;\n}\n.offset-xl-6 {\n    margin-left: 50%;\n}\n.offset-xl-7 {\n    margin-left: 58.3333333333%;\n}\n.offset-xl-8 {\n    margin-left: 66.6666666667%;\n}\n.offset-xl-9 {\n    margin-left: 75%;\n}\n.offset-xl-10 {\n    margin-left: 83.3333333333%;\n}\n.offset-xl-11 {\n    margin-left: 91.6666666667%;\n}\n}\n.table {\n  width: 100%;\n  margin-bottom: 1rem;\n  background-color: transparent;\n}\n.table th,\n.table td {\n  padding: 0.75rem;\n  vertical-align: top;\n  border-top: 1px solid #dee2e6;\n}\n.table thead th {\n  vertical-align: bottom;\n  border-bottom: 2px solid #dee2e6;\n}\n.table tbody + tbody {\n  border-top: 2px solid #dee2e6;\n}\n.table .table {\n  background-color: #f8fafc;\n}\n.table-sm th,\n.table-sm td {\n  padding: 0.3rem;\n}\n.table-bordered {\n  border: 1px solid #dee2e6;\n}\n.table-bordered th,\n.table-bordered td {\n  border: 1px solid #dee2e6;\n}\n.table-bordered thead th,\n.table-bordered thead td {\n  border-bottom-width: 2px;\n}\n.table-borderless th,\n.table-borderless td,\n.table-borderless thead th,\n.table-borderless tbody + tbody {\n  border: 0;\n}\n.table-striped tbody tr:nth-of-type(odd) {\n  background-color: rgba(0, 0, 0, 0.05);\n}\n.table-hover tbody tr:hover {\n  background-color: rgba(0, 0, 0, 0.075);\n}\n.table-primary,\n.table-primary > th,\n.table-primary > td {\n  background-color: #c6e0f5;\n}\n.table-primary th,\n.table-primary td,\n.table-primary thead th,\n.table-primary tbody + tbody {\n  border-color: #95c5ed;\n}\n.table-hover .table-primary:hover {\n  background-color: #b0d4f1;\n}\n.table-hover .table-primary:hover > td,\n.table-hover .table-primary:hover > th {\n  background-color: #b0d4f1;\n}\n.table-secondary,\n.table-secondary > th,\n.table-secondary > td {\n  background-color: #d6d8db;\n}\n.table-secondary th,\n.table-secondary td,\n.table-secondary thead th,\n.table-secondary tbody + tbody {\n  border-color: #b3b7bb;\n}\n.table-hover .table-secondary:hover {\n  background-color: #c8cbcf;\n}\n.table-hover .table-secondary:hover > td,\n.table-hover .table-secondary:hover > th {\n  background-color: #c8cbcf;\n}\n.table-success,\n.table-success > th,\n.table-success > td {\n  background-color: #c7eed8;\n}\n.table-success th,\n.table-success td,\n.table-success thead th,\n.table-success tbody + tbody {\n  border-color: #98dfb6;\n}\n.table-hover .table-success:hover {\n  background-color: #b3e8ca;\n}\n.table-hover .table-success:hover > td,\n.table-hover .table-success:hover > th {\n  background-color: #b3e8ca;\n}\n.table-info,\n.table-info > th,\n.table-info > td {\n  background-color: #d6e9f9;\n}\n.table-info th,\n.table-info td,\n.table-info thead th,\n.table-info tbody + tbody {\n  border-color: #b3d7f5;\n}\n.table-hover .table-info:hover {\n  background-color: #c0ddf6;\n}\n.table-hover .table-info:hover > td,\n.table-hover .table-info:hover > th {\n  background-color: #c0ddf6;\n}\n.table-warning,\n.table-warning > th,\n.table-warning > td {\n  background-color: #fffacc;\n}\n.table-warning th,\n.table-warning td,\n.table-warning thead th,\n.table-warning tbody + tbody {\n  border-color: #fff6a1;\n}\n.table-hover .table-warning:hover {\n  background-color: #fff8b3;\n}\n.table-hover .table-warning:hover > td,\n.table-hover .table-warning:hover > th {\n  background-color: #fff8b3;\n}\n.table-danger,\n.table-danger > th,\n.table-danger > td {\n  background-color: #f7c6c5;\n}\n.table-danger th,\n.table-danger td,\n.table-danger thead th,\n.table-danger tbody + tbody {\n  border-color: #f09593;\n}\n.table-hover .table-danger:hover {\n  background-color: #f4b0af;\n}\n.table-hover .table-danger:hover > td,\n.table-hover .table-danger:hover > th {\n  background-color: #f4b0af;\n}\n.table-light,\n.table-light > th,\n.table-light > td {\n  background-color: #fdfdfe;\n}\n.table-light th,\n.table-light td,\n.table-light thead th,\n.table-light tbody + tbody {\n  border-color: #fbfcfc;\n}\n.table-hover .table-light:hover {\n  background-color: #ececf6;\n}\n.table-hover .table-light:hover > td,\n.table-hover .table-light:hover > th {\n  background-color: #ececf6;\n}\n.table-dark,\n.table-dark > th,\n.table-dark > td {\n  background-color: #c6c8ca;\n}\n.table-dark th,\n.table-dark td,\n.table-dark thead th,\n.table-dark tbody + tbody {\n  border-color: #95999c;\n}\n.table-hover .table-dark:hover {\n  background-color: #b9bbbe;\n}\n.table-hover .table-dark:hover > td,\n.table-hover .table-dark:hover > th {\n  background-color: #b9bbbe;\n}\n.table-active,\n.table-active > th,\n.table-active > td {\n  background-color: rgba(0, 0, 0, 0.075);\n}\n.table-hover .table-active:hover {\n  background-color: rgba(0, 0, 0, 0.075);\n}\n.table-hover .table-active:hover > td,\n.table-hover .table-active:hover > th {\n  background-color: rgba(0, 0, 0, 0.075);\n}\n.table .thead-dark th {\n  color: #fff;\n  background-color: #212529;\n  border-color: #32383e;\n}\n.table .thead-light th {\n  color: #495057;\n  background-color: #e9ecef;\n  border-color: #dee2e6;\n}\n.table-dark {\n  color: #fff;\n  background-color: #212529;\n}\n.table-dark th,\n.table-dark td,\n.table-dark thead th {\n  border-color: #32383e;\n}\n.table-dark.table-bordered {\n  border: 0;\n}\n.table-dark.table-striped tbody tr:nth-of-type(odd) {\n  background-color: rgba(255, 255, 255, 0.05);\n}\n.table-dark.table-hover tbody tr:hover {\n  background-color: rgba(255, 255, 255, 0.075);\n}\n@media (max-width: 575.98px) {\n.table-responsive-sm {\n    display: block;\n    width: 100%;\n    overflow-x: auto;\n    -webkit-overflow-scrolling: touch;\n    -ms-overflow-style: -ms-autohiding-scrollbar;\n}\n.table-responsive-sm > .table-bordered {\n    border: 0;\n}\n}\n@media (max-width: 767.98px) {\n.table-responsive-md {\n    display: block;\n    width: 100%;\n    overflow-x: auto;\n    -webkit-overflow-scrolling: touch;\n    -ms-overflow-style: -ms-autohiding-scrollbar;\n}\n.table-responsive-md > .table-bordered {\n    border: 0;\n}\n}\n@media (max-width: 991.98px) {\n.table-responsive-lg {\n    display: block;\n    width: 100%;\n    overflow-x: auto;\n    -webkit-overflow-scrolling: touch;\n    -ms-overflow-style: -ms-autohiding-scrollbar;\n}\n.table-responsive-lg > .table-bordered {\n    border: 0;\n}\n}\n@media (max-width: 1199.98px) {\n.table-responsive-xl {\n    display: block;\n    width: 100%;\n    overflow-x: auto;\n    -webkit-overflow-scrolling: touch;\n    -ms-overflow-style: -ms-autohiding-scrollbar;\n}\n.table-responsive-xl > .table-bordered {\n    border: 0;\n}\n}\n.table-responsive {\n  display: block;\n  width: 100%;\n  overflow-x: auto;\n  -webkit-overflow-scrolling: touch;\n  -ms-overflow-style: -ms-autohiding-scrollbar;\n}\n.table-responsive > .table-bordered {\n  border: 0;\n}\n.form-control {\n  display: block;\n  width: 100%;\n  height: calc(2.19rem + 2px);\n  padding: 0.375rem 0.75rem;\n  font-size: 0.9rem;\n  font-weight: 400;\n  line-height: 1.6;\n  color: #495057;\n  background-color: #fff;\n  background-clip: padding-box;\n  border: 1px solid #ced4da;\n  border-radius: 0.25rem;\n  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\n}\n@media screen and (prefers-reduced-motion: reduce) {\n.form-control {\n    transition: none;\n}\n}\n.form-control::-ms-expand {\n  background-color: transparent;\n  border: 0;\n}\n.form-control:focus {\n  color: #495057;\n  background-color: #fff;\n  border-color: #a1cbef;\n  outline: 0;\n  box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.25);\n}\n.form-control::-webkit-input-placeholder {\n  color: #6c757d;\n  opacity: 1;\n}\n.form-control:-ms-input-placeholder {\n  color: #6c757d;\n  opacity: 1;\n}\n.form-control::-ms-input-placeholder {\n  color: #6c757d;\n  opacity: 1;\n}\n.form-control::placeholder {\n  color: #6c757d;\n  opacity: 1;\n}\n.form-control:disabled, .form-control[readonly] {\n  background-color: #e9ecef;\n  opacity: 1;\n}\nselect.form-control:focus::-ms-value {\n  color: #495057;\n  background-color: #fff;\n}\n.form-control-file,\n.form-control-range {\n  display: block;\n  width: 100%;\n}\n.col-form-label {\n  padding-top: calc(0.375rem + 1px);\n  padding-bottom: calc(0.375rem + 1px);\n  margin-bottom: 0;\n  font-size: inherit;\n  line-height: 1.6;\n}\n.col-form-label-lg {\n  padding-top: calc(0.5rem + 1px);\n  padding-bottom: calc(0.5rem + 1px);\n  font-size: 1.125rem;\n  line-height: 1.5;\n}\n.col-form-label-sm {\n  padding-top: calc(0.25rem + 1px);\n  padding-bottom: calc(0.25rem + 1px);\n  font-size: 0.7875rem;\n  line-height: 1.5;\n}\n.form-control-plaintext {\n  display: block;\n  width: 100%;\n  padding-top: 0.375rem;\n  padding-bottom: 0.375rem;\n  margin-bottom: 0;\n  line-height: 1.6;\n  color: #212529;\n  background-color: transparent;\n  border: solid transparent;\n  border-width: 1px 0;\n}\n.form-control-plaintext.form-control-sm, .form-control-plaintext.form-control-lg {\n  padding-right: 0;\n  padding-left: 0;\n}\n.form-control-sm {\n  height: calc(1.68125rem + 2px);\n  padding: 0.25rem 0.5rem;\n  font-size: 0.7875rem;\n  line-height: 1.5;\n  border-radius: 0.2rem;\n}\n.form-control-lg {\n  height: calc(2.6875rem + 2px);\n  padding: 0.5rem 1rem;\n  font-size: 1.125rem;\n  line-height: 1.5;\n  border-radius: 0.3rem;\n}\nselect.form-control[size], select.form-control[multiple] {\n  height: auto;\n}\ntextarea.form-control {\n  height: auto;\n}\n.form-group {\n  margin-bottom: 1rem;\n}\n.form-text {\n  display: block;\n  margin-top: 0.25rem;\n}\n.form-row {\n  display: flex;\n  flex-wrap: wrap;\n  margin-right: -5px;\n  margin-left: -5px;\n}\n.form-row > .col,\n.form-row > [class*=col-] {\n  padding-right: 5px;\n  padding-left: 5px;\n}\n.form-check {\n  position: relative;\n  display: block;\n  padding-left: 1.25rem;\n}\n.form-check-input {\n  position: absolute;\n  margin-top: 0.3rem;\n  margin-left: -1.25rem;\n}\n.form-check-input:disabled ~ .form-check-label {\n  color: #6c757d;\n}\n.form-check-label {\n  margin-bottom: 0;\n}\n.form-check-inline {\n  display: inline-flex;\n  align-items: center;\n  padding-left: 0;\n  margin-right: 0.75rem;\n}\n.form-check-inline .form-check-input {\n  position: static;\n  margin-top: 0;\n  margin-right: 0.3125rem;\n  margin-left: 0;\n}\n.valid-feedback {\n  display: none;\n  width: 100%;\n  margin-top: 0.25rem;\n  font-size: 80%;\n  color: #38c172;\n}\n.valid-tooltip {\n  position: absolute;\n  top: 100%;\n  z-index: 5;\n  display: none;\n  max-width: 100%;\n  padding: 0.25rem 0.5rem;\n  margin-top: 0.1rem;\n  font-size: 0.7875rem;\n  line-height: 1.6;\n  color: #fff;\n  background-color: rgba(56, 193, 114, 0.9);\n  border-radius: 0.25rem;\n}\n.was-validated .form-control:valid, .form-control.is-valid {\n  border-color: #38c172;\n  padding-right: 2.19rem;\n  background-repeat: no-repeat;\n  background-position: center right calc(2.19rem / 4);\n  background-size: calc(2.19rem / 2) calc(2.19rem / 2);\n  background-image: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2338c172' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e\");\n}\n.was-validated .form-control:valid:focus, .form-control.is-valid:focus {\n  border-color: #38c172;\n  box-shadow: 0 0 0 0.2rem rgba(56, 193, 114, 0.25);\n}\n.was-validated .form-control:valid ~ .valid-feedback,\n.was-validated .form-control:valid ~ .valid-tooltip, .form-control.is-valid ~ .valid-feedback,\n.form-control.is-valid ~ .valid-tooltip {\n  display: block;\n}\n.was-validated textarea.form-control:valid, textarea.form-control.is-valid {\n  padding-right: 2.19rem;\n  background-position: top calc(2.19rem / 4) right calc(2.19rem / 4);\n}\n.was-validated .custom-select:valid, .custom-select.is-valid {\n  border-color: #38c172;\n  padding-right: 3.3925rem;\n  background: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e\") no-repeat right 0.75rem center/8px 10px, url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2338c172' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e\") no-repeat center right 1.75rem/1.095rem 1.095rem;\n}\n.was-validated .custom-select:valid:focus, .custom-select.is-valid:focus {\n  border-color: #38c172;\n  box-shadow: 0 0 0 0.2rem rgba(56, 193, 114, 0.25);\n}\n.was-validated .custom-select:valid ~ .valid-feedback,\n.was-validated .custom-select:valid ~ .valid-tooltip, .custom-select.is-valid ~ .valid-feedback,\n.custom-select.is-valid ~ .valid-tooltip {\n  display: block;\n}\n.was-validated .form-control-file:valid ~ .valid-feedback,\n.was-validated .form-control-file:valid ~ .valid-tooltip, .form-control-file.is-valid ~ .valid-feedback,\n.form-control-file.is-valid ~ .valid-tooltip {\n  display: block;\n}\n.was-validated .form-check-input:valid ~ .form-check-label, .form-check-input.is-valid ~ .form-check-label {\n  color: #38c172;\n}\n.was-validated .form-check-input:valid ~ .valid-feedback,\n.was-validated .form-check-input:valid ~ .valid-tooltip, .form-check-input.is-valid ~ .valid-feedback,\n.form-check-input.is-valid ~ .valid-tooltip {\n  display: block;\n}\n.was-validated .custom-control-input:valid ~ .custom-control-label, .custom-control-input.is-valid ~ .custom-control-label {\n  color: #38c172;\n}\n.was-validated .custom-control-input:valid ~ .custom-control-label::before, .custom-control-input.is-valid ~ .custom-control-label::before {\n  border-color: #38c172;\n}\n.was-validated .custom-control-input:valid ~ .valid-feedback,\n.was-validated .custom-control-input:valid ~ .valid-tooltip, .custom-control-input.is-valid ~ .valid-feedback,\n.custom-control-input.is-valid ~ .valid-tooltip {\n  display: block;\n}\n.was-validated .custom-control-input:valid:checked ~ .custom-control-label::before, .custom-control-input.is-valid:checked ~ .custom-control-label::before {\n  border-color: #5cd08d;\n  background-color: #5cd08d;\n}\n.was-validated .custom-control-input:valid:focus ~ .custom-control-label::before, .custom-control-input.is-valid:focus ~ .custom-control-label::before {\n  box-shadow: 0 0 0 0.2rem rgba(56, 193, 114, 0.25);\n}\n.was-validated .custom-control-input:valid:focus:not(:checked) ~ .custom-control-label::before, .custom-control-input.is-valid:focus:not(:checked) ~ .custom-control-label::before {\n  border-color: #38c172;\n}\n.was-validated .custom-file-input:valid ~ .custom-file-label, .custom-file-input.is-valid ~ .custom-file-label {\n  border-color: #38c172;\n}\n.was-validated .custom-file-input:valid ~ .valid-feedback,\n.was-validated .custom-file-input:valid ~ .valid-tooltip, .custom-file-input.is-valid ~ .valid-feedback,\n.custom-file-input.is-valid ~ .valid-tooltip {\n  display: block;\n}\n.was-validated .custom-file-input:valid:focus ~ .custom-file-label, .custom-file-input.is-valid:focus ~ .custom-file-label {\n  border-color: #38c172;\n  box-shadow: 0 0 0 0.2rem rgba(56, 193, 114, 0.25);\n}\n.invalid-feedback {\n  display: none;\n  width: 100%;\n  margin-top: 0.25rem;\n  font-size: 80%;\n  color: #e3342f;\n}\n.invalid-tooltip {\n  position: absolute;\n  top: 100%;\n  z-index: 5;\n  display: none;\n  max-width: 100%;\n  padding: 0.25rem 0.5rem;\n  margin-top: 0.1rem;\n  font-size: 0.7875rem;\n  line-height: 1.6;\n  color: #fff;\n  background-color: rgba(227, 52, 47, 0.9);\n  border-radius: 0.25rem;\n}\n.was-validated .form-control:invalid, .form-control.is-invalid {\n  border-color: #e3342f;\n  padding-right: 2.19rem;\n  background-repeat: no-repeat;\n  background-position: center right calc(2.19rem / 4);\n  background-size: calc(2.19rem / 2) calc(2.19rem / 2);\n  background-image: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23e3342f' viewBox='-2 -2 7 7'%3e%3cpath stroke='%23d9534f' d='M0 0l3 3m0-3L0 3'/%3e%3ccircle r='.5'/%3e%3ccircle cx='3' r='.5'/%3e%3ccircle cy='3' r='.5'/%3e%3ccircle cx='3' cy='3' r='.5'/%3e%3c/svg%3E\");\n}\n.was-validated .form-control:invalid:focus, .form-control.is-invalid:focus {\n  border-color: #e3342f;\n  box-shadow: 0 0 0 0.2rem rgba(227, 52, 47, 0.25);\n}\n.was-validated .form-control:invalid ~ .invalid-feedback,\n.was-validated .form-control:invalid ~ .invalid-tooltip, .form-control.is-invalid ~ .invalid-feedback,\n.form-control.is-invalid ~ .invalid-tooltip {\n  display: block;\n}\n.was-validated textarea.form-control:invalid, textarea.form-control.is-invalid {\n  padding-right: 2.19rem;\n  background-position: top calc(2.19rem / 4) right calc(2.19rem / 4);\n}\n.was-validated .custom-select:invalid, .custom-select.is-invalid {\n  border-color: #e3342f;\n  padding-right: 3.3925rem;\n  background: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e\") no-repeat right 0.75rem center/8px 10px, url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23e3342f' viewBox='-2 -2 7 7'%3e%3cpath stroke='%23d9534f' d='M0 0l3 3m0-3L0 3'/%3e%3ccircle r='.5'/%3e%3ccircle cx='3' r='.5'/%3e%3ccircle cy='3' r='.5'/%3e%3ccircle cx='3' cy='3' r='.5'/%3e%3c/svg%3E\") no-repeat center right 1.75rem/1.095rem 1.095rem;\n}\n.was-validated .custom-select:invalid:focus, .custom-select.is-invalid:focus {\n  border-color: #e3342f;\n  box-shadow: 0 0 0 0.2rem rgba(227, 52, 47, 0.25);\n}\n.was-validated .custom-select:invalid ~ .invalid-feedback,\n.was-validated .custom-select:invalid ~ .invalid-tooltip, .custom-select.is-invalid ~ .invalid-feedback,\n.custom-select.is-invalid ~ .invalid-tooltip {\n  display: block;\n}\n.was-validated .form-control-file:invalid ~ .invalid-feedback,\n.was-validated .form-control-file:invalid ~ .invalid-tooltip, .form-control-file.is-invalid ~ .invalid-feedback,\n.form-control-file.is-invalid ~ .invalid-tooltip {\n  display: block;\n}\n.was-validated .form-check-input:invalid ~ .form-check-label, .form-check-input.is-invalid ~ .form-check-label {\n  color: #e3342f;\n}\n.was-validated .form-check-input:invalid ~ .invalid-feedback,\n.was-validated .form-check-input:invalid ~ .invalid-tooltip, .form-check-input.is-invalid ~ .invalid-feedback,\n.form-check-input.is-invalid ~ .invalid-tooltip {\n  display: block;\n}\n.was-validated .custom-control-input:invalid ~ .custom-control-label, .custom-control-input.is-invalid ~ .custom-control-label {\n  color: #e3342f;\n}\n.was-validated .custom-control-input:invalid ~ .custom-control-label::before, .custom-control-input.is-invalid ~ .custom-control-label::before {\n  border-color: #e3342f;\n}\n.was-validated .custom-control-input:invalid ~ .invalid-feedback,\n.was-validated .custom-control-input:invalid ~ .invalid-tooltip, .custom-control-input.is-invalid ~ .invalid-feedback,\n.custom-control-input.is-invalid ~ .invalid-tooltip {\n  display: block;\n}\n.was-validated .custom-control-input:invalid:checked ~ .custom-control-label::before, .custom-control-input.is-invalid:checked ~ .custom-control-label::before {\n  border-color: #e9605c;\n  background-color: #e9605c;\n}\n.was-validated .custom-control-input:invalid:focus ~ .custom-control-label::before, .custom-control-input.is-invalid:focus ~ .custom-control-label::before {\n  box-shadow: 0 0 0 0.2rem rgba(227, 52, 47, 0.25);\n}\n.was-validated .custom-control-input:invalid:focus:not(:checked) ~ .custom-control-label::before, .custom-control-input.is-invalid:focus:not(:checked) ~ .custom-control-label::before {\n  border-color: #e3342f;\n}\n.was-validated .custom-file-input:invalid ~ .custom-file-label, .custom-file-input.is-invalid ~ .custom-file-label {\n  border-color: #e3342f;\n}\n.was-validated .custom-file-input:invalid ~ .invalid-feedback,\n.was-validated .custom-file-input:invalid ~ .invalid-tooltip, .custom-file-input.is-invalid ~ .invalid-feedback,\n.custom-file-input.is-invalid ~ .invalid-tooltip {\n  display: block;\n}\n.was-validated .custom-file-input:invalid:focus ~ .custom-file-label, .custom-file-input.is-invalid:focus ~ .custom-file-label {\n  border-color: #e3342f;\n  box-shadow: 0 0 0 0.2rem rgba(227, 52, 47, 0.25);\n}\n.form-inline {\n  display: flex;\n  flex-flow: row wrap;\n  align-items: center;\n}\n.form-inline .form-check {\n  width: 100%;\n}\n@media (min-width: 576px) {\n.form-inline label {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    margin-bottom: 0;\n}\n.form-inline .form-group {\n    display: flex;\n    flex: 0 0 auto;\n    flex-flow: row wrap;\n    align-items: center;\n    margin-bottom: 0;\n}\n.form-inline .form-control {\n    display: inline-block;\n    width: auto;\n    vertical-align: middle;\n}\n.form-inline .form-control-plaintext {\n    display: inline-block;\n}\n.form-inline .input-group,\n.form-inline .custom-select {\n    width: auto;\n}\n.form-inline .form-check {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    width: auto;\n    padding-left: 0;\n}\n.form-inline .form-check-input {\n    position: relative;\n    margin-top: 0;\n    margin-right: 0.25rem;\n    margin-left: 0;\n}\n.form-inline .custom-control {\n    align-items: center;\n    justify-content: center;\n}\n.form-inline .custom-control-label {\n    margin-bottom: 0;\n}\n}\n.btn {\n  display: inline-block;\n  font-weight: 400;\n  color: #212529;\n  text-align: center;\n  vertical-align: middle;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  background-color: transparent;\n  border: 1px solid transparent;\n  padding: 0.375rem 0.75rem;\n  font-size: 0.9rem;\n  line-height: 1.6;\n  border-radius: 0.25rem;\n  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\n}\n@media screen and (prefers-reduced-motion: reduce) {\n.btn {\n    transition: none;\n}\n}\n.btn:hover {\n  color: #212529;\n  text-decoration: none;\n}\n.btn:focus, .btn.focus {\n  outline: 0;\n  box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.25);\n}\n.btn.disabled, .btn:disabled {\n  opacity: 0.65;\n}\n.btn:not(:disabled):not(.disabled) {\n  cursor: pointer;\n}\na.btn.disabled,\nfieldset:disabled a.btn {\n  pointer-events: none;\n}\n.btn-primary {\n  color: #fff;\n  background-color: #3490dc;\n  border-color: #3490dc;\n}\n.btn-primary:hover {\n  color: #fff;\n  background-color: #227dc7;\n  border-color: #2176bd;\n}\n.btn-primary:focus, .btn-primary.focus {\n  box-shadow: 0 0 0 0.2rem rgba(82, 161, 225, 0.5);\n}\n.btn-primary.disabled, .btn-primary:disabled {\n  color: #fff;\n  background-color: #3490dc;\n  border-color: #3490dc;\n}\n.btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active, .show > .btn-primary.dropdown-toggle {\n  color: #fff;\n  background-color: #2176bd;\n  border-color: #1f6fb2;\n}\n.btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus, .show > .btn-primary.dropdown-toggle:focus {\n  box-shadow: 0 0 0 0.2rem rgba(82, 161, 225, 0.5);\n}\n.btn-secondary {\n  color: #fff;\n  background-color: #6c757d;\n  border-color: #6c757d;\n}\n.btn-secondary:hover {\n  color: #fff;\n  background-color: #5a6268;\n  border-color: #545b62;\n}\n.btn-secondary:focus, .btn-secondary.focus {\n  box-shadow: 0 0 0 0.2rem rgba(130, 138, 145, 0.5);\n}\n.btn-secondary.disabled, .btn-secondary:disabled {\n  color: #fff;\n  background-color: #6c757d;\n  border-color: #6c757d;\n}\n.btn-secondary:not(:disabled):not(.disabled):active, .btn-secondary:not(:disabled):not(.disabled).active, .show > .btn-secondary.dropdown-toggle {\n  color: #fff;\n  background-color: #545b62;\n  border-color: #4e555b;\n}\n.btn-secondary:not(:disabled):not(.disabled):active:focus, .btn-secondary:not(:disabled):not(.disabled).active:focus, .show > .btn-secondary.dropdown-toggle:focus {\n  box-shadow: 0 0 0 0.2rem rgba(130, 138, 145, 0.5);\n}\n.btn-success {\n  color: #fff;\n  background-color: #38c172;\n  border-color: #38c172;\n}\n.btn-success:hover {\n  color: #fff;\n  background-color: #2fa360;\n  border-color: #2d995b;\n}\n.btn-success:focus, .btn-success.focus {\n  box-shadow: 0 0 0 0.2rem rgba(86, 202, 135, 0.5);\n}\n.btn-success.disabled, .btn-success:disabled {\n  color: #fff;\n  background-color: #38c172;\n  border-color: #38c172;\n}\n.btn-success:not(:disabled):not(.disabled):active, .btn-success:not(:disabled):not(.disabled).active, .show > .btn-success.dropdown-toggle {\n  color: #fff;\n  background-color: #2d995b;\n  border-color: #2a9055;\n}\n.btn-success:not(:disabled):not(.disabled):active:focus, .btn-success:not(:disabled):not(.disabled).active:focus, .show > .btn-success.dropdown-toggle:focus {\n  box-shadow: 0 0 0 0.2rem rgba(86, 202, 135, 0.5);\n}\n.btn-info {\n  color: #212529;\n  background-color: #6cb2eb;\n  border-color: #6cb2eb;\n}\n.btn-info:hover {\n  color: #fff;\n  background-color: #4aa0e6;\n  border-color: #3f9ae5;\n}\n.btn-info:focus, .btn-info.focus {\n  box-shadow: 0 0 0 0.2rem rgba(97, 157, 206, 0.5);\n}\n.btn-info.disabled, .btn-info:disabled {\n  color: #212529;\n  background-color: #6cb2eb;\n  border-color: #6cb2eb;\n}\n.btn-info:not(:disabled):not(.disabled):active, .btn-info:not(:disabled):not(.disabled).active, .show > .btn-info.dropdown-toggle {\n  color: #fff;\n  background-color: #3f9ae5;\n  border-color: #3495e3;\n}\n.btn-info:not(:disabled):not(.disabled):active:focus, .btn-info:not(:disabled):not(.disabled).active:focus, .show > .btn-info.dropdown-toggle:focus {\n  box-shadow: 0 0 0 0.2rem rgba(97, 157, 206, 0.5);\n}\n.btn-warning {\n  color: #212529;\n  background-color: #ffed4a;\n  border-color: #ffed4a;\n}\n.btn-warning:hover {\n  color: #212529;\n  background-color: #ffe924;\n  border-color: #ffe817;\n}\n.btn-warning:focus, .btn-warning.focus {\n  box-shadow: 0 0 0 0.2rem rgba(222, 207, 69, 0.5);\n}\n.btn-warning.disabled, .btn-warning:disabled {\n  color: #212529;\n  background-color: #ffed4a;\n  border-color: #ffed4a;\n}\n.btn-warning:not(:disabled):not(.disabled):active, .btn-warning:not(:disabled):not(.disabled).active, .show > .btn-warning.dropdown-toggle {\n  color: #212529;\n  background-color: #ffe817;\n  border-color: #ffe70a;\n}\n.btn-warning:not(:disabled):not(.disabled):active:focus, .btn-warning:not(:disabled):not(.disabled).active:focus, .show > .btn-warning.dropdown-toggle:focus {\n  box-shadow: 0 0 0 0.2rem rgba(222, 207, 69, 0.5);\n}\n.btn-danger {\n  color: #fff;\n  background-color: #e3342f;\n  border-color: #e3342f;\n}\n.btn-danger:hover {\n  color: #fff;\n  background-color: #d0211c;\n  border-color: #c51f1a;\n}\n.btn-danger:focus, .btn-danger.focus {\n  box-shadow: 0 0 0 0.2rem rgba(231, 82, 78, 0.5);\n}\n.btn-danger.disabled, .btn-danger:disabled {\n  color: #fff;\n  background-color: #e3342f;\n  border-color: #e3342f;\n}\n.btn-danger:not(:disabled):not(.disabled):active, .btn-danger:not(:disabled):not(.disabled).active, .show > .btn-danger.dropdown-toggle {\n  color: #fff;\n  background-color: #c51f1a;\n  border-color: #b91d19;\n}\n.btn-danger:not(:disabled):not(.disabled):active:focus, .btn-danger:not(:disabled):not(.disabled).active:focus, .show > .btn-danger.dropdown-toggle:focus {\n  box-shadow: 0 0 0 0.2rem rgba(231, 82, 78, 0.5);\n}\n.btn-light {\n  color: #212529;\n  background-color: #f8f9fa;\n  border-color: #f8f9fa;\n}\n.btn-light:hover {\n  color: #212529;\n  background-color: #e2e6ea;\n  border-color: #dae0e5;\n}\n.btn-light:focus, .btn-light.focus {\n  box-shadow: 0 0 0 0.2rem rgba(216, 217, 219, 0.5);\n}\n.btn-light.disabled, .btn-light:disabled {\n  color: #212529;\n  background-color: #f8f9fa;\n  border-color: #f8f9fa;\n}\n.btn-light:not(:disabled):not(.disabled):active, .btn-light:not(:disabled):not(.disabled).active, .show > .btn-light.dropdown-toggle {\n  color: #212529;\n  background-color: #dae0e5;\n  border-color: #d3d9df;\n}\n.btn-light:not(:disabled):not(.disabled):active:focus, .btn-light:not(:disabled):not(.disabled).active:focus, .show > .btn-light.dropdown-toggle:focus {\n  box-shadow: 0 0 0 0.2rem rgba(216, 217, 219, 0.5);\n}\n.btn-dark {\n  color: #fff;\n  background-color: #343a40;\n  border-color: #343a40;\n}\n.btn-dark:hover {\n  color: #fff;\n  background-color: #23272b;\n  border-color: #1d2124;\n}\n.btn-dark:focus, .btn-dark.focus {\n  box-shadow: 0 0 0 0.2rem rgba(82, 88, 93, 0.5);\n}\n.btn-dark.disabled, .btn-dark:disabled {\n  color: #fff;\n  background-color: #343a40;\n  border-color: #343a40;\n}\n.btn-dark:not(:disabled):not(.disabled):active, .btn-dark:not(:disabled):not(.disabled).active, .show > .btn-dark.dropdown-toggle {\n  color: #fff;\n  background-color: #1d2124;\n  border-color: #171a1d;\n}\n.btn-dark:not(:disabled):not(.disabled):active:focus, .btn-dark:not(:disabled):not(.disabled).active:focus, .show > .btn-dark.dropdown-toggle:focus {\n  box-shadow: 0 0 0 0.2rem rgba(82, 88, 93, 0.5);\n}\n.btn-outline-primary {\n  color: #3490dc;\n  border-color: #3490dc;\n}\n.btn-outline-primary:hover {\n  color: #fff;\n  background-color: #3490dc;\n  border-color: #3490dc;\n}\n.btn-outline-primary:focus, .btn-outline-primary.focus {\n  box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.5);\n}\n.btn-outline-primary.disabled, .btn-outline-primary:disabled {\n  color: #3490dc;\n  background-color: transparent;\n}\n.btn-outline-primary:not(:disabled):not(.disabled):active, .btn-outline-primary:not(:disabled):not(.disabled).active, .show > .btn-outline-primary.dropdown-toggle {\n  color: #fff;\n  background-color: #3490dc;\n  border-color: #3490dc;\n}\n.btn-outline-primary:not(:disabled):not(.disabled):active:focus, .btn-outline-primary:not(:disabled):not(.disabled).active:focus, .show > .btn-outline-primary.dropdown-toggle:focus {\n  box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.5);\n}\n.btn-outline-secondary {\n  color: #6c757d;\n  border-color: #6c757d;\n}\n.btn-outline-secondary:hover {\n  color: #fff;\n  background-color: #6c757d;\n  border-color: #6c757d;\n}\n.btn-outline-secondary:focus, .btn-outline-secondary.focus {\n  box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.5);\n}\n.btn-outline-secondary.disabled, .btn-outline-secondary:disabled {\n  color: #6c757d;\n  background-color: transparent;\n}\n.btn-outline-secondary:not(:disabled):not(.disabled):active, .btn-outline-secondary:not(:disabled):not(.disabled).active, .show > .btn-outline-secondary.dropdown-toggle {\n  color: #fff;\n  background-color: #6c757d;\n  border-color: #6c757d;\n}\n.btn-outline-secondary:not(:disabled):not(.disabled):active:focus, .btn-outline-secondary:not(:disabled):not(.disabled).active:focus, .show > .btn-outline-secondary.dropdown-toggle:focus {\n  box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.5);\n}\n.btn-outline-success {\n  color: #38c172;\n  border-color: #38c172;\n}\n.btn-outline-success:hover {\n  color: #fff;\n  background-color: #38c172;\n  border-color: #38c172;\n}\n.btn-outline-success:focus, .btn-outline-success.focus {\n  box-shadow: 0 0 0 0.2rem rgba(56, 193, 114, 0.5);\n}\n.btn-outline-success.disabled, .btn-outline-success:disabled {\n  color: #38c172;\n  background-color: transparent;\n}\n.btn-outline-success:not(:disabled):not(.disabled):active, .btn-outline-success:not(:disabled):not(.disabled).active, .show > .btn-outline-success.dropdown-toggle {\n  color: #fff;\n  background-color: #38c172;\n  border-color: #38c172;\n}\n.btn-outline-success:not(:disabled):not(.disabled):active:focus, .btn-outline-success:not(:disabled):not(.disabled).active:focus, .show > .btn-outline-success.dropdown-toggle:focus {\n  box-shadow: 0 0 0 0.2rem rgba(56, 193, 114, 0.5);\n}\n.btn-outline-info {\n  color: #6cb2eb;\n  border-color: #6cb2eb;\n}\n.btn-outline-info:hover {\n  color: #212529;\n  background-color: #6cb2eb;\n  border-color: #6cb2eb;\n}\n.btn-outline-info:focus, .btn-outline-info.focus {\n  box-shadow: 0 0 0 0.2rem rgba(108, 178, 235, 0.5);\n}\n.btn-outline-info.disabled, .btn-outline-info:disabled {\n  color: #6cb2eb;\n  background-color: transparent;\n}\n.btn-outline-info:not(:disabled):not(.disabled):active, .btn-outline-info:not(:disabled):not(.disabled).active, .show > .btn-outline-info.dropdown-toggle {\n  color: #212529;\n  background-color: #6cb2eb;\n  border-color: #6cb2eb;\n}\n.btn-outline-info:not(:disabled):not(.disabled):active:focus, .btn-outline-info:not(:disabled):not(.disabled).active:focus, .show > .btn-outline-info.dropdown-toggle:focus {\n  box-shadow: 0 0 0 0.2rem rgba(108, 178, 235, 0.5);\n}\n.btn-outline-warning {\n  color: #ffed4a;\n  border-color: #ffed4a;\n}\n.btn-outline-warning:hover {\n  color: #212529;\n  background-color: #ffed4a;\n  border-color: #ffed4a;\n}\n.btn-outline-warning:focus, .btn-outline-warning.focus {\n  box-shadow: 0 0 0 0.2rem rgba(255, 237, 74, 0.5);\n}\n.btn-outline-warning.disabled, .btn-outline-warning:disabled {\n  color: #ffed4a;\n  background-color: transparent;\n}\n.btn-outline-warning:not(:disabled):not(.disabled):active, .btn-outline-warning:not(:disabled):not(.disabled).active, .show > .btn-outline-warning.dropdown-toggle {\n  color: #212529;\n  background-color: #ffed4a;\n  border-color: #ffed4a;\n}\n.btn-outline-warning:not(:disabled):not(.disabled):active:focus, .btn-outline-warning:not(:disabled):not(.disabled).active:focus, .show > .btn-outline-warning.dropdown-toggle:focus {\n  box-shadow: 0 0 0 0.2rem rgba(255, 237, 74, 0.5);\n}\n.btn-outline-danger {\n  color: #e3342f;\n  border-color: #e3342f;\n}\n.btn-outline-danger:hover {\n  color: #fff;\n  background-color: #e3342f;\n  border-color: #e3342f;\n}\n.btn-outline-danger:focus, .btn-outline-danger.focus {\n  box-shadow: 0 0 0 0.2rem rgba(227, 52, 47, 0.5);\n}\n.btn-outline-danger.disabled, .btn-outline-danger:disabled {\n  color: #e3342f;\n  background-color: transparent;\n}\n.btn-outline-danger:not(:disabled):not(.disabled):active, .btn-outline-danger:not(:disabled):not(.disabled).active, .show > .btn-outline-danger.dropdown-toggle {\n  color: #fff;\n  background-color: #e3342f;\n  border-color: #e3342f;\n}\n.btn-outline-danger:not(:disabled):not(.disabled):active:focus, .btn-outline-danger:not(:disabled):not(.disabled).active:focus, .show > .btn-outline-danger.dropdown-toggle:focus {\n  box-shadow: 0 0 0 0.2rem rgba(227, 52, 47, 0.5);\n}\n.btn-outline-light {\n  color: #f8f9fa;\n  border-color: #f8f9fa;\n}\n.btn-outline-light:hover {\n  color: #212529;\n  background-color: #f8f9fa;\n  border-color: #f8f9fa;\n}\n.btn-outline-light:focus, .btn-outline-light.focus {\n  box-shadow: 0 0 0 0.2rem rgba(248, 249, 250, 0.5);\n}\n.btn-outline-light.disabled, .btn-outline-light:disabled {\n  color: #f8f9fa;\n  background-color: transparent;\n}\n.btn-outline-light:not(:disabled):not(.disabled):active, .btn-outline-light:not(:disabled):not(.disabled).active, .show > .btn-outline-light.dropdown-toggle {\n  color: #212529;\n  background-color: #f8f9fa;\n  border-color: #f8f9fa;\n}\n.btn-outline-light:not(:disabled):not(.disabled):active:focus, .btn-outline-light:not(:disabled):not(.disabled).active:focus, .show > .btn-outline-light.dropdown-toggle:focus {\n  box-shadow: 0 0 0 0.2rem rgba(248, 249, 250, 0.5);\n}\n.btn-outline-dark {\n  color: #343a40;\n  border-color: #343a40;\n}\n.btn-outline-dark:hover {\n  color: #fff;\n  background-color: #343a40;\n  border-color: #343a40;\n}\n.btn-outline-dark:focus, .btn-outline-dark.focus {\n  box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.5);\n}\n.btn-outline-dark.disabled, .btn-outline-dark:disabled {\n  color: #343a40;\n  background-color: transparent;\n}\n.btn-outline-dark:not(:disabled):not(.disabled):active, .btn-outline-dark:not(:disabled):not(.disabled).active, .show > .btn-outline-dark.dropdown-toggle {\n  color: #fff;\n  background-color: #343a40;\n  border-color: #343a40;\n}\n.btn-outline-dark:not(:disabled):not(.disabled):active:focus, .btn-outline-dark:not(:disabled):not(.disabled).active:focus, .show > .btn-outline-dark.dropdown-toggle:focus {\n  box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.5);\n}\n.btn-link {\n  font-weight: 400;\n  color: #3490dc;\n}\n.btn-link:hover {\n  color: #1d68a7;\n  text-decoration: underline;\n}\n.btn-link:focus, .btn-link.focus {\n  text-decoration: underline;\n  box-shadow: none;\n}\n.btn-link:disabled, .btn-link.disabled {\n  color: #6c757d;\n  pointer-events: none;\n}\n.btn-lg, .btn-group-lg > .btn {\n  padding: 0.5rem 1rem;\n  font-size: 1.125rem;\n  line-height: 1.5;\n  border-radius: 0.3rem;\n}\n.btn-sm, .btn-group-sm > .btn {\n  padding: 0.25rem 0.5rem;\n  font-size: 0.7875rem;\n  line-height: 1.5;\n  border-radius: 0.2rem;\n}\n.btn-block {\n  display: block;\n  width: 100%;\n}\n.btn-block + .btn-block {\n  margin-top: 0.5rem;\n}\ninput[type=submit].btn-block,\ninput[type=reset].btn-block,\ninput[type=button].btn-block {\n  width: 100%;\n}\n.fade {\n  transition: opacity 0.15s linear;\n}\n@media screen and (prefers-reduced-motion: reduce) {\n.fade {\n    transition: none;\n}\n}\n.fade:not(.show) {\n  opacity: 0;\n}\n.collapse:not(.show) {\n  display: none;\n}\n.collapsing {\n  position: relative;\n  height: 0;\n  overflow: hidden;\n  transition: height 0.35s ease;\n}\n@media screen and (prefers-reduced-motion: reduce) {\n.collapsing {\n    transition: none;\n}\n}\n.dropup,\n.dropright,\n.dropdown,\n.dropleft {\n  position: relative;\n}\n.dropdown-toggle::after {\n  display: inline-block;\n  margin-left: 0.255em;\n  vertical-align: 0.255em;\n  content: \"\";\n  border-top: 0.3em solid;\n  border-right: 0.3em solid transparent;\n  border-bottom: 0;\n  border-left: 0.3em solid transparent;\n}\n.dropdown-toggle:empty::after {\n  margin-left: 0;\n}\n.dropdown-menu {\n  position: absolute;\n  top: 100%;\n  left: 0;\n  z-index: 1000;\n  display: none;\n  float: left;\n  min-width: 10rem;\n  padding: 0.5rem 0;\n  margin: 0.125rem 0 0;\n  font-size: 0.9rem;\n  color: #212529;\n  text-align: left;\n  list-style: none;\n  background-color: #fff;\n  background-clip: padding-box;\n  border: 1px solid rgba(0, 0, 0, 0.15);\n  border-radius: 0.25rem;\n}\n.dropdown-menu-right {\n  right: 0;\n  left: auto;\n}\n@media (min-width: 576px) {\n.dropdown-menu-sm-right {\n    right: 0;\n    left: auto;\n}\n}\n@media (min-width: 768px) {\n.dropdown-menu-md-right {\n    right: 0;\n    left: auto;\n}\n}\n@media (min-width: 992px) {\n.dropdown-menu-lg-right {\n    right: 0;\n    left: auto;\n}\n}\n@media (min-width: 1200px) {\n.dropdown-menu-xl-right {\n    right: 0;\n    left: auto;\n}\n}\n.dropdown-menu-left {\n  right: auto;\n  left: 0;\n}\n@media (min-width: 576px) {\n.dropdown-menu-sm-left {\n    right: auto;\n    left: 0;\n}\n}\n@media (min-width: 768px) {\n.dropdown-menu-md-left {\n    right: auto;\n    left: 0;\n}\n}\n@media (min-width: 992px) {\n.dropdown-menu-lg-left {\n    right: auto;\n    left: 0;\n}\n}\n@media (min-width: 1200px) {\n.dropdown-menu-xl-left {\n    right: auto;\n    left: 0;\n}\n}\n.dropup .dropdown-menu {\n  top: auto;\n  bottom: 100%;\n  margin-top: 0;\n  margin-bottom: 0.125rem;\n}\n.dropup .dropdown-toggle::after {\n  display: inline-block;\n  margin-left: 0.255em;\n  vertical-align: 0.255em;\n  content: \"\";\n  border-top: 0;\n  border-right: 0.3em solid transparent;\n  border-bottom: 0.3em solid;\n  border-left: 0.3em solid transparent;\n}\n.dropup .dropdown-toggle:empty::after {\n  margin-left: 0;\n}\n.dropright .dropdown-menu {\n  top: 0;\n  right: auto;\n  left: 100%;\n  margin-top: 0;\n  margin-left: 0.125rem;\n}\n.dropright .dropdown-toggle::after {\n  display: inline-block;\n  margin-left: 0.255em;\n  vertical-align: 0.255em;\n  content: \"\";\n  border-top: 0.3em solid transparent;\n  border-right: 0;\n  border-bottom: 0.3em solid transparent;\n  border-left: 0.3em solid;\n}\n.dropright .dropdown-toggle:empty::after {\n  margin-left: 0;\n}\n.dropright .dropdown-toggle::after {\n  vertical-align: 0;\n}\n.dropleft .dropdown-menu {\n  top: 0;\n  right: 100%;\n  left: auto;\n  margin-top: 0;\n  margin-right: 0.125rem;\n}\n.dropleft .dropdown-toggle::after {\n  display: inline-block;\n  margin-left: 0.255em;\n  vertical-align: 0.255em;\n  content: \"\";\n}\n.dropleft .dropdown-toggle::after {\n  display: none;\n}\n.dropleft .dropdown-toggle::before {\n  display: inline-block;\n  margin-right: 0.255em;\n  vertical-align: 0.255em;\n  content: \"\";\n  border-top: 0.3em solid transparent;\n  border-right: 0.3em solid;\n  border-bottom: 0.3em solid transparent;\n}\n.dropleft .dropdown-toggle:empty::after {\n  margin-left: 0;\n}\n.dropleft .dropdown-toggle::before {\n  vertical-align: 0;\n}\n.dropdown-menu[x-placement^=top], .dropdown-menu[x-placement^=right], .dropdown-menu[x-placement^=bottom], .dropdown-menu[x-placement^=left] {\n  right: auto;\n  bottom: auto;\n}\n.dropdown-divider {\n  height: 0;\n  margin: 0.5rem 0;\n  overflow: hidden;\n  border-top: 1px solid #e9ecef;\n}\n.dropdown-item {\n  display: block;\n  width: 100%;\n  padding: 0.25rem 1.5rem;\n  clear: both;\n  font-weight: 400;\n  color: #212529;\n  text-align: inherit;\n  white-space: nowrap;\n  background-color: transparent;\n  border: 0;\n}\n.dropdown-item:first-child {\n  border-top-left-radius: calc(0.25rem - 1px);\n  border-top-right-radius: calc(0.25rem - 1px);\n}\n.dropdown-item:last-child {\n  border-bottom-right-radius: calc(0.25rem - 1px);\n  border-bottom-left-radius: calc(0.25rem - 1px);\n}\n.dropdown-item:hover, .dropdown-item:focus {\n  color: #16181b;\n  text-decoration: none;\n  background-color: #f8f9fa;\n}\n.dropdown-item.active, .dropdown-item:active {\n  color: #fff;\n  text-decoration: none;\n  background-color: #3490dc;\n}\n.dropdown-item.disabled, .dropdown-item:disabled {\n  color: #6c757d;\n  pointer-events: none;\n  background-color: transparent;\n}\n.dropdown-menu.show {\n  display: block;\n}\n.dropdown-header {\n  display: block;\n  padding: 0.5rem 1.5rem;\n  margin-bottom: 0;\n  font-size: 0.7875rem;\n  color: #6c757d;\n  white-space: nowrap;\n}\n.dropdown-item-text {\n  display: block;\n  padding: 0.25rem 1.5rem;\n  color: #212529;\n}\n.btn-group,\n.btn-group-vertical {\n  position: relative;\n  display: inline-flex;\n  vertical-align: middle;\n}\n.btn-group > .btn,\n.btn-group-vertical > .btn {\n  position: relative;\n  flex: 1 1 auto;\n}\n.btn-group > .btn:hover,\n.btn-group-vertical > .btn:hover {\n  z-index: 1;\n}\n.btn-group > .btn:focus, .btn-group > .btn:active, .btn-group > .btn.active,\n.btn-group-vertical > .btn:focus,\n.btn-group-vertical > .btn:active,\n.btn-group-vertical > .btn.active {\n  z-index: 1;\n}\n.btn-toolbar {\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: flex-start;\n}\n.btn-toolbar .input-group {\n  width: auto;\n}\n.btn-group > .btn:not(:first-child),\n.btn-group > .btn-group:not(:first-child) {\n  margin-left: -1px;\n}\n.btn-group > .btn:not(:last-child):not(.dropdown-toggle),\n.btn-group > .btn-group:not(:last-child) > .btn {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.btn-group > .btn:not(:first-child),\n.btn-group > .btn-group:not(:first-child) > .btn {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.dropdown-toggle-split {\n  padding-right: 0.5625rem;\n  padding-left: 0.5625rem;\n}\n.dropdown-toggle-split::after, .dropup .dropdown-toggle-split::after, .dropright .dropdown-toggle-split::after {\n  margin-left: 0;\n}\n.dropleft .dropdown-toggle-split::before {\n  margin-right: 0;\n}\n.btn-sm + .dropdown-toggle-split, .btn-group-sm > .btn + .dropdown-toggle-split {\n  padding-right: 0.375rem;\n  padding-left: 0.375rem;\n}\n.btn-lg + .dropdown-toggle-split, .btn-group-lg > .btn + .dropdown-toggle-split {\n  padding-right: 0.75rem;\n  padding-left: 0.75rem;\n}\n.btn-group-vertical {\n  flex-direction: column;\n  align-items: flex-start;\n  justify-content: center;\n}\n.btn-group-vertical > .btn,\n.btn-group-vertical > .btn-group {\n  width: 100%;\n}\n.btn-group-vertical > .btn:not(:first-child),\n.btn-group-vertical > .btn-group:not(:first-child) {\n  margin-top: -1px;\n}\n.btn-group-vertical > .btn:not(:last-child):not(.dropdown-toggle),\n.btn-group-vertical > .btn-group:not(:last-child) > .btn {\n  border-bottom-right-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.btn-group-vertical > .btn:not(:first-child),\n.btn-group-vertical > .btn-group:not(:first-child) > .btn {\n  border-top-left-radius: 0;\n  border-top-right-radius: 0;\n}\n.btn-group-toggle > .btn,\n.btn-group-toggle > .btn-group > .btn {\n  margin-bottom: 0;\n}\n.btn-group-toggle > .btn input[type=radio],\n.btn-group-toggle > .btn input[type=checkbox],\n.btn-group-toggle > .btn-group > .btn input[type=radio],\n.btn-group-toggle > .btn-group > .btn input[type=checkbox] {\n  position: absolute;\n  clip: rect(0, 0, 0, 0);\n  pointer-events: none;\n}\n.input-group {\n  position: relative;\n  display: flex;\n  flex-wrap: wrap;\n  align-items: stretch;\n  width: 100%;\n}\n.input-group > .form-control,\n.input-group > .form-control-plaintext,\n.input-group > .custom-select,\n.input-group > .custom-file {\n  position: relative;\n  flex: 1 1 auto;\n  width: 1%;\n  margin-bottom: 0;\n}\n.input-group > .form-control + .form-control,\n.input-group > .form-control + .custom-select,\n.input-group > .form-control + .custom-file,\n.input-group > .form-control-plaintext + .form-control,\n.input-group > .form-control-plaintext + .custom-select,\n.input-group > .form-control-plaintext + .custom-file,\n.input-group > .custom-select + .form-control,\n.input-group > .custom-select + .custom-select,\n.input-group > .custom-select + .custom-file,\n.input-group > .custom-file + .form-control,\n.input-group > .custom-file + .custom-select,\n.input-group > .custom-file + .custom-file {\n  margin-left: -1px;\n}\n.input-group > .form-control:focus,\n.input-group > .custom-select:focus,\n.input-group > .custom-file .custom-file-input:focus ~ .custom-file-label {\n  z-index: 3;\n}\n.input-group > .custom-file .custom-file-input:focus {\n  z-index: 4;\n}\n.input-group > .form-control:not(:last-child),\n.input-group > .custom-select:not(:last-child) {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.input-group > .form-control:not(:first-child),\n.input-group > .custom-select:not(:first-child) {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.input-group > .custom-file {\n  display: flex;\n  align-items: center;\n}\n.input-group > .custom-file:not(:last-child) .custom-file-label, .input-group > .custom-file:not(:last-child) .custom-file-label::after {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.input-group > .custom-file:not(:first-child) .custom-file-label {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.input-group-prepend,\n.input-group-append {\n  display: flex;\n}\n.input-group-prepend .btn,\n.input-group-append .btn {\n  position: relative;\n  z-index: 2;\n}\n.input-group-prepend .btn:focus,\n.input-group-append .btn:focus {\n  z-index: 3;\n}\n.input-group-prepend .btn + .btn,\n.input-group-prepend .btn + .input-group-text,\n.input-group-prepend .input-group-text + .input-group-text,\n.input-group-prepend .input-group-text + .btn,\n.input-group-append .btn + .btn,\n.input-group-append .btn + .input-group-text,\n.input-group-append .input-group-text + .input-group-text,\n.input-group-append .input-group-text + .btn {\n  margin-left: -1px;\n}\n.input-group-prepend {\n  margin-right: -1px;\n}\n.input-group-append {\n  margin-left: -1px;\n}\n.input-group-text {\n  display: flex;\n  align-items: center;\n  padding: 0.375rem 0.75rem;\n  margin-bottom: 0;\n  font-size: 0.9rem;\n  font-weight: 400;\n  line-height: 1.6;\n  color: #495057;\n  text-align: center;\n  white-space: nowrap;\n  background-color: #e9ecef;\n  border: 1px solid #ced4da;\n  border-radius: 0.25rem;\n}\n.input-group-text input[type=radio],\n.input-group-text input[type=checkbox] {\n  margin-top: 0;\n}\n.input-group-lg > .form-control:not(textarea),\n.input-group-lg > .custom-select {\n  height: calc(2.6875rem + 2px);\n}\n.input-group-lg > .form-control,\n.input-group-lg > .custom-select,\n.input-group-lg > .input-group-prepend > .input-group-text,\n.input-group-lg > .input-group-append > .input-group-text,\n.input-group-lg > .input-group-prepend > .btn,\n.input-group-lg > .input-group-append > .btn {\n  padding: 0.5rem 1rem;\n  font-size: 1.125rem;\n  line-height: 1.5;\n  border-radius: 0.3rem;\n}\n.input-group-sm > .form-control:not(textarea),\n.input-group-sm > .custom-select {\n  height: calc(1.68125rem + 2px);\n}\n.input-group-sm > .form-control,\n.input-group-sm > .custom-select,\n.input-group-sm > .input-group-prepend > .input-group-text,\n.input-group-sm > .input-group-append > .input-group-text,\n.input-group-sm > .input-group-prepend > .btn,\n.input-group-sm > .input-group-append > .btn {\n  padding: 0.25rem 0.5rem;\n  font-size: 0.7875rem;\n  line-height: 1.5;\n  border-radius: 0.2rem;\n}\n.input-group-lg > .custom-select,\n.input-group-sm > .custom-select {\n  padding-right: 1.75rem;\n}\n.input-group > .input-group-prepend > .btn,\n.input-group > .input-group-prepend > .input-group-text,\n.input-group > .input-group-append:not(:last-child) > .btn,\n.input-group > .input-group-append:not(:last-child) > .input-group-text,\n.input-group > .input-group-append:last-child > .btn:not(:last-child):not(.dropdown-toggle),\n.input-group > .input-group-append:last-child > .input-group-text:not(:last-child) {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.input-group > .input-group-append > .btn,\n.input-group > .input-group-append > .input-group-text,\n.input-group > .input-group-prepend:not(:first-child) > .btn,\n.input-group > .input-group-prepend:not(:first-child) > .input-group-text,\n.input-group > .input-group-prepend:first-child > .btn:not(:first-child),\n.input-group > .input-group-prepend:first-child > .input-group-text:not(:first-child) {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.custom-control {\n  position: relative;\n  display: block;\n  min-height: 1.44rem;\n  padding-left: 1.5rem;\n}\n.custom-control-inline {\n  display: inline-flex;\n  margin-right: 1rem;\n}\n.custom-control-input {\n  position: absolute;\n  z-index: -1;\n  opacity: 0;\n}\n.custom-control-input:checked ~ .custom-control-label::before {\n  color: #fff;\n  border-color: #3490dc;\n  background-color: #3490dc;\n}\n.custom-control-input:focus ~ .custom-control-label::before {\n  box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.25);\n}\n.custom-control-input:focus:not(:checked) ~ .custom-control-label::before {\n  border-color: #a1cbef;\n}\n.custom-control-input:not(:disabled):active ~ .custom-control-label::before {\n  color: #fff;\n  background-color: #cce3f6;\n  border-color: #cce3f6;\n}\n.custom-control-input:disabled ~ .custom-control-label {\n  color: #6c757d;\n}\n.custom-control-input:disabled ~ .custom-control-label::before {\n  background-color: #e9ecef;\n}\n.custom-control-label {\n  position: relative;\n  margin-bottom: 0;\n  vertical-align: top;\n}\n.custom-control-label::before {\n  position: absolute;\n  top: 0.22rem;\n  left: -1.5rem;\n  display: block;\n  width: 1rem;\n  height: 1rem;\n  pointer-events: none;\n  content: \"\";\n  background-color: #fff;\n  border: #adb5bd solid 1px;\n}\n.custom-control-label::after {\n  position: absolute;\n  top: 0.22rem;\n  left: -1.5rem;\n  display: block;\n  width: 1rem;\n  height: 1rem;\n  content: \"\";\n  background-repeat: no-repeat;\n  background-position: center center;\n  background-size: 50% 50%;\n}\n.custom-checkbox .custom-control-label::before {\n  border-radius: 0.25rem;\n}\n.custom-checkbox .custom-control-input:checked ~ .custom-control-label::after {\n  background-image: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e\");\n}\n.custom-checkbox .custom-control-input:indeterminate ~ .custom-control-label::before {\n  border-color: #3490dc;\n  background-color: #3490dc;\n}\n.custom-checkbox .custom-control-input:indeterminate ~ .custom-control-label::after {\n  background-image: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 4'%3e%3cpath stroke='%23fff' d='M0 2h4'/%3e%3c/svg%3e\");\n}\n.custom-checkbox .custom-control-input:disabled:checked ~ .custom-control-label::before {\n  background-color: rgba(52, 144, 220, 0.5);\n}\n.custom-checkbox .custom-control-input:disabled:indeterminate ~ .custom-control-label::before {\n  background-color: rgba(52, 144, 220, 0.5);\n}\n.custom-radio .custom-control-label::before {\n  border-radius: 50%;\n}\n.custom-radio .custom-control-input:checked ~ .custom-control-label::after {\n  background-image: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e\");\n}\n.custom-radio .custom-control-input:disabled:checked ~ .custom-control-label::before {\n  background-color: rgba(52, 144, 220, 0.5);\n}\n.custom-switch {\n  padding-left: 2.25rem;\n}\n.custom-switch .custom-control-label::before {\n  left: -2.25rem;\n  width: 1.75rem;\n  pointer-events: all;\n  border-radius: 0.5rem;\n}\n.custom-switch .custom-control-label::after {\n  top: calc(0.22rem + 2px);\n  left: calc(-2.25rem + 2px);\n  width: calc(1rem - 4px);\n  height: calc(1rem - 4px);\n  background-color: #adb5bd;\n  border-radius: 0.5rem;\n  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-transform 0.15s ease-in-out;\n  transition: transform 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\n  transition: transform 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-transform 0.15s ease-in-out;\n}\n@media screen and (prefers-reduced-motion: reduce) {\n.custom-switch .custom-control-label::after {\n    transition: none;\n}\n}\n.custom-switch .custom-control-input:checked ~ .custom-control-label::after {\n  background-color: #fff;\n  -webkit-transform: translateX(0.75rem);\n          transform: translateX(0.75rem);\n}\n.custom-switch .custom-control-input:disabled:checked ~ .custom-control-label::before {\n  background-color: rgba(52, 144, 220, 0.5);\n}\n.custom-select {\n  display: inline-block;\n  width: 100%;\n  height: calc(2.19rem + 2px);\n  padding: 0.375rem 1.75rem 0.375rem 0.75rem;\n  font-weight: 400;\n  line-height: 1.6;\n  color: #495057;\n  vertical-align: middle;\n  background: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e\") no-repeat right 0.75rem center/8px 10px;\n  background-color: #fff;\n  border: 1px solid #ced4da;\n  border-radius: 0.25rem;\n  -webkit-appearance: none;\n     -moz-appearance: none;\n          appearance: none;\n}\n.custom-select:focus {\n  border-color: #a1cbef;\n  outline: 0;\n  box-shadow: 0 0 0 0.2rem rgba(161, 203, 239, 0.5);\n}\n.custom-select:focus::-ms-value {\n  color: #495057;\n  background-color: #fff;\n}\n.custom-select[multiple], .custom-select[size]:not([size=\"1\"]) {\n  height: auto;\n  padding-right: 0.75rem;\n  background-image: none;\n}\n.custom-select:disabled {\n  color: #6c757d;\n  background-color: #e9ecef;\n}\n.custom-select::-ms-expand {\n  opacity: 0;\n}\n.custom-select-sm {\n  height: calc(1.68125rem + 2px);\n  padding-top: 0.25rem;\n  padding-bottom: 0.25rem;\n  padding-left: 0.5rem;\n  font-size: 0.7875rem;\n}\n.custom-select-lg {\n  height: calc(2.6875rem + 2px);\n  padding-top: 0.5rem;\n  padding-bottom: 0.5rem;\n  padding-left: 1rem;\n  font-size: 1.125rem;\n}\n.custom-file {\n  position: relative;\n  display: inline-block;\n  width: 100%;\n  height: calc(2.19rem + 2px);\n  margin-bottom: 0;\n}\n.custom-file-input {\n  position: relative;\n  z-index: 2;\n  width: 100%;\n  height: calc(2.19rem + 2px);\n  margin: 0;\n  opacity: 0;\n}\n.custom-file-input:focus ~ .custom-file-label {\n  border-color: #a1cbef;\n  box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.25);\n}\n.custom-file-input:disabled ~ .custom-file-label {\n  background-color: #e9ecef;\n}\n.custom-file-input:lang(en) ~ .custom-file-label::after {\n  content: \"Browse\";\n}\n.custom-file-input ~ .custom-file-label[data-browse]::after {\n  content: attr(data-browse);\n}\n.custom-file-label {\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  z-index: 1;\n  height: calc(2.19rem + 2px);\n  padding: 0.375rem 0.75rem;\n  font-weight: 400;\n  line-height: 1.6;\n  color: #495057;\n  background-color: #fff;\n  border: 1px solid #ced4da;\n  border-radius: 0.25rem;\n}\n.custom-file-label::after {\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 3;\n  display: block;\n  height: 2.19rem;\n  padding: 0.375rem 0.75rem;\n  line-height: 1.6;\n  color: #495057;\n  content: \"Browse\";\n  background-color: #e9ecef;\n  border-left: inherit;\n  border-radius: 0 0.25rem 0.25rem 0;\n}\n.custom-range {\n  width: 100%;\n  height: calc(1rem + 0.4rem);\n  padding: 0;\n  background-color: transparent;\n  -webkit-appearance: none;\n     -moz-appearance: none;\n          appearance: none;\n}\n.custom-range:focus {\n  outline: none;\n}\n.custom-range:focus::-webkit-slider-thumb {\n  box-shadow: 0 0 0 1px #f8fafc, 0 0 0 0.2rem rgba(52, 144, 220, 0.25);\n}\n.custom-range:focus::-moz-range-thumb {\n  box-shadow: 0 0 0 1px #f8fafc, 0 0 0 0.2rem rgba(52, 144, 220, 0.25);\n}\n.custom-range:focus::-ms-thumb {\n  box-shadow: 0 0 0 1px #f8fafc, 0 0 0 0.2rem rgba(52, 144, 220, 0.25);\n}\n.custom-range::-moz-focus-outer {\n  border: 0;\n}\n.custom-range::-webkit-slider-thumb {\n  width: 1rem;\n  height: 1rem;\n  margin-top: -0.25rem;\n  background-color: #3490dc;\n  border: 0;\n  border-radius: 1rem;\n  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\n  -webkit-appearance: none;\n          appearance: none;\n}\n@media screen and (prefers-reduced-motion: reduce) {\n.custom-range::-webkit-slider-thumb {\n    transition: none;\n}\n}\n.custom-range::-webkit-slider-thumb:active {\n  background-color: #cce3f6;\n}\n.custom-range::-webkit-slider-runnable-track {\n  width: 100%;\n  height: 0.5rem;\n  color: transparent;\n  cursor: pointer;\n  background-color: #dee2e6;\n  border-color: transparent;\n  border-radius: 1rem;\n}\n.custom-range::-moz-range-thumb {\n  width: 1rem;\n  height: 1rem;\n  background-color: #3490dc;\n  border: 0;\n  border-radius: 1rem;\n  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\n  -moz-appearance: none;\n       appearance: none;\n}\n@media screen and (prefers-reduced-motion: reduce) {\n.custom-range::-moz-range-thumb {\n    transition: none;\n}\n}\n.custom-range::-moz-range-thumb:active {\n  background-color: #cce3f6;\n}\n.custom-range::-moz-range-track {\n  width: 100%;\n  height: 0.5rem;\n  color: transparent;\n  cursor: pointer;\n  background-color: #dee2e6;\n  border-color: transparent;\n  border-radius: 1rem;\n}\n.custom-range::-ms-thumb {\n  width: 1rem;\n  height: 1rem;\n  margin-top: 0;\n  margin-right: 0.2rem;\n  margin-left: 0.2rem;\n  background-color: #3490dc;\n  border: 0;\n  border-radius: 1rem;\n  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\n  appearance: none;\n}\n@media screen and (prefers-reduced-motion: reduce) {\n.custom-range::-ms-thumb {\n    transition: none;\n}\n}\n.custom-range::-ms-thumb:active {\n  background-color: #cce3f6;\n}\n.custom-range::-ms-track {\n  width: 100%;\n  height: 0.5rem;\n  color: transparent;\n  cursor: pointer;\n  background-color: transparent;\n  border-color: transparent;\n  border-width: 0.5rem;\n}\n.custom-range::-ms-fill-lower {\n  background-color: #dee2e6;\n  border-radius: 1rem;\n}\n.custom-range::-ms-fill-upper {\n  margin-right: 15px;\n  background-color: #dee2e6;\n  border-radius: 1rem;\n}\n.custom-range:disabled::-webkit-slider-thumb {\n  background-color: #adb5bd;\n}\n.custom-range:disabled::-webkit-slider-runnable-track {\n  cursor: default;\n}\n.custom-range:disabled::-moz-range-thumb {\n  background-color: #adb5bd;\n}\n.custom-range:disabled::-moz-range-track {\n  cursor: default;\n}\n.custom-range:disabled::-ms-thumb {\n  background-color: #adb5bd;\n}\n.custom-control-label::before,\n.custom-file-label,\n.custom-select {\n  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\n}\n@media screen and (prefers-reduced-motion: reduce) {\n.custom-control-label::before,\n.custom-file-label,\n.custom-select {\n    transition: none;\n}\n}\n.nav {\n  display: flex;\n  flex-wrap: wrap;\n  padding-left: 0;\n  margin-bottom: 0;\n  list-style: none;\n}\n.nav-link {\n  display: block;\n  padding: 0.5rem 1rem;\n}\n.nav-link:hover, .nav-link:focus {\n  text-decoration: none;\n}\n.nav-link.disabled {\n  color: #6c757d;\n  pointer-events: none;\n  cursor: default;\n}\n.nav-tabs {\n  border-bottom: 1px solid #dee2e6;\n}\n.nav-tabs .nav-item {\n  margin-bottom: -1px;\n}\n.nav-tabs .nav-link {\n  border: 1px solid transparent;\n  border-top-left-radius: 0.25rem;\n  border-top-right-radius: 0.25rem;\n}\n.nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus {\n  border-color: #e9ecef #e9ecef #dee2e6;\n}\n.nav-tabs .nav-link.disabled {\n  color: #6c757d;\n  background-color: transparent;\n  border-color: transparent;\n}\n.nav-tabs .nav-link.active,\n.nav-tabs .nav-item.show .nav-link {\n  color: #495057;\n  background-color: #f8fafc;\n  border-color: #dee2e6 #dee2e6 #f8fafc;\n}\n.nav-tabs .dropdown-menu {\n  margin-top: -1px;\n  border-top-left-radius: 0;\n  border-top-right-radius: 0;\n}\n.nav-pills .nav-link {\n  border-radius: 0.25rem;\n}\n.nav-pills .nav-link.active,\n.nav-pills .show > .nav-link {\n  color: #fff;\n  background-color: #3490dc;\n}\n.nav-fill .nav-item {\n  flex: 1 1 auto;\n  text-align: center;\n}\n.nav-justified .nav-item {\n  flex-basis: 0;\n  flex-grow: 1;\n  text-align: center;\n}\n.tab-content > .tab-pane {\n  display: none;\n}\n.tab-content > .active {\n  display: block;\n}\n.navbar {\n  position: relative;\n  display: flex;\n  flex-wrap: wrap;\n  align-items: center;\n  justify-content: space-between;\n  padding: 0.5rem 1rem;\n}\n.navbar > .container,\n.navbar > .container-fluid {\n  display: flex;\n  flex-wrap: wrap;\n  align-items: center;\n  justify-content: space-between;\n}\n.navbar-brand {\n  display: inline-block;\n  padding-top: 0.32rem;\n  padding-bottom: 0.32rem;\n  margin-right: 1rem;\n  font-size: 1.125rem;\n  line-height: inherit;\n  white-space: nowrap;\n}\n.navbar-brand:hover, .navbar-brand:focus {\n  text-decoration: none;\n}\n.navbar-nav {\n  display: flex;\n  flex-direction: column;\n  padding-left: 0;\n  margin-bottom: 0;\n  list-style: none;\n}\n.navbar-nav .nav-link {\n  padding-right: 0;\n  padding-left: 0;\n}\n.navbar-nav .dropdown-menu {\n  position: static;\n  float: none;\n}\n.navbar-text {\n  display: inline-block;\n  padding-top: 0.5rem;\n  padding-bottom: 0.5rem;\n}\n.navbar-collapse {\n  flex-basis: 100%;\n  flex-grow: 1;\n  align-items: center;\n}\n.navbar-toggler {\n  padding: 0.25rem 0.75rem;\n  font-size: 1.125rem;\n  line-height: 1;\n  background-color: transparent;\n  border: 1px solid transparent;\n  border-radius: 0.25rem;\n}\n.navbar-toggler:hover, .navbar-toggler:focus {\n  text-decoration: none;\n}\n.navbar-toggler:not(:disabled):not(.disabled) {\n  cursor: pointer;\n}\n.navbar-toggler-icon {\n  display: inline-block;\n  width: 1.5em;\n  height: 1.5em;\n  vertical-align: middle;\n  content: \"\";\n  background: no-repeat center center;\n  background-size: 100% 100%;\n}\n@media (max-width: 575.98px) {\n.navbar-expand-sm > .container,\n.navbar-expand-sm > .container-fluid {\n    padding-right: 0;\n    padding-left: 0;\n}\n}\n@media (min-width: 576px) {\n.navbar-expand-sm {\n    flex-flow: row nowrap;\n    justify-content: flex-start;\n}\n.navbar-expand-sm .navbar-nav {\n    flex-direction: row;\n}\n.navbar-expand-sm .navbar-nav .dropdown-menu {\n    position: absolute;\n}\n.navbar-expand-sm .navbar-nav .nav-link {\n    padding-right: 0.5rem;\n    padding-left: 0.5rem;\n}\n.navbar-expand-sm > .container,\n.navbar-expand-sm > .container-fluid {\n    flex-wrap: nowrap;\n}\n.navbar-expand-sm .navbar-collapse {\n    display: flex !important;\n    flex-basis: auto;\n}\n.navbar-expand-sm .navbar-toggler {\n    display: none;\n}\n}\n@media (max-width: 767.98px) {\n.navbar-expand-md > .container,\n.navbar-expand-md > .container-fluid {\n    padding-right: 0;\n    padding-left: 0;\n}\n}\n@media (min-width: 768px) {\n.navbar-expand-md {\n    flex-flow: row nowrap;\n    justify-content: flex-start;\n}\n.navbar-expand-md .navbar-nav {\n    flex-direction: row;\n}\n.navbar-expand-md .navbar-nav .dropdown-menu {\n    position: absolute;\n}\n.navbar-expand-md .navbar-nav .nav-link {\n    padding-right: 0.5rem;\n    padding-left: 0.5rem;\n}\n.navbar-expand-md > .container,\n.navbar-expand-md > .container-fluid {\n    flex-wrap: nowrap;\n}\n.navbar-expand-md .navbar-collapse {\n    display: flex !important;\n    flex-basis: auto;\n}\n.navbar-expand-md .navbar-toggler {\n    display: none;\n}\n}\n@media (max-width: 991.98px) {\n.navbar-expand-lg > .container,\n.navbar-expand-lg > .container-fluid {\n    padding-right: 0;\n    padding-left: 0;\n}\n}\n@media (min-width: 992px) {\n.navbar-expand-lg {\n    flex-flow: row nowrap;\n    justify-content: flex-start;\n}\n.navbar-expand-lg .navbar-nav {\n    flex-direction: row;\n}\n.navbar-expand-lg .navbar-nav .dropdown-menu {\n    position: absolute;\n}\n.navbar-expand-lg .navbar-nav .nav-link {\n    padding-right: 0.5rem;\n    padding-left: 0.5rem;\n}\n.navbar-expand-lg > .container,\n.navbar-expand-lg > .container-fluid {\n    flex-wrap: nowrap;\n}\n.navbar-expand-lg .navbar-collapse {\n    display: flex !important;\n    flex-basis: auto;\n}\n.navbar-expand-lg .navbar-toggler {\n    display: none;\n}\n}\n@media (max-width: 1199.98px) {\n.navbar-expand-xl > .container,\n.navbar-expand-xl > .container-fluid {\n    padding-right: 0;\n    padding-left: 0;\n}\n}\n@media (min-width: 1200px) {\n.navbar-expand-xl {\n    flex-flow: row nowrap;\n    justify-content: flex-start;\n}\n.navbar-expand-xl .navbar-nav {\n    flex-direction: row;\n}\n.navbar-expand-xl .navbar-nav .dropdown-menu {\n    position: absolute;\n}\n.navbar-expand-xl .navbar-nav .nav-link {\n    padding-right: 0.5rem;\n    padding-left: 0.5rem;\n}\n.navbar-expand-xl > .container,\n.navbar-expand-xl > .container-fluid {\n    flex-wrap: nowrap;\n}\n.navbar-expand-xl .navbar-collapse {\n    display: flex !important;\n    flex-basis: auto;\n}\n.navbar-expand-xl .navbar-toggler {\n    display: none;\n}\n}\n.navbar-expand {\n  flex-flow: row nowrap;\n  justify-content: flex-start;\n}\n.navbar-expand > .container,\n.navbar-expand > .container-fluid {\n  padding-right: 0;\n  padding-left: 0;\n}\n.navbar-expand .navbar-nav {\n  flex-direction: row;\n}\n.navbar-expand .navbar-nav .dropdown-menu {\n  position: absolute;\n}\n.navbar-expand .navbar-nav .nav-link {\n  padding-right: 0.5rem;\n  padding-left: 0.5rem;\n}\n.navbar-expand > .container,\n.navbar-expand > .container-fluid {\n  flex-wrap: nowrap;\n}\n.navbar-expand .navbar-collapse {\n  display: flex !important;\n  flex-basis: auto;\n}\n.navbar-expand .navbar-toggler {\n  display: none;\n}\n.navbar-light .navbar-brand {\n  color: rgba(0, 0, 0, 0.9);\n}\n.navbar-light .navbar-brand:hover, .navbar-light .navbar-brand:focus {\n  color: rgba(0, 0, 0, 0.9);\n}\n.navbar-light .navbar-nav .nav-link {\n  color: rgba(0, 0, 0, 0.5);\n}\n.navbar-light .navbar-nav .nav-link:hover, .navbar-light .navbar-nav .nav-link:focus {\n  color: rgba(0, 0, 0, 0.7);\n}\n.navbar-light .navbar-nav .nav-link.disabled {\n  color: rgba(0, 0, 0, 0.3);\n}\n.navbar-light .navbar-nav .show > .nav-link,\n.navbar-light .navbar-nav .active > .nav-link,\n.navbar-light .navbar-nav .nav-link.show,\n.navbar-light .navbar-nav .nav-link.active {\n  color: rgba(0, 0, 0, 0.9);\n}\n.navbar-light .navbar-toggler {\n  color: rgba(0, 0, 0, 0.5);\n  border-color: rgba(0, 0, 0, 0.1);\n}\n.navbar-light .navbar-toggler-icon {\n  background-image: url(\"data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(0, 0, 0, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e\");\n}\n.navbar-light .navbar-text {\n  color: rgba(0, 0, 0, 0.5);\n}\n.navbar-light .navbar-text a {\n  color: rgba(0, 0, 0, 0.9);\n}\n.navbar-light .navbar-text a:hover, .navbar-light .navbar-text a:focus {\n  color: rgba(0, 0, 0, 0.9);\n}\n.navbar-dark .navbar-brand {\n  color: #fff;\n}\n.navbar-dark .navbar-brand:hover, .navbar-dark .navbar-brand:focus {\n  color: #fff;\n}\n.navbar-dark .navbar-nav .nav-link {\n  color: rgba(255, 255, 255, 0.5);\n}\n.navbar-dark .navbar-nav .nav-link:hover, .navbar-dark .navbar-nav .nav-link:focus {\n  color: rgba(255, 255, 255, 0.75);\n}\n.navbar-dark .navbar-nav .nav-link.disabled {\n  color: rgba(255, 255, 255, 0.25);\n}\n.navbar-dark .navbar-nav .show > .nav-link,\n.navbar-dark .navbar-nav .active > .nav-link,\n.navbar-dark .navbar-nav .nav-link.show,\n.navbar-dark .navbar-nav .nav-link.active {\n  color: #fff;\n}\n.navbar-dark .navbar-toggler {\n  color: rgba(255, 255, 255, 0.5);\n  border-color: rgba(255, 255, 255, 0.1);\n}\n.navbar-dark .navbar-toggler-icon {\n  background-image: url(\"data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(255, 255, 255, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e\");\n}\n.navbar-dark .navbar-text {\n  color: rgba(255, 255, 255, 0.5);\n}\n.navbar-dark .navbar-text a {\n  color: #fff;\n}\n.navbar-dark .navbar-text a:hover, .navbar-dark .navbar-text a:focus {\n  color: #fff;\n}\n.card {\n  position: relative;\n  display: flex;\n  flex-direction: column;\n  min-width: 0;\n  word-wrap: break-word;\n  background-color: #fff;\n  background-clip: border-box;\n  border: 1px solid rgba(0, 0, 0, 0.125);\n  border-radius: 0.25rem;\n}\n.card > hr {\n  margin-right: 0;\n  margin-left: 0;\n}\n.card > .list-group:first-child .list-group-item:first-child {\n  border-top-left-radius: 0.25rem;\n  border-top-right-radius: 0.25rem;\n}\n.card > .list-group:last-child .list-group-item:last-child {\n  border-bottom-right-radius: 0.25rem;\n  border-bottom-left-radius: 0.25rem;\n}\n.card-body {\n  flex: 1 1 auto;\n  padding: 1.25rem;\n}\n.card-title {\n  margin-bottom: 0.75rem;\n}\n.card-subtitle {\n  margin-top: -0.375rem;\n  margin-bottom: 0;\n}\n.card-text:last-child {\n  margin-bottom: 0;\n}\n.card-link:hover {\n  text-decoration: none;\n}\n.card-link + .card-link {\n  margin-left: 1.25rem;\n}\n.card-header {\n  padding: 0.75rem 1.25rem;\n  margin-bottom: 0;\n  color: inherit;\n  background-color: rgba(0, 0, 0, 0.03);\n  border-bottom: 1px solid rgba(0, 0, 0, 0.125);\n}\n.card-header:first-child {\n  border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;\n}\n.card-header + .list-group .list-group-item:first-child {\n  border-top: 0;\n}\n.card-footer {\n  padding: 0.75rem 1.25rem;\n  background-color: rgba(0, 0, 0, 0.03);\n  border-top: 1px solid rgba(0, 0, 0, 0.125);\n}\n.card-footer:last-child {\n  border-radius: 0 0 calc(0.25rem - 1px) calc(0.25rem - 1px);\n}\n.card-header-tabs {\n  margin-right: -0.625rem;\n  margin-bottom: -0.75rem;\n  margin-left: -0.625rem;\n  border-bottom: 0;\n}\n.card-header-pills {\n  margin-right: -0.625rem;\n  margin-left: -0.625rem;\n}\n.card-img-overlay {\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  padding: 1.25rem;\n}\n.card-img {\n  width: 100%;\n  border-radius: calc(0.25rem - 1px);\n}\n.card-img-top {\n  width: 100%;\n  border-top-left-radius: calc(0.25rem - 1px);\n  border-top-right-radius: calc(0.25rem - 1px);\n}\n.card-img-bottom {\n  width: 100%;\n  border-bottom-right-radius: calc(0.25rem - 1px);\n  border-bottom-left-radius: calc(0.25rem - 1px);\n}\n.card-deck {\n  display: flex;\n  flex-direction: column;\n}\n.card-deck .card {\n  margin-bottom: 15px;\n}\n@media (min-width: 576px) {\n.card-deck {\n    flex-flow: row wrap;\n    margin-right: -15px;\n    margin-left: -15px;\n}\n.card-deck .card {\n    display: flex;\n    flex: 1 0 0%;\n    flex-direction: column;\n    margin-right: 15px;\n    margin-bottom: 0;\n    margin-left: 15px;\n}\n}\n.card-group {\n  display: flex;\n  flex-direction: column;\n}\n.card-group > .card {\n  margin-bottom: 15px;\n}\n@media (min-width: 576px) {\n.card-group {\n    flex-flow: row wrap;\n}\n.card-group > .card {\n    flex: 1 0 0%;\n    margin-bottom: 0;\n}\n.card-group > .card + .card {\n    margin-left: 0;\n    border-left: 0;\n}\n.card-group > .card:first-child {\n    border-top-right-radius: 0;\n    border-bottom-right-radius: 0;\n}\n.card-group > .card:first-child .card-img-top,\n.card-group > .card:first-child .card-header {\n    border-top-right-radius: 0;\n}\n.card-group > .card:first-child .card-img-bottom,\n.card-group > .card:first-child .card-footer {\n    border-bottom-right-radius: 0;\n}\n.card-group > .card:last-child {\n    border-top-left-radius: 0;\n    border-bottom-left-radius: 0;\n}\n.card-group > .card:last-child .card-img-top,\n.card-group > .card:last-child .card-header {\n    border-top-left-radius: 0;\n}\n.card-group > .card:last-child .card-img-bottom,\n.card-group > .card:last-child .card-footer {\n    border-bottom-left-radius: 0;\n}\n.card-group > .card:only-child {\n    border-radius: 0.25rem;\n}\n.card-group > .card:only-child .card-img-top,\n.card-group > .card:only-child .card-header {\n    border-top-left-radius: 0.25rem;\n    border-top-right-radius: 0.25rem;\n}\n.card-group > .card:only-child .card-img-bottom,\n.card-group > .card:only-child .card-footer {\n    border-bottom-right-radius: 0.25rem;\n    border-bottom-left-radius: 0.25rem;\n}\n.card-group > .card:not(:first-child):not(:last-child):not(:only-child) {\n    border-radius: 0;\n}\n.card-group > .card:not(:first-child):not(:last-child):not(:only-child) .card-img-top,\n.card-group > .card:not(:first-child):not(:last-child):not(:only-child) .card-img-bottom,\n.card-group > .card:not(:first-child):not(:last-child):not(:only-child) .card-header,\n.card-group > .card:not(:first-child):not(:last-child):not(:only-child) .card-footer {\n    border-radius: 0;\n}\n}\n.card-columns .card {\n  margin-bottom: 0.75rem;\n}\n@media (min-width: 576px) {\n.card-columns {\n    -webkit-column-count: 3;\n            column-count: 3;\n    -webkit-column-gap: 1.25rem;\n            column-gap: 1.25rem;\n    orphans: 1;\n    widows: 1;\n}\n.card-columns .card {\n    display: inline-block;\n    width: 100%;\n}\n}\n.accordion .card {\n  overflow: hidden;\n}\n.accordion .card:not(:first-of-type) .card-header:first-child {\n  border-radius: 0;\n}\n.accordion .card:not(:first-of-type):not(:last-of-type) {\n  border-bottom: 0;\n  border-radius: 0;\n}\n.accordion .card:first-of-type {\n  border-bottom: 0;\n  border-bottom-right-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.accordion .card:last-of-type {\n  border-top-left-radius: 0;\n  border-top-right-radius: 0;\n}\n.accordion .card .card-header {\n  margin-bottom: -1px;\n}\n.breadcrumb {\n  display: flex;\n  flex-wrap: wrap;\n  padding: 0.75rem 1rem;\n  margin-bottom: 1rem;\n  list-style: none;\n  background-color: #e9ecef;\n  border-radius: 0.25rem;\n}\n.breadcrumb-item + .breadcrumb-item {\n  padding-left: 0.5rem;\n}\n.breadcrumb-item + .breadcrumb-item::before {\n  display: inline-block;\n  padding-right: 0.5rem;\n  color: #6c757d;\n  content: \"/\";\n}\n.breadcrumb-item + .breadcrumb-item:hover::before {\n  text-decoration: underline;\n}\n.breadcrumb-item + .breadcrumb-item:hover::before {\n  text-decoration: none;\n}\n.breadcrumb-item.active {\n  color: #6c757d;\n}\n.pagination {\n  display: flex;\n  padding-left: 0;\n  list-style: none;\n  border-radius: 0.25rem;\n}\n.page-link {\n  position: relative;\n  display: block;\n  padding: 0.5rem 0.75rem;\n  margin-left: -1px;\n  line-height: 1.25;\n  color: #3490dc;\n  background-color: #fff;\n  border: 1px solid #dee2e6;\n}\n.page-link:hover {\n  z-index: 2;\n  color: #1d68a7;\n  text-decoration: none;\n  background-color: #e9ecef;\n  border-color: #dee2e6;\n}\n.page-link:focus {\n  z-index: 2;\n  outline: 0;\n  box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.25);\n}\n.page-link:not(:disabled):not(.disabled) {\n  cursor: pointer;\n}\n.page-item:first-child .page-link {\n  margin-left: 0;\n  border-top-left-radius: 0.25rem;\n  border-bottom-left-radius: 0.25rem;\n}\n.page-item:last-child .page-link {\n  border-top-right-radius: 0.25rem;\n  border-bottom-right-radius: 0.25rem;\n}\n.page-item.active .page-link {\n  z-index: 1;\n  color: #fff;\n  background-color: #3490dc;\n  border-color: #3490dc;\n}\n.page-item.disabled .page-link {\n  color: #6c757d;\n  pointer-events: none;\n  cursor: auto;\n  background-color: #fff;\n  border-color: #dee2e6;\n}\n.pagination-lg .page-link {\n  padding: 0.75rem 1.5rem;\n  font-size: 1.125rem;\n  line-height: 1.5;\n}\n.pagination-lg .page-item:first-child .page-link {\n  border-top-left-radius: 0.3rem;\n  border-bottom-left-radius: 0.3rem;\n}\n.pagination-lg .page-item:last-child .page-link {\n  border-top-right-radius: 0.3rem;\n  border-bottom-right-radius: 0.3rem;\n}\n.pagination-sm .page-link {\n  padding: 0.25rem 0.5rem;\n  font-size: 0.7875rem;\n  line-height: 1.5;\n}\n.pagination-sm .page-item:first-child .page-link {\n  border-top-left-radius: 0.2rem;\n  border-bottom-left-radius: 0.2rem;\n}\n.pagination-sm .page-item:last-child .page-link {\n  border-top-right-radius: 0.2rem;\n  border-bottom-right-radius: 0.2rem;\n}\n.badge {\n  display: inline-block;\n  padding: 0.25em 0.4em;\n  font-size: 75%;\n  font-weight: 700;\n  line-height: 1;\n  text-align: center;\n  white-space: nowrap;\n  vertical-align: baseline;\n  border-radius: 0.25rem;\n}\na.badge:hover, a.badge:focus {\n  text-decoration: none;\n}\n.badge:empty {\n  display: none;\n}\n.btn .badge {\n  position: relative;\n  top: -1px;\n}\n.badge-pill {\n  padding-right: 0.6em;\n  padding-left: 0.6em;\n  border-radius: 10rem;\n}\n.badge-primary {\n  color: #fff;\n  background-color: #3490dc;\n}\na.badge-primary:hover, a.badge-primary:focus {\n  color: #fff;\n  background-color: #2176bd;\n}\n.badge-secondary {\n  color: #fff;\n  background-color: #6c757d;\n}\na.badge-secondary:hover, a.badge-secondary:focus {\n  color: #fff;\n  background-color: #545b62;\n}\n.badge-success {\n  color: #fff;\n  background-color: #38c172;\n}\na.badge-success:hover, a.badge-success:focus {\n  color: #fff;\n  background-color: #2d995b;\n}\n.badge-info {\n  color: #212529;\n  background-color: #6cb2eb;\n}\na.badge-info:hover, a.badge-info:focus {\n  color: #212529;\n  background-color: #3f9ae5;\n}\n.badge-warning {\n  color: #212529;\n  background-color: #ffed4a;\n}\na.badge-warning:hover, a.badge-warning:focus {\n  color: #212529;\n  background-color: #ffe817;\n}\n.badge-danger {\n  color: #fff;\n  background-color: #e3342f;\n}\na.badge-danger:hover, a.badge-danger:focus {\n  color: #fff;\n  background-color: #c51f1a;\n}\n.badge-light {\n  color: #212529;\n  background-color: #f8f9fa;\n}\na.badge-light:hover, a.badge-light:focus {\n  color: #212529;\n  background-color: #dae0e5;\n}\n.badge-dark {\n  color: #fff;\n  background-color: #343a40;\n}\na.badge-dark:hover, a.badge-dark:focus {\n  color: #fff;\n  background-color: #1d2124;\n}\n.jumbotron {\n  padding: 2rem 1rem;\n  margin-bottom: 2rem;\n  background-color: #e9ecef;\n  border-radius: 0.3rem;\n}\n@media (min-width: 576px) {\n.jumbotron {\n    padding: 4rem 2rem;\n}\n}\n.jumbotron-fluid {\n  padding-right: 0;\n  padding-left: 0;\n  border-radius: 0;\n}\n.alert {\n  position: relative;\n  padding: 0.75rem 1.25rem;\n  margin-bottom: 1rem;\n  border: 1px solid transparent;\n  border-radius: 0.25rem;\n}\n.alert-heading {\n  color: inherit;\n}\n.alert-link {\n  font-weight: 700;\n}\n.alert-dismissible {\n  padding-right: 3.85rem;\n}\n.alert-dismissible .close {\n  position: absolute;\n  top: 0;\n  right: 0;\n  padding: 0.75rem 1.25rem;\n  color: inherit;\n}\n.alert-primary {\n  color: #1b4b72;\n  background-color: #d6e9f8;\n  border-color: #c6e0f5;\n}\n.alert-primary hr {\n  border-top-color: #b0d4f1;\n}\n.alert-primary .alert-link {\n  color: #113049;\n}\n.alert-secondary {\n  color: #383d41;\n  background-color: #e2e3e5;\n  border-color: #d6d8db;\n}\n.alert-secondary hr {\n  border-top-color: #c8cbcf;\n}\n.alert-secondary .alert-link {\n  color: #202326;\n}\n.alert-success {\n  color: #1d643b;\n  background-color: #d7f3e3;\n  border-color: #c7eed8;\n}\n.alert-success hr {\n  border-top-color: #b3e8ca;\n}\n.alert-success .alert-link {\n  color: #123c24;\n}\n.alert-info {\n  color: #385d7a;\n  background-color: #e2f0fb;\n  border-color: #d6e9f9;\n}\n.alert-info hr {\n  border-top-color: #c0ddf6;\n}\n.alert-info .alert-link {\n  color: #284257;\n}\n.alert-warning {\n  color: #857b26;\n  background-color: #fffbdb;\n  border-color: #fffacc;\n}\n.alert-warning hr {\n  border-top-color: #fff8b3;\n}\n.alert-warning .alert-link {\n  color: #5d561b;\n}\n.alert-danger {\n  color: #761b18;\n  background-color: #f9d6d5;\n  border-color: #f7c6c5;\n}\n.alert-danger hr {\n  border-top-color: #f4b0af;\n}\n.alert-danger .alert-link {\n  color: #4c110f;\n}\n.alert-light {\n  color: #818182;\n  background-color: #fefefe;\n  border-color: #fdfdfe;\n}\n.alert-light hr {\n  border-top-color: #ececf6;\n}\n.alert-light .alert-link {\n  color: #686868;\n}\n.alert-dark {\n  color: #1b1e21;\n  background-color: #d6d8d9;\n  border-color: #c6c8ca;\n}\n.alert-dark hr {\n  border-top-color: #b9bbbe;\n}\n.alert-dark .alert-link {\n  color: #040505;\n}\n@-webkit-keyframes progress-bar-stripes {\nfrom {\n    background-position: 1rem 0;\n}\nto {\n    background-position: 0 0;\n}\n}\n@keyframes progress-bar-stripes {\nfrom {\n    background-position: 1rem 0;\n}\nto {\n    background-position: 0 0;\n}\n}\n.progress {\n  display: flex;\n  height: 1rem;\n  overflow: hidden;\n  font-size: 0.675rem;\n  background-color: #e9ecef;\n  border-radius: 0.25rem;\n}\n.progress-bar {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  color: #fff;\n  text-align: center;\n  white-space: nowrap;\n  background-color: #3490dc;\n  transition: width 0.6s ease;\n}\n@media screen and (prefers-reduced-motion: reduce) {\n.progress-bar {\n    transition: none;\n}\n}\n.progress-bar-striped {\n  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);\n  background-size: 1rem 1rem;\n}\n.progress-bar-animated {\n  -webkit-animation: progress-bar-stripes 1s linear infinite;\n          animation: progress-bar-stripes 1s linear infinite;\n}\n.media {\n  display: flex;\n  align-items: flex-start;\n}\n.media-body {\n  flex: 1;\n}\n.list-group {\n  display: flex;\n  flex-direction: column;\n  padding-left: 0;\n  margin-bottom: 0;\n}\n.list-group-item-action {\n  width: 100%;\n  color: #495057;\n  text-align: inherit;\n}\n.list-group-item-action:hover, .list-group-item-action:focus {\n  color: #495057;\n  text-decoration: none;\n  background-color: #f8f9fa;\n}\n.list-group-item-action:active {\n  color: #212529;\n  background-color: #e9ecef;\n}\n.list-group-item {\n  position: relative;\n  display: block;\n  padding: 0.75rem 1.25rem;\n  margin-bottom: -1px;\n  background-color: #fff;\n  border: 1px solid rgba(0, 0, 0, 0.125);\n}\n.list-group-item:first-child {\n  border-top-left-radius: 0.25rem;\n  border-top-right-radius: 0.25rem;\n}\n.list-group-item:last-child {\n  margin-bottom: 0;\n  border-bottom-right-radius: 0.25rem;\n  border-bottom-left-radius: 0.25rem;\n}\n.list-group-item:hover, .list-group-item:focus {\n  z-index: 1;\n  text-decoration: none;\n}\n.list-group-item.disabled, .list-group-item:disabled {\n  color: #6c757d;\n  pointer-events: none;\n  background-color: #fff;\n}\n.list-group-item.active {\n  z-index: 2;\n  color: #fff;\n  background-color: #3490dc;\n  border-color: #3490dc;\n}\n.list-group-flush .list-group-item {\n  border-right: 0;\n  border-left: 0;\n  border-radius: 0;\n}\n.list-group-flush .list-group-item:last-child {\n  margin-bottom: -1px;\n}\n.list-group-flush:first-child .list-group-item:first-child {\n  border-top: 0;\n}\n.list-group-flush:last-child .list-group-item:last-child {\n  margin-bottom: 0;\n  border-bottom: 0;\n}\n.list-group-item-primary {\n  color: #1b4b72;\n  background-color: #c6e0f5;\n}\n.list-group-item-primary.list-group-item-action:hover, .list-group-item-primary.list-group-item-action:focus {\n  color: #1b4b72;\n  background-color: #b0d4f1;\n}\n.list-group-item-primary.list-group-item-action.active {\n  color: #fff;\n  background-color: #1b4b72;\n  border-color: #1b4b72;\n}\n.list-group-item-secondary {\n  color: #383d41;\n  background-color: #d6d8db;\n}\n.list-group-item-secondary.list-group-item-action:hover, .list-group-item-secondary.list-group-item-action:focus {\n  color: #383d41;\n  background-color: #c8cbcf;\n}\n.list-group-item-secondary.list-group-item-action.active {\n  color: #fff;\n  background-color: #383d41;\n  border-color: #383d41;\n}\n.list-group-item-success {\n  color: #1d643b;\n  background-color: #c7eed8;\n}\n.list-group-item-success.list-group-item-action:hover, .list-group-item-success.list-group-item-action:focus {\n  color: #1d643b;\n  background-color: #b3e8ca;\n}\n.list-group-item-success.list-group-item-action.active {\n  color: #fff;\n  background-color: #1d643b;\n  border-color: #1d643b;\n}\n.list-group-item-info {\n  color: #385d7a;\n  background-color: #d6e9f9;\n}\n.list-group-item-info.list-group-item-action:hover, .list-group-item-info.list-group-item-action:focus {\n  color: #385d7a;\n  background-color: #c0ddf6;\n}\n.list-group-item-info.list-group-item-action.active {\n  color: #fff;\n  background-color: #385d7a;\n  border-color: #385d7a;\n}\n.list-group-item-warning {\n  color: #857b26;\n  background-color: #fffacc;\n}\n.list-group-item-warning.list-group-item-action:hover, .list-group-item-warning.list-group-item-action:focus {\n  color: #857b26;\n  background-color: #fff8b3;\n}\n.list-group-item-warning.list-group-item-action.active {\n  color: #fff;\n  background-color: #857b26;\n  border-color: #857b26;\n}\n.list-group-item-danger {\n  color: #761b18;\n  background-color: #f7c6c5;\n}\n.list-group-item-danger.list-group-item-action:hover, .list-group-item-danger.list-group-item-action:focus {\n  color: #761b18;\n  background-color: #f4b0af;\n}\n.list-group-item-danger.list-group-item-action.active {\n  color: #fff;\n  background-color: #761b18;\n  border-color: #761b18;\n}\n.list-group-item-light {\n  color: #818182;\n  background-color: #fdfdfe;\n}\n.list-group-item-light.list-group-item-action:hover, .list-group-item-light.list-group-item-action:focus {\n  color: #818182;\n  background-color: #ececf6;\n}\n.list-group-item-light.list-group-item-action.active {\n  color: #fff;\n  background-color: #818182;\n  border-color: #818182;\n}\n.list-group-item-dark {\n  color: #1b1e21;\n  background-color: #c6c8ca;\n}\n.list-group-item-dark.list-group-item-action:hover, .list-group-item-dark.list-group-item-action:focus {\n  color: #1b1e21;\n  background-color: #b9bbbe;\n}\n.list-group-item-dark.list-group-item-action.active {\n  color: #fff;\n  background-color: #1b1e21;\n  border-color: #1b1e21;\n}\n.close {\n  float: right;\n  font-size: 1.35rem;\n  font-weight: 700;\n  line-height: 1;\n  color: #000;\n  text-shadow: 0 1px 0 #fff;\n  opacity: 0.5;\n}\n.close:hover {\n  color: #000;\n  text-decoration: none;\n}\n.close:not(:disabled):not(.disabled) {\n  cursor: pointer;\n}\n.close:not(:disabled):not(.disabled):hover, .close:not(:disabled):not(.disabled):focus {\n  opacity: 0.75;\n}\nbutton.close {\n  padding: 0;\n  background-color: transparent;\n  border: 0;\n  -webkit-appearance: none;\n     -moz-appearance: none;\n          appearance: none;\n}\na.close.disabled {\n  pointer-events: none;\n}\n.toast {\n  max-width: 350px;\n  overflow: hidden;\n  font-size: 0.875rem;\n  background-color: rgba(255, 255, 255, 0.85);\n  background-clip: padding-box;\n  border: 1px solid rgba(0, 0, 0, 0.1);\n  border-radius: 0.25rem;\n  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);\n  -webkit-backdrop-filter: blur(10px);\n          backdrop-filter: blur(10px);\n  opacity: 0;\n}\n.toast:not(:last-child) {\n  margin-bottom: 0.75rem;\n}\n.toast.showing {\n  opacity: 1;\n}\n.toast.show {\n  display: block;\n  opacity: 1;\n}\n.toast.hide {\n  display: none;\n}\n.toast-header {\n  display: flex;\n  align-items: center;\n  padding: 0.25rem 0.75rem;\n  color: #6c757d;\n  background-color: rgba(255, 255, 255, 0.85);\n  background-clip: padding-box;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.05);\n}\n.toast-body {\n  padding: 0.75rem;\n}\n.modal-open {\n  overflow: hidden;\n}\n.modal-open .modal {\n  overflow-x: hidden;\n  overflow-y: auto;\n}\n.modal {\n  position: fixed;\n  top: 0;\n  left: 0;\n  z-index: 1050;\n  display: none;\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n  outline: 0;\n}\n.modal-dialog {\n  position: relative;\n  width: auto;\n  margin: 0.5rem;\n  pointer-events: none;\n}\n.modal.fade .modal-dialog {\n  transition: -webkit-transform 0.3s ease-out;\n  transition: transform 0.3s ease-out;\n  transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out;\n  -webkit-transform: translate(0, -50px);\n          transform: translate(0, -50px);\n}\n@media screen and (prefers-reduced-motion: reduce) {\n.modal.fade .modal-dialog {\n    transition: none;\n}\n}\n.modal.show .modal-dialog {\n  -webkit-transform: none;\n          transform: none;\n}\n.modal-dialog-centered {\n  display: flex;\n  align-items: center;\n  min-height: calc(100% - (0.5rem * 2));\n}\n.modal-dialog-centered::before {\n  display: block;\n  height: calc(100vh - (0.5rem * 2));\n  content: \"\";\n}\n.modal-content {\n  position: relative;\n  display: flex;\n  flex-direction: column;\n  width: 100%;\n  pointer-events: auto;\n  background-color: #fff;\n  background-clip: padding-box;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  border-radius: 0.3rem;\n  outline: 0;\n}\n.modal-backdrop {\n  position: fixed;\n  top: 0;\n  left: 0;\n  z-index: 1040;\n  width: 100vw;\n  height: 100vh;\n  background-color: #000;\n}\n.modal-backdrop.fade {\n  opacity: 0;\n}\n.modal-backdrop.show {\n  opacity: 0.5;\n}\n.modal-header {\n  display: flex;\n  align-items: flex-start;\n  justify-content: space-between;\n  padding: 1rem 1rem;\n  border-bottom: 1px solid #e9ecef;\n  border-top-left-radius: 0.3rem;\n  border-top-right-radius: 0.3rem;\n}\n.modal-header .close {\n  padding: 1rem 1rem;\n  margin: -1rem -1rem -1rem auto;\n}\n.modal-title {\n  margin-bottom: 0;\n  line-height: 1.6;\n}\n.modal-body {\n  position: relative;\n  flex: 1 1 auto;\n  padding: 1rem;\n}\n.modal-footer {\n  display: flex;\n  align-items: center;\n  justify-content: flex-end;\n  padding: 1rem;\n  border-top: 1px solid #e9ecef;\n  border-bottom-right-radius: 0.3rem;\n  border-bottom-left-radius: 0.3rem;\n}\n.modal-footer > :not(:first-child) {\n  margin-left: 0.25rem;\n}\n.modal-footer > :not(:last-child) {\n  margin-right: 0.25rem;\n}\n.modal-scrollbar-measure {\n  position: absolute;\n  top: -9999px;\n  width: 50px;\n  height: 50px;\n  overflow: scroll;\n}\n@media (min-width: 576px) {\n.modal-dialog {\n    max-width: 500px;\n    margin: 1.75rem auto;\n}\n.modal-dialog-centered {\n    min-height: calc(100% - (1.75rem * 2));\n}\n.modal-dialog-centered::before {\n    height: calc(100vh - (1.75rem * 2));\n}\n.modal-sm {\n    max-width: 300px;\n}\n}\n@media (min-width: 992px) {\n.modal-lg,\n.modal-xl {\n    max-width: 800px;\n}\n}\n@media (min-width: 1200px) {\n.modal-xl {\n    max-width: 1140px;\n}\n}\n.tooltip {\n  position: absolute;\n  z-index: 1070;\n  display: block;\n  margin: 0;\n  font-family: \"Nunito\", sans-serif;\n  font-style: normal;\n  font-weight: 400;\n  line-height: 1.6;\n  text-align: left;\n  text-align: start;\n  text-decoration: none;\n  text-shadow: none;\n  text-transform: none;\n  letter-spacing: normal;\n  word-break: normal;\n  word-spacing: normal;\n  white-space: normal;\n  line-break: auto;\n  font-size: 0.7875rem;\n  word-wrap: break-word;\n  opacity: 0;\n}\n.tooltip.show {\n  opacity: 0.9;\n}\n.tooltip .arrow {\n  position: absolute;\n  display: block;\n  width: 0.8rem;\n  height: 0.4rem;\n}\n.tooltip .arrow::before {\n  position: absolute;\n  content: \"\";\n  border-color: transparent;\n  border-style: solid;\n}\n.bs-tooltip-top, .bs-tooltip-auto[x-placement^=top] {\n  padding: 0.4rem 0;\n}\n.bs-tooltip-top .arrow, .bs-tooltip-auto[x-placement^=top] .arrow {\n  bottom: 0;\n}\n.bs-tooltip-top .arrow::before, .bs-tooltip-auto[x-placement^=top] .arrow::before {\n  top: 0;\n  border-width: 0.4rem 0.4rem 0;\n  border-top-color: #000;\n}\n.bs-tooltip-right, .bs-tooltip-auto[x-placement^=right] {\n  padding: 0 0.4rem;\n}\n.bs-tooltip-right .arrow, .bs-tooltip-auto[x-placement^=right] .arrow {\n  left: 0;\n  width: 0.4rem;\n  height: 0.8rem;\n}\n.bs-tooltip-right .arrow::before, .bs-tooltip-auto[x-placement^=right] .arrow::before {\n  right: 0;\n  border-width: 0.4rem 0.4rem 0.4rem 0;\n  border-right-color: #000;\n}\n.bs-tooltip-bottom, .bs-tooltip-auto[x-placement^=bottom] {\n  padding: 0.4rem 0;\n}\n.bs-tooltip-bottom .arrow, .bs-tooltip-auto[x-placement^=bottom] .arrow {\n  top: 0;\n}\n.bs-tooltip-bottom .arrow::before, .bs-tooltip-auto[x-placement^=bottom] .arrow::before {\n  bottom: 0;\n  border-width: 0 0.4rem 0.4rem;\n  border-bottom-color: #000;\n}\n.bs-tooltip-left, .bs-tooltip-auto[x-placement^=left] {\n  padding: 0 0.4rem;\n}\n.bs-tooltip-left .arrow, .bs-tooltip-auto[x-placement^=left] .arrow {\n  right: 0;\n  width: 0.4rem;\n  height: 0.8rem;\n}\n.bs-tooltip-left .arrow::before, .bs-tooltip-auto[x-placement^=left] .arrow::before {\n  left: 0;\n  border-width: 0.4rem 0 0.4rem 0.4rem;\n  border-left-color: #000;\n}\n.tooltip-inner {\n  max-width: 200px;\n  padding: 0.25rem 0.5rem;\n  color: #fff;\n  text-align: center;\n  background-color: #000;\n  border-radius: 0.25rem;\n}\n.popover {\n  position: absolute;\n  top: 0;\n  left: 0;\n  z-index: 1060;\n  display: block;\n  max-width: 276px;\n  font-family: \"Nunito\", sans-serif;\n  font-style: normal;\n  font-weight: 400;\n  line-height: 1.6;\n  text-align: left;\n  text-align: start;\n  text-decoration: none;\n  text-shadow: none;\n  text-transform: none;\n  letter-spacing: normal;\n  word-break: normal;\n  word-spacing: normal;\n  white-space: normal;\n  line-break: auto;\n  font-size: 0.7875rem;\n  word-wrap: break-word;\n  background-color: #fff;\n  background-clip: padding-box;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  border-radius: 0.3rem;\n}\n.popover .arrow {\n  position: absolute;\n  display: block;\n  width: 1rem;\n  height: 0.5rem;\n  margin: 0 0.3rem;\n}\n.popover .arrow::before, .popover .arrow::after {\n  position: absolute;\n  display: block;\n  content: \"\";\n  border-color: transparent;\n  border-style: solid;\n}\n.bs-popover-top, .bs-popover-auto[x-placement^=top] {\n  margin-bottom: 0.5rem;\n}\n.bs-popover-top .arrow, .bs-popover-auto[x-placement^=top] .arrow {\n  bottom: calc((0.5rem + 1px) * -1);\n}\n.bs-popover-top .arrow::before, .bs-popover-auto[x-placement^=top] .arrow::before,\n.bs-popover-top .arrow::after,\n.bs-popover-auto[x-placement^=top] .arrow::after {\n  border-width: 0.5rem 0.5rem 0;\n}\n.bs-popover-top .arrow::before, .bs-popover-auto[x-placement^=top] .arrow::before {\n  bottom: 0;\n  border-top-color: rgba(0, 0, 0, 0.25);\n}\n.bs-popover-top .arrow::after, .bs-popover-auto[x-placement^=top] .arrow::after {\n  bottom: 1px;\n  border-top-color: #fff;\n}\n.bs-popover-right, .bs-popover-auto[x-placement^=right] {\n  margin-left: 0.5rem;\n}\n.bs-popover-right .arrow, .bs-popover-auto[x-placement^=right] .arrow {\n  left: calc((0.5rem + 1px) * -1);\n  width: 0.5rem;\n  height: 1rem;\n  margin: 0.3rem 0;\n}\n.bs-popover-right .arrow::before, .bs-popover-auto[x-placement^=right] .arrow::before,\n.bs-popover-right .arrow::after,\n.bs-popover-auto[x-placement^=right] .arrow::after {\n  border-width: 0.5rem 0.5rem 0.5rem 0;\n}\n.bs-popover-right .arrow::before, .bs-popover-auto[x-placement^=right] .arrow::before {\n  left: 0;\n  border-right-color: rgba(0, 0, 0, 0.25);\n}\n.bs-popover-right .arrow::after, .bs-popover-auto[x-placement^=right] .arrow::after {\n  left: 1px;\n  border-right-color: #fff;\n}\n.bs-popover-bottom, .bs-popover-auto[x-placement^=bottom] {\n  margin-top: 0.5rem;\n}\n.bs-popover-bottom .arrow, .bs-popover-auto[x-placement^=bottom] .arrow {\n  top: calc((0.5rem + 1px) * -1);\n}\n.bs-popover-bottom .arrow::before, .bs-popover-auto[x-placement^=bottom] .arrow::before,\n.bs-popover-bottom .arrow::after,\n.bs-popover-auto[x-placement^=bottom] .arrow::after {\n  border-width: 0 0.5rem 0.5rem 0.5rem;\n}\n.bs-popover-bottom .arrow::before, .bs-popover-auto[x-placement^=bottom] .arrow::before {\n  top: 0;\n  border-bottom-color: rgba(0, 0, 0, 0.25);\n}\n.bs-popover-bottom .arrow::after, .bs-popover-auto[x-placement^=bottom] .arrow::after {\n  top: 1px;\n  border-bottom-color: #fff;\n}\n.bs-popover-bottom .popover-header::before, .bs-popover-auto[x-placement^=bottom] .popover-header::before {\n  position: absolute;\n  top: 0;\n  left: 50%;\n  display: block;\n  width: 1rem;\n  margin-left: -0.5rem;\n  content: \"\";\n  border-bottom: 1px solid #f7f7f7;\n}\n.bs-popover-left, .bs-popover-auto[x-placement^=left] {\n  margin-right: 0.5rem;\n}\n.bs-popover-left .arrow, .bs-popover-auto[x-placement^=left] .arrow {\n  right: calc((0.5rem + 1px) * -1);\n  width: 0.5rem;\n  height: 1rem;\n  margin: 0.3rem 0;\n}\n.bs-popover-left .arrow::before, .bs-popover-auto[x-placement^=left] .arrow::before,\n.bs-popover-left .arrow::after,\n.bs-popover-auto[x-placement^=left] .arrow::after {\n  border-width: 0.5rem 0 0.5rem 0.5rem;\n}\n.bs-popover-left .arrow::before, .bs-popover-auto[x-placement^=left] .arrow::before {\n  right: 0;\n  border-left-color: rgba(0, 0, 0, 0.25);\n}\n.bs-popover-left .arrow::after, .bs-popover-auto[x-placement^=left] .arrow::after {\n  right: 1px;\n  border-left-color: #fff;\n}\n.popover-header {\n  padding: 0.5rem 0.75rem;\n  margin-bottom: 0;\n  font-size: 0.9rem;\n  color: inherit;\n  background-color: #f7f7f7;\n  border-bottom: 1px solid #ebebeb;\n  border-top-left-radius: calc(0.3rem - 1px);\n  border-top-right-radius: calc(0.3rem - 1px);\n}\n.popover-header:empty {\n  display: none;\n}\n.popover-body {\n  padding: 0.5rem 0.75rem;\n  color: #212529;\n}\n.carousel {\n  position: relative;\n}\n.carousel.pointer-event {\n  touch-action: pan-y;\n}\n.carousel-inner {\n  position: relative;\n  width: 100%;\n  overflow: hidden;\n}\n.carousel-inner::after {\n  display: block;\n  clear: both;\n  content: \"\";\n}\n.carousel-item {\n  position: relative;\n  display: none;\n  float: left;\n  width: 100%;\n  margin-right: -100%;\n  -webkit-backface-visibility: hidden;\n          backface-visibility: hidden;\n  transition: -webkit-transform 0.6s ease-in-out;\n  transition: transform 0.6s ease-in-out;\n  transition: transform 0.6s ease-in-out, -webkit-transform 0.6s ease-in-out;\n}\n@media screen and (prefers-reduced-motion: reduce) {\n.carousel-item {\n    transition: none;\n}\n}\n.carousel-item.active,\n.carousel-item-next,\n.carousel-item-prev {\n  display: block;\n}\n.carousel-item-next:not(.carousel-item-left),\n.active.carousel-item-right {\n  -webkit-transform: translateX(100%);\n          transform: translateX(100%);\n}\n.carousel-item-prev:not(.carousel-item-right),\n.active.carousel-item-left {\n  -webkit-transform: translateX(-100%);\n          transform: translateX(-100%);\n}\n.carousel-fade .carousel-item {\n  opacity: 0;\n  transition-property: opacity;\n  -webkit-transform: none;\n          transform: none;\n}\n.carousel-fade .carousel-item.active,\n.carousel-fade .carousel-item-next.carousel-item-left,\n.carousel-fade .carousel-item-prev.carousel-item-right {\n  z-index: 1;\n  opacity: 1;\n}\n.carousel-fade .active.carousel-item-left,\n.carousel-fade .active.carousel-item-right {\n  z-index: 0;\n  opacity: 0;\n  transition: 0s 0.6s opacity;\n}\n@media screen and (prefers-reduced-motion: reduce) {\n.carousel-fade .active.carousel-item-left,\n.carousel-fade .active.carousel-item-right {\n    transition: none;\n}\n}\n.carousel-control-prev,\n.carousel-control-next {\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  z-index: 1;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 15%;\n  color: #fff;\n  text-align: center;\n  opacity: 0.5;\n  transition: opacity 0.15s ease;\n}\n@media screen and (prefers-reduced-motion: reduce) {\n.carousel-control-prev,\n.carousel-control-next {\n    transition: none;\n}\n}\n.carousel-control-prev:hover, .carousel-control-prev:focus,\n.carousel-control-next:hover,\n.carousel-control-next:focus {\n  color: #fff;\n  text-decoration: none;\n  outline: 0;\n  opacity: 0.9;\n}\n.carousel-control-prev {\n  left: 0;\n}\n.carousel-control-next {\n  right: 0;\n}\n.carousel-control-prev-icon,\n.carousel-control-next-icon {\n  display: inline-block;\n  width: 20px;\n  height: 20px;\n  background: transparent no-repeat center center;\n  background-size: 100% 100%;\n}\n.carousel-control-prev-icon {\n  background-image: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3e%3cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3e%3c/svg%3e\");\n}\n.carousel-control-next-icon {\n  background-image: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3e%3cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3e%3c/svg%3e\");\n}\n.carousel-indicators {\n  position: absolute;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 15;\n  display: flex;\n  justify-content: center;\n  padding-left: 0;\n  margin-right: 15%;\n  margin-left: 15%;\n  list-style: none;\n}\n.carousel-indicators li {\n  box-sizing: content-box;\n  flex: 0 1 auto;\n  width: 30px;\n  height: 3px;\n  margin-right: 3px;\n  margin-left: 3px;\n  text-indent: -999px;\n  cursor: pointer;\n  background-color: #fff;\n  background-clip: padding-box;\n  border-top: 10px solid transparent;\n  border-bottom: 10px solid transparent;\n  opacity: 0.5;\n  transition: opacity 0.6s ease;\n}\n@media screen and (prefers-reduced-motion: reduce) {\n.carousel-indicators li {\n    transition: none;\n}\n}\n.carousel-indicators .active {\n  opacity: 1;\n}\n.carousel-caption {\n  position: absolute;\n  right: 15%;\n  bottom: 20px;\n  left: 15%;\n  z-index: 10;\n  padding-top: 20px;\n  padding-bottom: 20px;\n  color: #fff;\n  text-align: center;\n}\n@-webkit-keyframes spinner-border {\nto {\n    -webkit-transform: rotate(360deg);\n            transform: rotate(360deg);\n}\n}\n@keyframes spinner-border {\nto {\n    -webkit-transform: rotate(360deg);\n            transform: rotate(360deg);\n}\n}\n.spinner-border {\n  display: inline-block;\n  width: 2rem;\n  height: 2rem;\n  vertical-align: text-bottom;\n  border: 0.25em solid currentColor;\n  border-right-color: transparent;\n  border-radius: 50%;\n  -webkit-animation: spinner-border 0.75s linear infinite;\n          animation: spinner-border 0.75s linear infinite;\n}\n.spinner-border-sm {\n  width: 1rem;\n  height: 1rem;\n  border-width: 0.2em;\n}\n@-webkit-keyframes spinner-grow {\n0% {\n    -webkit-transform: scale(0);\n            transform: scale(0);\n}\n50% {\n    opacity: 1;\n}\n}\n@keyframes spinner-grow {\n0% {\n    -webkit-transform: scale(0);\n            transform: scale(0);\n}\n50% {\n    opacity: 1;\n}\n}\n.spinner-grow {\n  display: inline-block;\n  width: 2rem;\n  height: 2rem;\n  vertical-align: text-bottom;\n  background-color: currentColor;\n  border-radius: 50%;\n  opacity: 0;\n  -webkit-animation: spinner-grow 0.75s linear infinite;\n          animation: spinner-grow 0.75s linear infinite;\n}\n.spinner-grow-sm {\n  width: 1rem;\n  height: 1rem;\n}\n.align-baseline {\n  vertical-align: baseline !important;\n}\n.align-top {\n  vertical-align: top !important;\n}\n.align-middle {\n  vertical-align: middle !important;\n}\n.align-bottom {\n  vertical-align: bottom !important;\n}\n.align-text-bottom {\n  vertical-align: text-bottom !important;\n}\n.align-text-top {\n  vertical-align: text-top !important;\n}\n.bg-primary {\n  background-color: #3490dc !important;\n}\na.bg-primary:hover, a.bg-primary:focus,\nbutton.bg-primary:hover,\nbutton.bg-primary:focus {\n  background-color: #2176bd !important;\n}\n.bg-secondary {\n  background-color: #6c757d !important;\n}\na.bg-secondary:hover, a.bg-secondary:focus,\nbutton.bg-secondary:hover,\nbutton.bg-secondary:focus {\n  background-color: #545b62 !important;\n}\n.bg-success {\n  background-color: #38c172 !important;\n}\na.bg-success:hover, a.bg-success:focus,\nbutton.bg-success:hover,\nbutton.bg-success:focus {\n  background-color: #2d995b !important;\n}\n.bg-info {\n  background-color: #6cb2eb !important;\n}\na.bg-info:hover, a.bg-info:focus,\nbutton.bg-info:hover,\nbutton.bg-info:focus {\n  background-color: #3f9ae5 !important;\n}\n.bg-warning {\n  background-color: #ffed4a !important;\n}\na.bg-warning:hover, a.bg-warning:focus,\nbutton.bg-warning:hover,\nbutton.bg-warning:focus {\n  background-color: #ffe817 !important;\n}\n.bg-danger {\n  background-color: #e3342f !important;\n}\na.bg-danger:hover, a.bg-danger:focus,\nbutton.bg-danger:hover,\nbutton.bg-danger:focus {\n  background-color: #c51f1a !important;\n}\n.bg-light {\n  background-color: #f8f9fa !important;\n}\na.bg-light:hover, a.bg-light:focus,\nbutton.bg-light:hover,\nbutton.bg-light:focus {\n  background-color: #dae0e5 !important;\n}\n.bg-dark {\n  background-color: #343a40 !important;\n}\na.bg-dark:hover, a.bg-dark:focus,\nbutton.bg-dark:hover,\nbutton.bg-dark:focus {\n  background-color: #1d2124 !important;\n}\n.bg-white {\n  background-color: #fff !important;\n}\n.bg-transparent {\n  background-color: transparent !important;\n}\n.border {\n  border: 1px solid #dee2e6 !important;\n}\n.border-top {\n  border-top: 1px solid #dee2e6 !important;\n}\n.border-right {\n  border-right: 1px solid #dee2e6 !important;\n}\n.border-bottom {\n  border-bottom: 1px solid #dee2e6 !important;\n}\n.border-left {\n  border-left: 1px solid #dee2e6 !important;\n}\n.border-0 {\n  border: 0 !important;\n}\n.border-top-0 {\n  border-top: 0 !important;\n}\n.border-right-0 {\n  border-right: 0 !important;\n}\n.border-bottom-0 {\n  border-bottom: 0 !important;\n}\n.border-left-0 {\n  border-left: 0 !important;\n}\n.border-primary {\n  border-color: #3490dc !important;\n}\n.border-secondary {\n  border-color: #6c757d !important;\n}\n.border-success {\n  border-color: #38c172 !important;\n}\n.border-info {\n  border-color: #6cb2eb !important;\n}\n.border-warning {\n  border-color: #ffed4a !important;\n}\n.border-danger {\n  border-color: #e3342f !important;\n}\n.border-light {\n  border-color: #f8f9fa !important;\n}\n.border-dark {\n  border-color: #343a40 !important;\n}\n.border-white {\n  border-color: #fff !important;\n}\n.rounded {\n  border-radius: 0.25rem !important;\n}\n.rounded-top {\n  border-top-left-radius: 0.25rem !important;\n  border-top-right-radius: 0.25rem !important;\n}\n.rounded-right {\n  border-top-right-radius: 0.25rem !important;\n  border-bottom-right-radius: 0.25rem !important;\n}\n.rounded-bottom {\n  border-bottom-right-radius: 0.25rem !important;\n  border-bottom-left-radius: 0.25rem !important;\n}\n.rounded-left {\n  border-top-left-radius: 0.25rem !important;\n  border-bottom-left-radius: 0.25rem !important;\n}\n.rounded-circle {\n  border-radius: 50% !important;\n}\n.rounded-pill {\n  border-radius: 50rem !important;\n}\n.rounded-0 {\n  border-radius: 0 !important;\n}\n.clearfix::after {\n  display: block;\n  clear: both;\n  content: \"\";\n}\n.d-none {\n  display: none !important;\n}\n.d-inline {\n  display: inline !important;\n}\n.d-inline-block {\n  display: inline-block !important;\n}\n.d-block {\n  display: block !important;\n}\n.d-table {\n  display: table !important;\n}\n.d-table-row {\n  display: table-row !important;\n}\n.d-table-cell {\n  display: table-cell !important;\n}\n.d-flex {\n  display: flex !important;\n}\n.d-inline-flex {\n  display: inline-flex !important;\n}\n@media (min-width: 576px) {\n.d-sm-none {\n    display: none !important;\n}\n.d-sm-inline {\n    display: inline !important;\n}\n.d-sm-inline-block {\n    display: inline-block !important;\n}\n.d-sm-block {\n    display: block !important;\n}\n.d-sm-table {\n    display: table !important;\n}\n.d-sm-table-row {\n    display: table-row !important;\n}\n.d-sm-table-cell {\n    display: table-cell !important;\n}\n.d-sm-flex {\n    display: flex !important;\n}\n.d-sm-inline-flex {\n    display: inline-flex !important;\n}\n}\n@media (min-width: 768px) {\n.d-md-none {\n    display: none !important;\n}\n.d-md-inline {\n    display: inline !important;\n}\n.d-md-inline-block {\n    display: inline-block !important;\n}\n.d-md-block {\n    display: block !important;\n}\n.d-md-table {\n    display: table !important;\n}\n.d-md-table-row {\n    display: table-row !important;\n}\n.d-md-table-cell {\n    display: table-cell !important;\n}\n.d-md-flex {\n    display: flex !important;\n}\n.d-md-inline-flex {\n    display: inline-flex !important;\n}\n}\n@media (min-width: 992px) {\n.d-lg-none {\n    display: none !important;\n}\n.d-lg-inline {\n    display: inline !important;\n}\n.d-lg-inline-block {\n    display: inline-block !important;\n}\n.d-lg-block {\n    display: block !important;\n}\n.d-lg-table {\n    display: table !important;\n}\n.d-lg-table-row {\n    display: table-row !important;\n}\n.d-lg-table-cell {\n    display: table-cell !important;\n}\n.d-lg-flex {\n    display: flex !important;\n}\n.d-lg-inline-flex {\n    display: inline-flex !important;\n}\n}\n@media (min-width: 1200px) {\n.d-xl-none {\n    display: none !important;\n}\n.d-xl-inline {\n    display: inline !important;\n}\n.d-xl-inline-block {\n    display: inline-block !important;\n}\n.d-xl-block {\n    display: block !important;\n}\n.d-xl-table {\n    display: table !important;\n}\n.d-xl-table-row {\n    display: table-row !important;\n}\n.d-xl-table-cell {\n    display: table-cell !important;\n}\n.d-xl-flex {\n    display: flex !important;\n}\n.d-xl-inline-flex {\n    display: inline-flex !important;\n}\n}\n@media print {\n.d-print-none {\n    display: none !important;\n}\n.d-print-inline {\n    display: inline !important;\n}\n.d-print-inline-block {\n    display: inline-block !important;\n}\n.d-print-block {\n    display: block !important;\n}\n.d-print-table {\n    display: table !important;\n}\n.d-print-table-row {\n    display: table-row !important;\n}\n.d-print-table-cell {\n    display: table-cell !important;\n}\n.d-print-flex {\n    display: flex !important;\n}\n.d-print-inline-flex {\n    display: inline-flex !important;\n}\n}\n.embed-responsive {\n  position: relative;\n  display: block;\n  width: 100%;\n  padding: 0;\n  overflow: hidden;\n}\n.embed-responsive::before {\n  display: block;\n  content: \"\";\n}\n.embed-responsive .embed-responsive-item,\n.embed-responsive iframe,\n.embed-responsive embed,\n.embed-responsive object,\n.embed-responsive video {\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  border: 0;\n}\n.embed-responsive-21by9::before {\n  padding-top: 42.8571428571%;\n}\n.embed-responsive-16by9::before {\n  padding-top: 56.25%;\n}\n.embed-responsive-3by4::before {\n  padding-top: 133.3333333333%;\n}\n.embed-responsive-1by1::before {\n  padding-top: 100%;\n}\n.flex-row {\n  flex-direction: row !important;\n}\n.flex-column {\n  flex-direction: column !important;\n}\n.flex-row-reverse {\n  flex-direction: row-reverse !important;\n}\n.flex-column-reverse {\n  flex-direction: column-reverse !important;\n}\n.flex-wrap {\n  flex-wrap: wrap !important;\n}\n.flex-nowrap {\n  flex-wrap: nowrap !important;\n}\n.flex-wrap-reverse {\n  flex-wrap: wrap-reverse !important;\n}\n.flex-fill {\n  flex: 1 1 auto !important;\n}\n.flex-grow-0 {\n  flex-grow: 0 !important;\n}\n.flex-grow-1 {\n  flex-grow: 1 !important;\n}\n.flex-shrink-0 {\n  flex-shrink: 0 !important;\n}\n.flex-shrink-1 {\n  flex-shrink: 1 !important;\n}\n.justify-content-start {\n  justify-content: flex-start !important;\n}\n.justify-content-end {\n  justify-content: flex-end !important;\n}\n.justify-content-center {\n  justify-content: center !important;\n}\n.justify-content-between {\n  justify-content: space-between !important;\n}\n.justify-content-around {\n  justify-content: space-around !important;\n}\n.align-items-start {\n  align-items: flex-start !important;\n}\n.align-items-end {\n  align-items: flex-end !important;\n}\n.align-items-center {\n  align-items: center !important;\n}\n.align-items-baseline {\n  align-items: baseline !important;\n}\n.align-items-stretch {\n  align-items: stretch !important;\n}\n.align-content-start {\n  align-content: flex-start !important;\n}\n.align-content-end {\n  align-content: flex-end !important;\n}\n.align-content-center {\n  align-content: center !important;\n}\n.align-content-between {\n  align-content: space-between !important;\n}\n.align-content-around {\n  align-content: space-around !important;\n}\n.align-content-stretch {\n  align-content: stretch !important;\n}\n.align-self-auto {\n  align-self: auto !important;\n}\n.align-self-start {\n  align-self: flex-start !important;\n}\n.align-self-end {\n  align-self: flex-end !important;\n}\n.align-self-center {\n  align-self: center !important;\n}\n.align-self-baseline {\n  align-self: baseline !important;\n}\n.align-self-stretch {\n  align-self: stretch !important;\n}\n@media (min-width: 576px) {\n.flex-sm-row {\n    flex-direction: row !important;\n}\n.flex-sm-column {\n    flex-direction: column !important;\n}\n.flex-sm-row-reverse {\n    flex-direction: row-reverse !important;\n}\n.flex-sm-column-reverse {\n    flex-direction: column-reverse !important;\n}\n.flex-sm-wrap {\n    flex-wrap: wrap !important;\n}\n.flex-sm-nowrap {\n    flex-wrap: nowrap !important;\n}\n.flex-sm-wrap-reverse {\n    flex-wrap: wrap-reverse !important;\n}\n.flex-sm-fill {\n    flex: 1 1 auto !important;\n}\n.flex-sm-grow-0 {\n    flex-grow: 0 !important;\n}\n.flex-sm-grow-1 {\n    flex-grow: 1 !important;\n}\n.flex-sm-shrink-0 {\n    flex-shrink: 0 !important;\n}\n.flex-sm-shrink-1 {\n    flex-shrink: 1 !important;\n}\n.justify-content-sm-start {\n    justify-content: flex-start !important;\n}\n.justify-content-sm-end {\n    justify-content: flex-end !important;\n}\n.justify-content-sm-center {\n    justify-content: center !important;\n}\n.justify-content-sm-between {\n    justify-content: space-between !important;\n}\n.justify-content-sm-around {\n    justify-content: space-around !important;\n}\n.align-items-sm-start {\n    align-items: flex-start !important;\n}\n.align-items-sm-end {\n    align-items: flex-end !important;\n}\n.align-items-sm-center {\n    align-items: center !important;\n}\n.align-items-sm-baseline {\n    align-items: baseline !important;\n}\n.align-items-sm-stretch {\n    align-items: stretch !important;\n}\n.align-content-sm-start {\n    align-content: flex-start !important;\n}\n.align-content-sm-end {\n    align-content: flex-end !important;\n}\n.align-content-sm-center {\n    align-content: center !important;\n}\n.align-content-sm-between {\n    align-content: space-between !important;\n}\n.align-content-sm-around {\n    align-content: space-around !important;\n}\n.align-content-sm-stretch {\n    align-content: stretch !important;\n}\n.align-self-sm-auto {\n    align-self: auto !important;\n}\n.align-self-sm-start {\n    align-self: flex-start !important;\n}\n.align-self-sm-end {\n    align-self: flex-end !important;\n}\n.align-self-sm-center {\n    align-self: center !important;\n}\n.align-self-sm-baseline {\n    align-self: baseline !important;\n}\n.align-self-sm-stretch {\n    align-self: stretch !important;\n}\n}\n@media (min-width: 768px) {\n.flex-md-row {\n    flex-direction: row !important;\n}\n.flex-md-column {\n    flex-direction: column !important;\n}\n.flex-md-row-reverse {\n    flex-direction: row-reverse !important;\n}\n.flex-md-column-reverse {\n    flex-direction: column-reverse !important;\n}\n.flex-md-wrap {\n    flex-wrap: wrap !important;\n}\n.flex-md-nowrap {\n    flex-wrap: nowrap !important;\n}\n.flex-md-wrap-reverse {\n    flex-wrap: wrap-reverse !important;\n}\n.flex-md-fill {\n    flex: 1 1 auto !important;\n}\n.flex-md-grow-0 {\n    flex-grow: 0 !important;\n}\n.flex-md-grow-1 {\n    flex-grow: 1 !important;\n}\n.flex-md-shrink-0 {\n    flex-shrink: 0 !important;\n}\n.flex-md-shrink-1 {\n    flex-shrink: 1 !important;\n}\n.justify-content-md-start {\n    justify-content: flex-start !important;\n}\n.justify-content-md-end {\n    justify-content: flex-end !important;\n}\n.justify-content-md-center {\n    justify-content: center !important;\n}\n.justify-content-md-between {\n    justify-content: space-between !important;\n}\n.justify-content-md-around {\n    justify-content: space-around !important;\n}\n.align-items-md-start {\n    align-items: flex-start !important;\n}\n.align-items-md-end {\n    align-items: flex-end !important;\n}\n.align-items-md-center {\n    align-items: center !important;\n}\n.align-items-md-baseline {\n    align-items: baseline !important;\n}\n.align-items-md-stretch {\n    align-items: stretch !important;\n}\n.align-content-md-start {\n    align-content: flex-start !important;\n}\n.align-content-md-end {\n    align-content: flex-end !important;\n}\n.align-content-md-center {\n    align-content: center !important;\n}\n.align-content-md-between {\n    align-content: space-between !important;\n}\n.align-content-md-around {\n    align-content: space-around !important;\n}\n.align-content-md-stretch {\n    align-content: stretch !important;\n}\n.align-self-md-auto {\n    align-self: auto !important;\n}\n.align-self-md-start {\n    align-self: flex-start !important;\n}\n.align-self-md-end {\n    align-self: flex-end !important;\n}\n.align-self-md-center {\n    align-self: center !important;\n}\n.align-self-md-baseline {\n    align-self: baseline !important;\n}\n.align-self-md-stretch {\n    align-self: stretch !important;\n}\n}\n@media (min-width: 992px) {\n.flex-lg-row {\n    flex-direction: row !important;\n}\n.flex-lg-column {\n    flex-direction: column !important;\n}\n.flex-lg-row-reverse {\n    flex-direction: row-reverse !important;\n}\n.flex-lg-column-reverse {\n    flex-direction: column-reverse !important;\n}\n.flex-lg-wrap {\n    flex-wrap: wrap !important;\n}\n.flex-lg-nowrap {\n    flex-wrap: nowrap !important;\n}\n.flex-lg-wrap-reverse {\n    flex-wrap: wrap-reverse !important;\n}\n.flex-lg-fill {\n    flex: 1 1 auto !important;\n}\n.flex-lg-grow-0 {\n    flex-grow: 0 !important;\n}\n.flex-lg-grow-1 {\n    flex-grow: 1 !important;\n}\n.flex-lg-shrink-0 {\n    flex-shrink: 0 !important;\n}\n.flex-lg-shrink-1 {\n    flex-shrink: 1 !important;\n}\n.justify-content-lg-start {\n    justify-content: flex-start !important;\n}\n.justify-content-lg-end {\n    justify-content: flex-end !important;\n}\n.justify-content-lg-center {\n    justify-content: center !important;\n}\n.justify-content-lg-between {\n    justify-content: space-between !important;\n}\n.justify-content-lg-around {\n    justify-content: space-around !important;\n}\n.align-items-lg-start {\n    align-items: flex-start !important;\n}\n.align-items-lg-end {\n    align-items: flex-end !important;\n}\n.align-items-lg-center {\n    align-items: center !important;\n}\n.align-items-lg-baseline {\n    align-items: baseline !important;\n}\n.align-items-lg-stretch {\n    align-items: stretch !important;\n}\n.align-content-lg-start {\n    align-content: flex-start !important;\n}\n.align-content-lg-end {\n    align-content: flex-end !important;\n}\n.align-content-lg-center {\n    align-content: center !important;\n}\n.align-content-lg-between {\n    align-content: space-between !important;\n}\n.align-content-lg-around {\n    align-content: space-around !important;\n}\n.align-content-lg-stretch {\n    align-content: stretch !important;\n}\n.align-self-lg-auto {\n    align-self: auto !important;\n}\n.align-self-lg-start {\n    align-self: flex-start !important;\n}\n.align-self-lg-end {\n    align-self: flex-end !important;\n}\n.align-self-lg-center {\n    align-self: center !important;\n}\n.align-self-lg-baseline {\n    align-self: baseline !important;\n}\n.align-self-lg-stretch {\n    align-self: stretch !important;\n}\n}\n@media (min-width: 1200px) {\n.flex-xl-row {\n    flex-direction: row !important;\n}\n.flex-xl-column {\n    flex-direction: column !important;\n}\n.flex-xl-row-reverse {\n    flex-direction: row-reverse !important;\n}\n.flex-xl-column-reverse {\n    flex-direction: column-reverse !important;\n}\n.flex-xl-wrap {\n    flex-wrap: wrap !important;\n}\n.flex-xl-nowrap {\n    flex-wrap: nowrap !important;\n}\n.flex-xl-wrap-reverse {\n    flex-wrap: wrap-reverse !important;\n}\n.flex-xl-fill {\n    flex: 1 1 auto !important;\n}\n.flex-xl-grow-0 {\n    flex-grow: 0 !important;\n}\n.flex-xl-grow-1 {\n    flex-grow: 1 !important;\n}\n.flex-xl-shrink-0 {\n    flex-shrink: 0 !important;\n}\n.flex-xl-shrink-1 {\n    flex-shrink: 1 !important;\n}\n.justify-content-xl-start {\n    justify-content: flex-start !important;\n}\n.justify-content-xl-end {\n    justify-content: flex-end !important;\n}\n.justify-content-xl-center {\n    justify-content: center !important;\n}\n.justify-content-xl-between {\n    justify-content: space-between !important;\n}\n.justify-content-xl-around {\n    justify-content: space-around !important;\n}\n.align-items-xl-start {\n    align-items: flex-start !important;\n}\n.align-items-xl-end {\n    align-items: flex-end !important;\n}\n.align-items-xl-center {\n    align-items: center !important;\n}\n.align-items-xl-baseline {\n    align-items: baseline !important;\n}\n.align-items-xl-stretch {\n    align-items: stretch !important;\n}\n.align-content-xl-start {\n    align-content: flex-start !important;\n}\n.align-content-xl-end {\n    align-content: flex-end !important;\n}\n.align-content-xl-center {\n    align-content: center !important;\n}\n.align-content-xl-between {\n    align-content: space-between !important;\n}\n.align-content-xl-around {\n    align-content: space-around !important;\n}\n.align-content-xl-stretch {\n    align-content: stretch !important;\n}\n.align-self-xl-auto {\n    align-self: auto !important;\n}\n.align-self-xl-start {\n    align-self: flex-start !important;\n}\n.align-self-xl-end {\n    align-self: flex-end !important;\n}\n.align-self-xl-center {\n    align-self: center !important;\n}\n.align-self-xl-baseline {\n    align-self: baseline !important;\n}\n.align-self-xl-stretch {\n    align-self: stretch !important;\n}\n}\n.float-left {\n  float: left !important;\n}\n.float-right {\n  float: right !important;\n}\n.float-none {\n  float: none !important;\n}\n@media (min-width: 576px) {\n.float-sm-left {\n    float: left !important;\n}\n.float-sm-right {\n    float: right !important;\n}\n.float-sm-none {\n    float: none !important;\n}\n}\n@media (min-width: 768px) {\n.float-md-left {\n    float: left !important;\n}\n.float-md-right {\n    float: right !important;\n}\n.float-md-none {\n    float: none !important;\n}\n}\n@media (min-width: 992px) {\n.float-lg-left {\n    float: left !important;\n}\n.float-lg-right {\n    float: right !important;\n}\n.float-lg-none {\n    float: none !important;\n}\n}\n@media (min-width: 1200px) {\n.float-xl-left {\n    float: left !important;\n}\n.float-xl-right {\n    float: right !important;\n}\n.float-xl-none {\n    float: none !important;\n}\n}\n.overflow-auto {\n  overflow: auto !important;\n}\n.overflow-hidden {\n  overflow: hidden !important;\n}\n.position-static {\n  position: static !important;\n}\n.position-relative {\n  position: relative !important;\n}\n.position-absolute {\n  position: absolute !important;\n}\n.position-fixed {\n  position: fixed !important;\n}\n.position-sticky {\n  position: -webkit-sticky !important;\n  position: sticky !important;\n}\n.fixed-top {\n  position: fixed;\n  top: 0;\n  right: 0;\n  left: 0;\n  z-index: 1030;\n}\n.fixed-bottom {\n  position: fixed;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 1030;\n}\n@supports ((position: -webkit-sticky) or (position: sticky)) {\n.sticky-top {\n    position: -webkit-sticky;\n    position: sticky;\n    top: 0;\n    z-index: 1020;\n}\n}\n.sr-only {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  white-space: nowrap;\n  border: 0;\n}\n.sr-only-focusable:active, .sr-only-focusable:focus {\n  position: static;\n  width: auto;\n  height: auto;\n  overflow: visible;\n  clip: auto;\n  white-space: normal;\n}\n.shadow-sm {\n  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;\n}\n.shadow {\n  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;\n}\n.shadow-lg {\n  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;\n}\n.shadow-none {\n  box-shadow: none !important;\n}\n.w-25 {\n  width: 25% !important;\n}\n.w-50 {\n  width: 50% !important;\n}\n.w-75 {\n  width: 75% !important;\n}\n.w-100 {\n  width: 100% !important;\n}\n.w-auto {\n  width: auto !important;\n}\n.h-25 {\n  height: 25% !important;\n}\n.h-50 {\n  height: 50% !important;\n}\n.h-75 {\n  height: 75% !important;\n}\n.h-100 {\n  height: 100% !important;\n}\n.h-auto {\n  height: auto !important;\n}\n.mw-100 {\n  max-width: 100% !important;\n}\n.mh-100 {\n  max-height: 100% !important;\n}\n.min-vw-100 {\n  min-width: 100vw !important;\n}\n.min-vh-100 {\n  min-height: 100vh !important;\n}\n.vw-100 {\n  width: 100vw !important;\n}\n.vh-100 {\n  height: 100vh !important;\n}\n.m-0 {\n  margin: 0 !important;\n}\n.mt-0,\n.my-0 {\n  margin-top: 0 !important;\n}\n.mr-0,\n.mx-0 {\n  margin-right: 0 !important;\n}\n.mb-0,\n.my-0 {\n  margin-bottom: 0 !important;\n}\n.ml-0,\n.mx-0 {\n  margin-left: 0 !important;\n}\n.m-1 {\n  margin: 0.25rem !important;\n}\n.mt-1,\n.my-1 {\n  margin-top: 0.25rem !important;\n}\n.mr-1,\n.mx-1 {\n  margin-right: 0.25rem !important;\n}\n.mb-1,\n.my-1 {\n  margin-bottom: 0.25rem !important;\n}\n.ml-1,\n.mx-1 {\n  margin-left: 0.25rem !important;\n}\n.m-2 {\n  margin: 0.5rem !important;\n}\n.mt-2,\n.my-2 {\n  margin-top: 0.5rem !important;\n}\n.mr-2,\n.mx-2 {\n  margin-right: 0.5rem !important;\n}\n.mb-2,\n.my-2 {\n  margin-bottom: 0.5rem !important;\n}\n.ml-2,\n.mx-2 {\n  margin-left: 0.5rem !important;\n}\n.m-3 {\n  margin: 1rem !important;\n}\n.mt-3,\n.my-3 {\n  margin-top: 1rem !important;\n}\n.mr-3,\n.mx-3 {\n  margin-right: 1rem !important;\n}\n.mb-3,\n.my-3 {\n  margin-bottom: 1rem !important;\n}\n.ml-3,\n.mx-3 {\n  margin-left: 1rem !important;\n}\n.m-4 {\n  margin: 1.5rem !important;\n}\n.mt-4,\n.my-4 {\n  margin-top: 1.5rem !important;\n}\n.mr-4,\n.mx-4 {\n  margin-right: 1.5rem !important;\n}\n.mb-4,\n.my-4 {\n  margin-bottom: 1.5rem !important;\n}\n.ml-4,\n.mx-4 {\n  margin-left: 1.5rem !important;\n}\n.m-5 {\n  margin: 3rem !important;\n}\n.mt-5,\n.my-5 {\n  margin-top: 3rem !important;\n}\n.mr-5,\n.mx-5 {\n  margin-right: 3rem !important;\n}\n.mb-5,\n.my-5 {\n  margin-bottom: 3rem !important;\n}\n.ml-5,\n.mx-5 {\n  margin-left: 3rem !important;\n}\n.p-0 {\n  padding: 0 !important;\n}\n.pt-0,\n.py-0 {\n  padding-top: 0 !important;\n}\n.pr-0,\n.px-0 {\n  padding-right: 0 !important;\n}\n.pb-0,\n.py-0 {\n  padding-bottom: 0 !important;\n}\n.pl-0,\n.px-0 {\n  padding-left: 0 !important;\n}\n.p-1 {\n  padding: 0.25rem !important;\n}\n.pt-1,\n.py-1 {\n  padding-top: 0.25rem !important;\n}\n.pr-1,\n.px-1 {\n  padding-right: 0.25rem !important;\n}\n.pb-1,\n.py-1 {\n  padding-bottom: 0.25rem !important;\n}\n.pl-1,\n.px-1 {\n  padding-left: 0.25rem !important;\n}\n.p-2 {\n  padding: 0.5rem !important;\n}\n.pt-2,\n.py-2 {\n  padding-top: 0.5rem !important;\n}\n.pr-2,\n.px-2 {\n  padding-right: 0.5rem !important;\n}\n.pb-2,\n.py-2 {\n  padding-bottom: 0.5rem !important;\n}\n.pl-2,\n.px-2 {\n  padding-left: 0.5rem !important;\n}\n.p-3 {\n  padding: 1rem !important;\n}\n.pt-3,\n.py-3 {\n  padding-top: 1rem !important;\n}\n.pr-3,\n.px-3 {\n  padding-right: 1rem !important;\n}\n.pb-3,\n.py-3 {\n  padding-bottom: 1rem !important;\n}\n.pl-3,\n.px-3 {\n  padding-left: 1rem !important;\n}\n.p-4 {\n  padding: 1.5rem !important;\n}\n.pt-4,\n.py-4 {\n  padding-top: 1.5rem !important;\n}\n.pr-4,\n.px-4 {\n  padding-right: 1.5rem !important;\n}\n.pb-4,\n.py-4 {\n  padding-bottom: 1.5rem !important;\n}\n.pl-4,\n.px-4 {\n  padding-left: 1.5rem !important;\n}\n.p-5 {\n  padding: 3rem !important;\n}\n.pt-5,\n.py-5 {\n  padding-top: 3rem !important;\n}\n.pr-5,\n.px-5 {\n  padding-right: 3rem !important;\n}\n.pb-5,\n.py-5 {\n  padding-bottom: 3rem !important;\n}\n.pl-5,\n.px-5 {\n  padding-left: 3rem !important;\n}\n.m-n1 {\n  margin: -0.25rem !important;\n}\n.mt-n1,\n.my-n1 {\n  margin-top: -0.25rem !important;\n}\n.mr-n1,\n.mx-n1 {\n  margin-right: -0.25rem !important;\n}\n.mb-n1,\n.my-n1 {\n  margin-bottom: -0.25rem !important;\n}\n.ml-n1,\n.mx-n1 {\n  margin-left: -0.25rem !important;\n}\n.m-n2 {\n  margin: -0.5rem !important;\n}\n.mt-n2,\n.my-n2 {\n  margin-top: -0.5rem !important;\n}\n.mr-n2,\n.mx-n2 {\n  margin-right: -0.5rem !important;\n}\n.mb-n2,\n.my-n2 {\n  margin-bottom: -0.5rem !important;\n}\n.ml-n2,\n.mx-n2 {\n  margin-left: -0.5rem !important;\n}\n.m-n3 {\n  margin: -1rem !important;\n}\n.mt-n3,\n.my-n3 {\n  margin-top: -1rem !important;\n}\n.mr-n3,\n.mx-n3 {\n  margin-right: -1rem !important;\n}\n.mb-n3,\n.my-n3 {\n  margin-bottom: -1rem !important;\n}\n.ml-n3,\n.mx-n3 {\n  margin-left: -1rem !important;\n}\n.m-n4 {\n  margin: -1.5rem !important;\n}\n.mt-n4,\n.my-n4 {\n  margin-top: -1.5rem !important;\n}\n.mr-n4,\n.mx-n4 {\n  margin-right: -1.5rem !important;\n}\n.mb-n4,\n.my-n4 {\n  margin-bottom: -1.5rem !important;\n}\n.ml-n4,\n.mx-n4 {\n  margin-left: -1.5rem !important;\n}\n.m-n5 {\n  margin: -3rem !important;\n}\n.mt-n5,\n.my-n5 {\n  margin-top: -3rem !important;\n}\n.mr-n5,\n.mx-n5 {\n  margin-right: -3rem !important;\n}\n.mb-n5,\n.my-n5 {\n  margin-bottom: -3rem !important;\n}\n.ml-n5,\n.mx-n5 {\n  margin-left: -3rem !important;\n}\n.m-auto {\n  margin: auto !important;\n}\n.mt-auto,\n.my-auto {\n  margin-top: auto !important;\n}\n.mr-auto,\n.mx-auto {\n  margin-right: auto !important;\n}\n.mb-auto,\n.my-auto {\n  margin-bottom: auto !important;\n}\n.ml-auto,\n.mx-auto {\n  margin-left: auto !important;\n}\n@media (min-width: 576px) {\n.m-sm-0 {\n    margin: 0 !important;\n}\n.mt-sm-0,\n.my-sm-0 {\n    margin-top: 0 !important;\n}\n.mr-sm-0,\n.mx-sm-0 {\n    margin-right: 0 !important;\n}\n.mb-sm-0,\n.my-sm-0 {\n    margin-bottom: 0 !important;\n}\n.ml-sm-0,\n.mx-sm-0 {\n    margin-left: 0 !important;\n}\n.m-sm-1 {\n    margin: 0.25rem !important;\n}\n.mt-sm-1,\n.my-sm-1 {\n    margin-top: 0.25rem !important;\n}\n.mr-sm-1,\n.mx-sm-1 {\n    margin-right: 0.25rem !important;\n}\n.mb-sm-1,\n.my-sm-1 {\n    margin-bottom: 0.25rem !important;\n}\n.ml-sm-1,\n.mx-sm-1 {\n    margin-left: 0.25rem !important;\n}\n.m-sm-2 {\n    margin: 0.5rem !important;\n}\n.mt-sm-2,\n.my-sm-2 {\n    margin-top: 0.5rem !important;\n}\n.mr-sm-2,\n.mx-sm-2 {\n    margin-right: 0.5rem !important;\n}\n.mb-sm-2,\n.my-sm-2 {\n    margin-bottom: 0.5rem !important;\n}\n.ml-sm-2,\n.mx-sm-2 {\n    margin-left: 0.5rem !important;\n}\n.m-sm-3 {\n    margin: 1rem !important;\n}\n.mt-sm-3,\n.my-sm-3 {\n    margin-top: 1rem !important;\n}\n.mr-sm-3,\n.mx-sm-3 {\n    margin-right: 1rem !important;\n}\n.mb-sm-3,\n.my-sm-3 {\n    margin-bottom: 1rem !important;\n}\n.ml-sm-3,\n.mx-sm-3 {\n    margin-left: 1rem !important;\n}\n.m-sm-4 {\n    margin: 1.5rem !important;\n}\n.mt-sm-4,\n.my-sm-4 {\n    margin-top: 1.5rem !important;\n}\n.mr-sm-4,\n.mx-sm-4 {\n    margin-right: 1.5rem !important;\n}\n.mb-sm-4,\n.my-sm-4 {\n    margin-bottom: 1.5rem !important;\n}\n.ml-sm-4,\n.mx-sm-4 {\n    margin-left: 1.5rem !important;\n}\n.m-sm-5 {\n    margin: 3rem !important;\n}\n.mt-sm-5,\n.my-sm-5 {\n    margin-top: 3rem !important;\n}\n.mr-sm-5,\n.mx-sm-5 {\n    margin-right: 3rem !important;\n}\n.mb-sm-5,\n.my-sm-5 {\n    margin-bottom: 3rem !important;\n}\n.ml-sm-5,\n.mx-sm-5 {\n    margin-left: 3rem !important;\n}\n.p-sm-0 {\n    padding: 0 !important;\n}\n.pt-sm-0,\n.py-sm-0 {\n    padding-top: 0 !important;\n}\n.pr-sm-0,\n.px-sm-0 {\n    padding-right: 0 !important;\n}\n.pb-sm-0,\n.py-sm-0 {\n    padding-bottom: 0 !important;\n}\n.pl-sm-0,\n.px-sm-0 {\n    padding-left: 0 !important;\n}\n.p-sm-1 {\n    padding: 0.25rem !important;\n}\n.pt-sm-1,\n.py-sm-1 {\n    padding-top: 0.25rem !important;\n}\n.pr-sm-1,\n.px-sm-1 {\n    padding-right: 0.25rem !important;\n}\n.pb-sm-1,\n.py-sm-1 {\n    padding-bottom: 0.25rem !important;\n}\n.pl-sm-1,\n.px-sm-1 {\n    padding-left: 0.25rem !important;\n}\n.p-sm-2 {\n    padding: 0.5rem !important;\n}\n.pt-sm-2,\n.py-sm-2 {\n    padding-top: 0.5rem !important;\n}\n.pr-sm-2,\n.px-sm-2 {\n    padding-right: 0.5rem !important;\n}\n.pb-sm-2,\n.py-sm-2 {\n    padding-bottom: 0.5rem !important;\n}\n.pl-sm-2,\n.px-sm-2 {\n    padding-left: 0.5rem !important;\n}\n.p-sm-3 {\n    padding: 1rem !important;\n}\n.pt-sm-3,\n.py-sm-3 {\n    padding-top: 1rem !important;\n}\n.pr-sm-3,\n.px-sm-3 {\n    padding-right: 1rem !important;\n}\n.pb-sm-3,\n.py-sm-3 {\n    padding-bottom: 1rem !important;\n}\n.pl-sm-3,\n.px-sm-3 {\n    padding-left: 1rem !important;\n}\n.p-sm-4 {\n    padding: 1.5rem !important;\n}\n.pt-sm-4,\n.py-sm-4 {\n    padding-top: 1.5rem !important;\n}\n.pr-sm-4,\n.px-sm-4 {\n    padding-right: 1.5rem !important;\n}\n.pb-sm-4,\n.py-sm-4 {\n    padding-bottom: 1.5rem !important;\n}\n.pl-sm-4,\n.px-sm-4 {\n    padding-left: 1.5rem !important;\n}\n.p-sm-5 {\n    padding: 3rem !important;\n}\n.pt-sm-5,\n.py-sm-5 {\n    padding-top: 3rem !important;\n}\n.pr-sm-5,\n.px-sm-5 {\n    padding-right: 3rem !important;\n}\n.pb-sm-5,\n.py-sm-5 {\n    padding-bottom: 3rem !important;\n}\n.pl-sm-5,\n.px-sm-5 {\n    padding-left: 3rem !important;\n}\n.m-sm-n1 {\n    margin: -0.25rem !important;\n}\n.mt-sm-n1,\n.my-sm-n1 {\n    margin-top: -0.25rem !important;\n}\n.mr-sm-n1,\n.mx-sm-n1 {\n    margin-right: -0.25rem !important;\n}\n.mb-sm-n1,\n.my-sm-n1 {\n    margin-bottom: -0.25rem !important;\n}\n.ml-sm-n1,\n.mx-sm-n1 {\n    margin-left: -0.25rem !important;\n}\n.m-sm-n2 {\n    margin: -0.5rem !important;\n}\n.mt-sm-n2,\n.my-sm-n2 {\n    margin-top: -0.5rem !important;\n}\n.mr-sm-n2,\n.mx-sm-n2 {\n    margin-right: -0.5rem !important;\n}\n.mb-sm-n2,\n.my-sm-n2 {\n    margin-bottom: -0.5rem !important;\n}\n.ml-sm-n2,\n.mx-sm-n2 {\n    margin-left: -0.5rem !important;\n}\n.m-sm-n3 {\n    margin: -1rem !important;\n}\n.mt-sm-n3,\n.my-sm-n3 {\n    margin-top: -1rem !important;\n}\n.mr-sm-n3,\n.mx-sm-n3 {\n    margin-right: -1rem !important;\n}\n.mb-sm-n3,\n.my-sm-n3 {\n    margin-bottom: -1rem !important;\n}\n.ml-sm-n3,\n.mx-sm-n3 {\n    margin-left: -1rem !important;\n}\n.m-sm-n4 {\n    margin: -1.5rem !important;\n}\n.mt-sm-n4,\n.my-sm-n4 {\n    margin-top: -1.5rem !important;\n}\n.mr-sm-n4,\n.mx-sm-n4 {\n    margin-right: -1.5rem !important;\n}\n.mb-sm-n4,\n.my-sm-n4 {\n    margin-bottom: -1.5rem !important;\n}\n.ml-sm-n4,\n.mx-sm-n4 {\n    margin-left: -1.5rem !important;\n}\n.m-sm-n5 {\n    margin: -3rem !important;\n}\n.mt-sm-n5,\n.my-sm-n5 {\n    margin-top: -3rem !important;\n}\n.mr-sm-n5,\n.mx-sm-n5 {\n    margin-right: -3rem !important;\n}\n.mb-sm-n5,\n.my-sm-n5 {\n    margin-bottom: -3rem !important;\n}\n.ml-sm-n5,\n.mx-sm-n5 {\n    margin-left: -3rem !important;\n}\n.m-sm-auto {\n    margin: auto !important;\n}\n.mt-sm-auto,\n.my-sm-auto {\n    margin-top: auto !important;\n}\n.mr-sm-auto,\n.mx-sm-auto {\n    margin-right: auto !important;\n}\n.mb-sm-auto,\n.my-sm-auto {\n    margin-bottom: auto !important;\n}\n.ml-sm-auto,\n.mx-sm-auto {\n    margin-left: auto !important;\n}\n}\n@media (min-width: 768px) {\n.m-md-0 {\n    margin: 0 !important;\n}\n.mt-md-0,\n.my-md-0 {\n    margin-top: 0 !important;\n}\n.mr-md-0,\n.mx-md-0 {\n    margin-right: 0 !important;\n}\n.mb-md-0,\n.my-md-0 {\n    margin-bottom: 0 !important;\n}\n.ml-md-0,\n.mx-md-0 {\n    margin-left: 0 !important;\n}\n.m-md-1 {\n    margin: 0.25rem !important;\n}\n.mt-md-1,\n.my-md-1 {\n    margin-top: 0.25rem !important;\n}\n.mr-md-1,\n.mx-md-1 {\n    margin-right: 0.25rem !important;\n}\n.mb-md-1,\n.my-md-1 {\n    margin-bottom: 0.25rem !important;\n}\n.ml-md-1,\n.mx-md-1 {\n    margin-left: 0.25rem !important;\n}\n.m-md-2 {\n    margin: 0.5rem !important;\n}\n.mt-md-2,\n.my-md-2 {\n    margin-top: 0.5rem !important;\n}\n.mr-md-2,\n.mx-md-2 {\n    margin-right: 0.5rem !important;\n}\n.mb-md-2,\n.my-md-2 {\n    margin-bottom: 0.5rem !important;\n}\n.ml-md-2,\n.mx-md-2 {\n    margin-left: 0.5rem !important;\n}\n.m-md-3 {\n    margin: 1rem !important;\n}\n.mt-md-3,\n.my-md-3 {\n    margin-top: 1rem !important;\n}\n.mr-md-3,\n.mx-md-3 {\n    margin-right: 1rem !important;\n}\n.mb-md-3,\n.my-md-3 {\n    margin-bottom: 1rem !important;\n}\n.ml-md-3,\n.mx-md-3 {\n    margin-left: 1rem !important;\n}\n.m-md-4 {\n    margin: 1.5rem !important;\n}\n.mt-md-4,\n.my-md-4 {\n    margin-top: 1.5rem !important;\n}\n.mr-md-4,\n.mx-md-4 {\n    margin-right: 1.5rem !important;\n}\n.mb-md-4,\n.my-md-4 {\n    margin-bottom: 1.5rem !important;\n}\n.ml-md-4,\n.mx-md-4 {\n    margin-left: 1.5rem !important;\n}\n.m-md-5 {\n    margin: 3rem !important;\n}\n.mt-md-5,\n.my-md-5 {\n    margin-top: 3rem !important;\n}\n.mr-md-5,\n.mx-md-5 {\n    margin-right: 3rem !important;\n}\n.mb-md-5,\n.my-md-5 {\n    margin-bottom: 3rem !important;\n}\n.ml-md-5,\n.mx-md-5 {\n    margin-left: 3rem !important;\n}\n.p-md-0 {\n    padding: 0 !important;\n}\n.pt-md-0,\n.py-md-0 {\n    padding-top: 0 !important;\n}\n.pr-md-0,\n.px-md-0 {\n    padding-right: 0 !important;\n}\n.pb-md-0,\n.py-md-0 {\n    padding-bottom: 0 !important;\n}\n.pl-md-0,\n.px-md-0 {\n    padding-left: 0 !important;\n}\n.p-md-1 {\n    padding: 0.25rem !important;\n}\n.pt-md-1,\n.py-md-1 {\n    padding-top: 0.25rem !important;\n}\n.pr-md-1,\n.px-md-1 {\n    padding-right: 0.25rem !important;\n}\n.pb-md-1,\n.py-md-1 {\n    padding-bottom: 0.25rem !important;\n}\n.pl-md-1,\n.px-md-1 {\n    padding-left: 0.25rem !important;\n}\n.p-md-2 {\n    padding: 0.5rem !important;\n}\n.pt-md-2,\n.py-md-2 {\n    padding-top: 0.5rem !important;\n}\n.pr-md-2,\n.px-md-2 {\n    padding-right: 0.5rem !important;\n}\n.pb-md-2,\n.py-md-2 {\n    padding-bottom: 0.5rem !important;\n}\n.pl-md-2,\n.px-md-2 {\n    padding-left: 0.5rem !important;\n}\n.p-md-3 {\n    padding: 1rem !important;\n}\n.pt-md-3,\n.py-md-3 {\n    padding-top: 1rem !important;\n}\n.pr-md-3,\n.px-md-3 {\n    padding-right: 1rem !important;\n}\n.pb-md-3,\n.py-md-3 {\n    padding-bottom: 1rem !important;\n}\n.pl-md-3,\n.px-md-3 {\n    padding-left: 1rem !important;\n}\n.p-md-4 {\n    padding: 1.5rem !important;\n}\n.pt-md-4,\n.py-md-4 {\n    padding-top: 1.5rem !important;\n}\n.pr-md-4,\n.px-md-4 {\n    padding-right: 1.5rem !important;\n}\n.pb-md-4,\n.py-md-4 {\n    padding-bottom: 1.5rem !important;\n}\n.pl-md-4,\n.px-md-4 {\n    padding-left: 1.5rem !important;\n}\n.p-md-5 {\n    padding: 3rem !important;\n}\n.pt-md-5,\n.py-md-5 {\n    padding-top: 3rem !important;\n}\n.pr-md-5,\n.px-md-5 {\n    padding-right: 3rem !important;\n}\n.pb-md-5,\n.py-md-5 {\n    padding-bottom: 3rem !important;\n}\n.pl-md-5,\n.px-md-5 {\n    padding-left: 3rem !important;\n}\n.m-md-n1 {\n    margin: -0.25rem !important;\n}\n.mt-md-n1,\n.my-md-n1 {\n    margin-top: -0.25rem !important;\n}\n.mr-md-n1,\n.mx-md-n1 {\n    margin-right: -0.25rem !important;\n}\n.mb-md-n1,\n.my-md-n1 {\n    margin-bottom: -0.25rem !important;\n}\n.ml-md-n1,\n.mx-md-n1 {\n    margin-left: -0.25rem !important;\n}\n.m-md-n2 {\n    margin: -0.5rem !important;\n}\n.mt-md-n2,\n.my-md-n2 {\n    margin-top: -0.5rem !important;\n}\n.mr-md-n2,\n.mx-md-n2 {\n    margin-right: -0.5rem !important;\n}\n.mb-md-n2,\n.my-md-n2 {\n    margin-bottom: -0.5rem !important;\n}\n.ml-md-n2,\n.mx-md-n2 {\n    margin-left: -0.5rem !important;\n}\n.m-md-n3 {\n    margin: -1rem !important;\n}\n.mt-md-n3,\n.my-md-n3 {\n    margin-top: -1rem !important;\n}\n.mr-md-n3,\n.mx-md-n3 {\n    margin-right: -1rem !important;\n}\n.mb-md-n3,\n.my-md-n3 {\n    margin-bottom: -1rem !important;\n}\n.ml-md-n3,\n.mx-md-n3 {\n    margin-left: -1rem !important;\n}\n.m-md-n4 {\n    margin: -1.5rem !important;\n}\n.mt-md-n4,\n.my-md-n4 {\n    margin-top: -1.5rem !important;\n}\n.mr-md-n4,\n.mx-md-n4 {\n    margin-right: -1.5rem !important;\n}\n.mb-md-n4,\n.my-md-n4 {\n    margin-bottom: -1.5rem !important;\n}\n.ml-md-n4,\n.mx-md-n4 {\n    margin-left: -1.5rem !important;\n}\n.m-md-n5 {\n    margin: -3rem !important;\n}\n.mt-md-n5,\n.my-md-n5 {\n    margin-top: -3rem !important;\n}\n.mr-md-n5,\n.mx-md-n5 {\n    margin-right: -3rem !important;\n}\n.mb-md-n5,\n.my-md-n5 {\n    margin-bottom: -3rem !important;\n}\n.ml-md-n5,\n.mx-md-n5 {\n    margin-left: -3rem !important;\n}\n.m-md-auto {\n    margin: auto !important;\n}\n.mt-md-auto,\n.my-md-auto {\n    margin-top: auto !important;\n}\n.mr-md-auto,\n.mx-md-auto {\n    margin-right: auto !important;\n}\n.mb-md-auto,\n.my-md-auto {\n    margin-bottom: auto !important;\n}\n.ml-md-auto,\n.mx-md-auto {\n    margin-left: auto !important;\n}\n}\n@media (min-width: 992px) {\n.m-lg-0 {\n    margin: 0 !important;\n}\n.mt-lg-0,\n.my-lg-0 {\n    margin-top: 0 !important;\n}\n.mr-lg-0,\n.mx-lg-0 {\n    margin-right: 0 !important;\n}\n.mb-lg-0,\n.my-lg-0 {\n    margin-bottom: 0 !important;\n}\n.ml-lg-0,\n.mx-lg-0 {\n    margin-left: 0 !important;\n}\n.m-lg-1 {\n    margin: 0.25rem !important;\n}\n.mt-lg-1,\n.my-lg-1 {\n    margin-top: 0.25rem !important;\n}\n.mr-lg-1,\n.mx-lg-1 {\n    margin-right: 0.25rem !important;\n}\n.mb-lg-1,\n.my-lg-1 {\n    margin-bottom: 0.25rem !important;\n}\n.ml-lg-1,\n.mx-lg-1 {\n    margin-left: 0.25rem !important;\n}\n.m-lg-2 {\n    margin: 0.5rem !important;\n}\n.mt-lg-2,\n.my-lg-2 {\n    margin-top: 0.5rem !important;\n}\n.mr-lg-2,\n.mx-lg-2 {\n    margin-right: 0.5rem !important;\n}\n.mb-lg-2,\n.my-lg-2 {\n    margin-bottom: 0.5rem !important;\n}\n.ml-lg-2,\n.mx-lg-2 {\n    margin-left: 0.5rem !important;\n}\n.m-lg-3 {\n    margin: 1rem !important;\n}\n.mt-lg-3,\n.my-lg-3 {\n    margin-top: 1rem !important;\n}\n.mr-lg-3,\n.mx-lg-3 {\n    margin-right: 1rem !important;\n}\n.mb-lg-3,\n.my-lg-3 {\n    margin-bottom: 1rem !important;\n}\n.ml-lg-3,\n.mx-lg-3 {\n    margin-left: 1rem !important;\n}\n.m-lg-4 {\n    margin: 1.5rem !important;\n}\n.mt-lg-4,\n.my-lg-4 {\n    margin-top: 1.5rem !important;\n}\n.mr-lg-4,\n.mx-lg-4 {\n    margin-right: 1.5rem !important;\n}\n.mb-lg-4,\n.my-lg-4 {\n    margin-bottom: 1.5rem !important;\n}\n.ml-lg-4,\n.mx-lg-4 {\n    margin-left: 1.5rem !important;\n}\n.m-lg-5 {\n    margin: 3rem !important;\n}\n.mt-lg-5,\n.my-lg-5 {\n    margin-top: 3rem !important;\n}\n.mr-lg-5,\n.mx-lg-5 {\n    margin-right: 3rem !important;\n}\n.mb-lg-5,\n.my-lg-5 {\n    margin-bottom: 3rem !important;\n}\n.ml-lg-5,\n.mx-lg-5 {\n    margin-left: 3rem !important;\n}\n.p-lg-0 {\n    padding: 0 !important;\n}\n.pt-lg-0,\n.py-lg-0 {\n    padding-top: 0 !important;\n}\n.pr-lg-0,\n.px-lg-0 {\n    padding-right: 0 !important;\n}\n.pb-lg-0,\n.py-lg-0 {\n    padding-bottom: 0 !important;\n}\n.pl-lg-0,\n.px-lg-0 {\n    padding-left: 0 !important;\n}\n.p-lg-1 {\n    padding: 0.25rem !important;\n}\n.pt-lg-1,\n.py-lg-1 {\n    padding-top: 0.25rem !important;\n}\n.pr-lg-1,\n.px-lg-1 {\n    padding-right: 0.25rem !important;\n}\n.pb-lg-1,\n.py-lg-1 {\n    padding-bottom: 0.25rem !important;\n}\n.pl-lg-1,\n.px-lg-1 {\n    padding-left: 0.25rem !important;\n}\n.p-lg-2 {\n    padding: 0.5rem !important;\n}\n.pt-lg-2,\n.py-lg-2 {\n    padding-top: 0.5rem !important;\n}\n.pr-lg-2,\n.px-lg-2 {\n    padding-right: 0.5rem !important;\n}\n.pb-lg-2,\n.py-lg-2 {\n    padding-bottom: 0.5rem !important;\n}\n.pl-lg-2,\n.px-lg-2 {\n    padding-left: 0.5rem !important;\n}\n.p-lg-3 {\n    padding: 1rem !important;\n}\n.pt-lg-3,\n.py-lg-3 {\n    padding-top: 1rem !important;\n}\n.pr-lg-3,\n.px-lg-3 {\n    padding-right: 1rem !important;\n}\n.pb-lg-3,\n.py-lg-3 {\n    padding-bottom: 1rem !important;\n}\n.pl-lg-3,\n.px-lg-3 {\n    padding-left: 1rem !important;\n}\n.p-lg-4 {\n    padding: 1.5rem !important;\n}\n.pt-lg-4,\n.py-lg-4 {\n    padding-top: 1.5rem !important;\n}\n.pr-lg-4,\n.px-lg-4 {\n    padding-right: 1.5rem !important;\n}\n.pb-lg-4,\n.py-lg-4 {\n    padding-bottom: 1.5rem !important;\n}\n.pl-lg-4,\n.px-lg-4 {\n    padding-left: 1.5rem !important;\n}\n.p-lg-5 {\n    padding: 3rem !important;\n}\n.pt-lg-5,\n.py-lg-5 {\n    padding-top: 3rem !important;\n}\n.pr-lg-5,\n.px-lg-5 {\n    padding-right: 3rem !important;\n}\n.pb-lg-5,\n.py-lg-5 {\n    padding-bottom: 3rem !important;\n}\n.pl-lg-5,\n.px-lg-5 {\n    padding-left: 3rem !important;\n}\n.m-lg-n1 {\n    margin: -0.25rem !important;\n}\n.mt-lg-n1,\n.my-lg-n1 {\n    margin-top: -0.25rem !important;\n}\n.mr-lg-n1,\n.mx-lg-n1 {\n    margin-right: -0.25rem !important;\n}\n.mb-lg-n1,\n.my-lg-n1 {\n    margin-bottom: -0.25rem !important;\n}\n.ml-lg-n1,\n.mx-lg-n1 {\n    margin-left: -0.25rem !important;\n}\n.m-lg-n2 {\n    margin: -0.5rem !important;\n}\n.mt-lg-n2,\n.my-lg-n2 {\n    margin-top: -0.5rem !important;\n}\n.mr-lg-n2,\n.mx-lg-n2 {\n    margin-right: -0.5rem !important;\n}\n.mb-lg-n2,\n.my-lg-n2 {\n    margin-bottom: -0.5rem !important;\n}\n.ml-lg-n2,\n.mx-lg-n2 {\n    margin-left: -0.5rem !important;\n}\n.m-lg-n3 {\n    margin: -1rem !important;\n}\n.mt-lg-n3,\n.my-lg-n3 {\n    margin-top: -1rem !important;\n}\n.mr-lg-n3,\n.mx-lg-n3 {\n    margin-right: -1rem !important;\n}\n.mb-lg-n3,\n.my-lg-n3 {\n    margin-bottom: -1rem !important;\n}\n.ml-lg-n3,\n.mx-lg-n3 {\n    margin-left: -1rem !important;\n}\n.m-lg-n4 {\n    margin: -1.5rem !important;\n}\n.mt-lg-n4,\n.my-lg-n4 {\n    margin-top: -1.5rem !important;\n}\n.mr-lg-n4,\n.mx-lg-n4 {\n    margin-right: -1.5rem !important;\n}\n.mb-lg-n4,\n.my-lg-n4 {\n    margin-bottom: -1.5rem !important;\n}\n.ml-lg-n4,\n.mx-lg-n4 {\n    margin-left: -1.5rem !important;\n}\n.m-lg-n5 {\n    margin: -3rem !important;\n}\n.mt-lg-n5,\n.my-lg-n5 {\n    margin-top: -3rem !important;\n}\n.mr-lg-n5,\n.mx-lg-n5 {\n    margin-right: -3rem !important;\n}\n.mb-lg-n5,\n.my-lg-n5 {\n    margin-bottom: -3rem !important;\n}\n.ml-lg-n5,\n.mx-lg-n5 {\n    margin-left: -3rem !important;\n}\n.m-lg-auto {\n    margin: auto !important;\n}\n.mt-lg-auto,\n.my-lg-auto {\n    margin-top: auto !important;\n}\n.mr-lg-auto,\n.mx-lg-auto {\n    margin-right: auto !important;\n}\n.mb-lg-auto,\n.my-lg-auto {\n    margin-bottom: auto !important;\n}\n.ml-lg-auto,\n.mx-lg-auto {\n    margin-left: auto !important;\n}\n}\n@media (min-width: 1200px) {\n.m-xl-0 {\n    margin: 0 !important;\n}\n.mt-xl-0,\n.my-xl-0 {\n    margin-top: 0 !important;\n}\n.mr-xl-0,\n.mx-xl-0 {\n    margin-right: 0 !important;\n}\n.mb-xl-0,\n.my-xl-0 {\n    margin-bottom: 0 !important;\n}\n.ml-xl-0,\n.mx-xl-0 {\n    margin-left: 0 !important;\n}\n.m-xl-1 {\n    margin: 0.25rem !important;\n}\n.mt-xl-1,\n.my-xl-1 {\n    margin-top: 0.25rem !important;\n}\n.mr-xl-1,\n.mx-xl-1 {\n    margin-right: 0.25rem !important;\n}\n.mb-xl-1,\n.my-xl-1 {\n    margin-bottom: 0.25rem !important;\n}\n.ml-xl-1,\n.mx-xl-1 {\n    margin-left: 0.25rem !important;\n}\n.m-xl-2 {\n    margin: 0.5rem !important;\n}\n.mt-xl-2,\n.my-xl-2 {\n    margin-top: 0.5rem !important;\n}\n.mr-xl-2,\n.mx-xl-2 {\n    margin-right: 0.5rem !important;\n}\n.mb-xl-2,\n.my-xl-2 {\n    margin-bottom: 0.5rem !important;\n}\n.ml-xl-2,\n.mx-xl-2 {\n    margin-left: 0.5rem !important;\n}\n.m-xl-3 {\n    margin: 1rem !important;\n}\n.mt-xl-3,\n.my-xl-3 {\n    margin-top: 1rem !important;\n}\n.mr-xl-3,\n.mx-xl-3 {\n    margin-right: 1rem !important;\n}\n.mb-xl-3,\n.my-xl-3 {\n    margin-bottom: 1rem !important;\n}\n.ml-xl-3,\n.mx-xl-3 {\n    margin-left: 1rem !important;\n}\n.m-xl-4 {\n    margin: 1.5rem !important;\n}\n.mt-xl-4,\n.my-xl-4 {\n    margin-top: 1.5rem !important;\n}\n.mr-xl-4,\n.mx-xl-4 {\n    margin-right: 1.5rem !important;\n}\n.mb-xl-4,\n.my-xl-4 {\n    margin-bottom: 1.5rem !important;\n}\n.ml-xl-4,\n.mx-xl-4 {\n    margin-left: 1.5rem !important;\n}\n.m-xl-5 {\n    margin: 3rem !important;\n}\n.mt-xl-5,\n.my-xl-5 {\n    margin-top: 3rem !important;\n}\n.mr-xl-5,\n.mx-xl-5 {\n    margin-right: 3rem !important;\n}\n.mb-xl-5,\n.my-xl-5 {\n    margin-bottom: 3rem !important;\n}\n.ml-xl-5,\n.mx-xl-5 {\n    margin-left: 3rem !important;\n}\n.p-xl-0 {\n    padding: 0 !important;\n}\n.pt-xl-0,\n.py-xl-0 {\n    padding-top: 0 !important;\n}\n.pr-xl-0,\n.px-xl-0 {\n    padding-right: 0 !important;\n}\n.pb-xl-0,\n.py-xl-0 {\n    padding-bottom: 0 !important;\n}\n.pl-xl-0,\n.px-xl-0 {\n    padding-left: 0 !important;\n}\n.p-xl-1 {\n    padding: 0.25rem !important;\n}\n.pt-xl-1,\n.py-xl-1 {\n    padding-top: 0.25rem !important;\n}\n.pr-xl-1,\n.px-xl-1 {\n    padding-right: 0.25rem !important;\n}\n.pb-xl-1,\n.py-xl-1 {\n    padding-bottom: 0.25rem !important;\n}\n.pl-xl-1,\n.px-xl-1 {\n    padding-left: 0.25rem !important;\n}\n.p-xl-2 {\n    padding: 0.5rem !important;\n}\n.pt-xl-2,\n.py-xl-2 {\n    padding-top: 0.5rem !important;\n}\n.pr-xl-2,\n.px-xl-2 {\n    padding-right: 0.5rem !important;\n}\n.pb-xl-2,\n.py-xl-2 {\n    padding-bottom: 0.5rem !important;\n}\n.pl-xl-2,\n.px-xl-2 {\n    padding-left: 0.5rem !important;\n}\n.p-xl-3 {\n    padding: 1rem !important;\n}\n.pt-xl-3,\n.py-xl-3 {\n    padding-top: 1rem !important;\n}\n.pr-xl-3,\n.px-xl-3 {\n    padding-right: 1rem !important;\n}\n.pb-xl-3,\n.py-xl-3 {\n    padding-bottom: 1rem !important;\n}\n.pl-xl-3,\n.px-xl-3 {\n    padding-left: 1rem !important;\n}\n.p-xl-4 {\n    padding: 1.5rem !important;\n}\n.pt-xl-4,\n.py-xl-4 {\n    padding-top: 1.5rem !important;\n}\n.pr-xl-4,\n.px-xl-4 {\n    padding-right: 1.5rem !important;\n}\n.pb-xl-4,\n.py-xl-4 {\n    padding-bottom: 1.5rem !important;\n}\n.pl-xl-4,\n.px-xl-4 {\n    padding-left: 1.5rem !important;\n}\n.p-xl-5 {\n    padding: 3rem !important;\n}\n.pt-xl-5,\n.py-xl-5 {\n    padding-top: 3rem !important;\n}\n.pr-xl-5,\n.px-xl-5 {\n    padding-right: 3rem !important;\n}\n.pb-xl-5,\n.py-xl-5 {\n    padding-bottom: 3rem !important;\n}\n.pl-xl-5,\n.px-xl-5 {\n    padding-left: 3rem !important;\n}\n.m-xl-n1 {\n    margin: -0.25rem !important;\n}\n.mt-xl-n1,\n.my-xl-n1 {\n    margin-top: -0.25rem !important;\n}\n.mr-xl-n1,\n.mx-xl-n1 {\n    margin-right: -0.25rem !important;\n}\n.mb-xl-n1,\n.my-xl-n1 {\n    margin-bottom: -0.25rem !important;\n}\n.ml-xl-n1,\n.mx-xl-n1 {\n    margin-left: -0.25rem !important;\n}\n.m-xl-n2 {\n    margin: -0.5rem !important;\n}\n.mt-xl-n2,\n.my-xl-n2 {\n    margin-top: -0.5rem !important;\n}\n.mr-xl-n2,\n.mx-xl-n2 {\n    margin-right: -0.5rem !important;\n}\n.mb-xl-n2,\n.my-xl-n2 {\n    margin-bottom: -0.5rem !important;\n}\n.ml-xl-n2,\n.mx-xl-n2 {\n    margin-left: -0.5rem !important;\n}\n.m-xl-n3 {\n    margin: -1rem !important;\n}\n.mt-xl-n3,\n.my-xl-n3 {\n    margin-top: -1rem !important;\n}\n.mr-xl-n3,\n.mx-xl-n3 {\n    margin-right: -1rem !important;\n}\n.mb-xl-n3,\n.my-xl-n3 {\n    margin-bottom: -1rem !important;\n}\n.ml-xl-n3,\n.mx-xl-n3 {\n    margin-left: -1rem !important;\n}\n.m-xl-n4 {\n    margin: -1.5rem !important;\n}\n.mt-xl-n4,\n.my-xl-n4 {\n    margin-top: -1.5rem !important;\n}\n.mr-xl-n4,\n.mx-xl-n4 {\n    margin-right: -1.5rem !important;\n}\n.mb-xl-n4,\n.my-xl-n4 {\n    margin-bottom: -1.5rem !important;\n}\n.ml-xl-n4,\n.mx-xl-n4 {\n    margin-left: -1.5rem !important;\n}\n.m-xl-n5 {\n    margin: -3rem !important;\n}\n.mt-xl-n5,\n.my-xl-n5 {\n    margin-top: -3rem !important;\n}\n.mr-xl-n5,\n.mx-xl-n5 {\n    margin-right: -3rem !important;\n}\n.mb-xl-n5,\n.my-xl-n5 {\n    margin-bottom: -3rem !important;\n}\n.ml-xl-n5,\n.mx-xl-n5 {\n    margin-left: -3rem !important;\n}\n.m-xl-auto {\n    margin: auto !important;\n}\n.mt-xl-auto,\n.my-xl-auto {\n    margin-top: auto !important;\n}\n.mr-xl-auto,\n.mx-xl-auto {\n    margin-right: auto !important;\n}\n.mb-xl-auto,\n.my-xl-auto {\n    margin-bottom: auto !important;\n}\n.ml-xl-auto,\n.mx-xl-auto {\n    margin-left: auto !important;\n}\n}\n.text-monospace {\n  font-family: SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace;\n}\n.text-justify {\n  text-align: justify !important;\n}\n.text-wrap {\n  white-space: normal !important;\n}\n.text-nowrap {\n  white-space: nowrap !important;\n}\n.text-truncate {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n.text-left {\n  text-align: left !important;\n}\n.text-right {\n  text-align: right !important;\n}\n.text-center {\n  text-align: center !important;\n}\n@media (min-width: 576px) {\n.text-sm-left {\n    text-align: left !important;\n}\n.text-sm-right {\n    text-align: right !important;\n}\n.text-sm-center {\n    text-align: center !important;\n}\n}\n@media (min-width: 768px) {\n.text-md-left {\n    text-align: left !important;\n}\n.text-md-right {\n    text-align: right !important;\n}\n.text-md-center {\n    text-align: center !important;\n}\n}\n@media (min-width: 992px) {\n.text-lg-left {\n    text-align: left !important;\n}\n.text-lg-right {\n    text-align: right !important;\n}\n.text-lg-center {\n    text-align: center !important;\n}\n}\n@media (min-width: 1200px) {\n.text-xl-left {\n    text-align: left !important;\n}\n.text-xl-right {\n    text-align: right !important;\n}\n.text-xl-center {\n    text-align: center !important;\n}\n}\n.text-lowercase {\n  text-transform: lowercase !important;\n}\n.text-uppercase {\n  text-transform: uppercase !important;\n}\n.text-capitalize {\n  text-transform: capitalize !important;\n}\n.font-weight-light {\n  font-weight: 300 !important;\n}\n.font-weight-lighter {\n  font-weight: lighter !important;\n}\n.font-weight-normal {\n  font-weight: 400 !important;\n}\n.font-weight-bold {\n  font-weight: 700 !important;\n}\n.font-weight-bolder {\n  font-weight: bolder !important;\n}\n.font-italic {\n  font-style: italic !important;\n}\n.text-white {\n  color: #fff !important;\n}\n.text-primary {\n  color: #3490dc !important;\n}\na.text-primary:hover, a.text-primary:focus {\n  color: #1d68a7 !important;\n}\n.text-secondary {\n  color: #6c757d !important;\n}\na.text-secondary:hover, a.text-secondary:focus {\n  color: #494f54 !important;\n}\n.text-success {\n  color: #38c172 !important;\n}\na.text-success:hover, a.text-success:focus {\n  color: #27864f !important;\n}\n.text-info {\n  color: #6cb2eb !important;\n}\na.text-info:hover, a.text-info:focus {\n  color: #298fe2 !important;\n}\n.text-warning {\n  color: #ffed4a !important;\n}\na.text-warning:hover, a.text-warning:focus {\n  color: #fde300 !important;\n}\n.text-danger {\n  color: #e3342f !important;\n}\na.text-danger:hover, a.text-danger:focus {\n  color: #ae1c17 !important;\n}\n.text-light {\n  color: #f8f9fa !important;\n}\na.text-light:hover, a.text-light:focus {\n  color: #cbd3da !important;\n}\n.text-dark {\n  color: #343a40 !important;\n}\na.text-dark:hover, a.text-dark:focus {\n  color: #121416 !important;\n}\n.text-body {\n  color: #212529 !important;\n}\n.text-muted {\n  color: #6c757d !important;\n}\n.text-black-50 {\n  color: rgba(0, 0, 0, 0.5) !important;\n}\n.text-white-50 {\n  color: rgba(255, 255, 255, 0.5) !important;\n}\n.text-hide {\n  font: 0/0 a;\n  color: transparent;\n  text-shadow: none;\n  background-color: transparent;\n  border: 0;\n}\n.text-decoration-none {\n  text-decoration: none !important;\n}\n.text-reset {\n  color: inherit !important;\n}\n.visible {\n  visibility: visible !important;\n}\n.invisible {\n  visibility: hidden !important;\n}\n@media print {\n*,\n*::before,\n*::after {\n    text-shadow: none !important;\n    box-shadow: none !important;\n}\na:not(.btn) {\n    text-decoration: underline;\n}\nabbr[title]::after {\n    content: \" (\" attr(title) \")\";\n}\npre {\n    white-space: pre-wrap !important;\n}\npre,\nblockquote {\n    border: 1px solid #adb5bd;\n    page-break-inside: avoid;\n}\nthead {\n    display: table-header-group;\n}\ntr,\nimg {\n    page-break-inside: avoid;\n}\np,\nh2,\nh3 {\n    orphans: 3;\n    widows: 3;\n}\nh2,\nh3 {\n    page-break-after: avoid;\n}\n@page {\n    size: a3;\n}\nbody {\n    min-width: 992px !important;\n}\n.container {\n    min-width: 992px !important;\n}\n.navbar {\n    display: none;\n}\n.badge {\n    border: 1px solid #000;\n}\n.table {\n    border-collapse: collapse !important;\n}\n.table td,\n.table th {\n    background-color: #fff !important;\n}\n.table-bordered th,\n.table-bordered td {\n    border: 1px solid #dee2e6 !important;\n}\n.table-dark {\n    color: inherit;\n}\n.table-dark th,\n.table-dark td,\n.table-dark thead th,\n.table-dark tbody + tbody {\n    border-color: #dee2e6;\n}\n.table .thead-dark th {\n    color: inherit;\n    border-color: #dee2e6;\n}\n}\nbody {\n  max-width: 1300px;\n  margin: auto;\n  border: 2px solid #ff33cc;\n}\n.landing__header {\n  margin: 2rem 1.5rem 2.5rem;\n  height: 3rem;\n  position: relative;\n}\n.landing__header .header-container {\n  height: inherit;\n}\n.landing__header .header-container .header-brand {\n  display: inline-block;\n  vertical-align: middle;\n}\n.landing__header .header-container .header-brand .text {\n  font-size: 2rem;\n  font-weight: bolder;\n}\n.landing__header .nav-01 {\n  display: inline;\n  position: absolute;\n  right: 0;\n  top: 50%;\n  -webkit-transform: translateY(-50%);\n          transform: translateY(-50%);\n  margin-right: 1rem;\n  max-width: 75%;\n}\n.landing__header .nav-01 .nav-list {\n  display: inline;\n  list-style-type: none;\n  margin: 0 2px;\n}\n.landing__header .nav-01 .nav-list .items {\n  display: inline;\n  margin: 0 1.5rem;\n}\n.landing__header .nav-01 .nav-list .items .menuButton {\n  font-weight: bold;\n}\n.landing__header .nav-01 .nav-list .items .menuButton:hover {\n  font-style: none;\n  color: red;\n}\n.barrier {\n  border-bottom: 2px solid blue;\n  margin-bottom: 1rem;\n}\n.landing__content {\n  margin: 0 0 2.5rem;\n}", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/about.vue?vue&type=style&index=0&id=0b0aedd2&scoped=true&lang=css&":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/about.vue?vue&type=style&index=0&id=0b0aedd2&scoped=true&lang=css& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.content_body_text[data-v-0b0aedd2]{\n  color: red;\n}\n", ""]);
 
 // exports
 
@@ -36940,6 +37016,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/about.vue?vue&type=style&index=0&id=0b0aedd2&scoped=true&lang=css&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/about.vue?vue&type=style&index=0&id=0b0aedd2&scoped=true&lang=css& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./about.vue?vue&type=style&index=0&id=0b0aedd2&scoped=true&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/about.vue?vue&type=style&index=0&id=0b0aedd2&scoped=true&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/lib/addStyles.js":
 /*!****************************************************!*\
   !*** ./node_modules/style-loader/lib/addStyles.js ***!
@@ -37524,10 +37630,10 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/about.vue?vue&type=template&id=0b0aedd2&":
-/*!********************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/about.vue?vue&type=template&id=0b0aedd2& ***!
-  \********************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/about.vue?vue&type=template&id=0b0aedd2&scoped=true&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/about.vue?vue&type=template&id=0b0aedd2&scoped=true& ***!
+  \********************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -37539,20 +37645,53 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("section", { staticClass: "creator" }, [
-        _c("h1", [_vm._v("Trung Nguyen1 ")])
+  return _c("div", [
+    _c("h1", [_vm._v("Testing wordpress api and datas")]),
+    _vm._v(" "),
+    _c("section", { staticClass: "creator" }, [
+      _c("div", { staticClass: "item_list" }, [
+        _c(
+          "div",
+          { staticClass: "list-item" },
+          _vm._l(_vm.rawData, function(item, index) {
+            return index < 6
+              ? _c("div", { staticClass: "items" }, [
+                  _c("h3", [_vm._v(_vm._s(item.title))]),
+                  _vm._v(" "),
+                  _c("p", [_vm._v(_vm._s(_vm.content[index]))]),
+                  _vm._v(" "),
+                  _c("a", { attrs: { href: item.URL } }, [
+                    _vm._v(_vm._s(item.URL))
+                  ]),
+                  _vm._v(" "),
+                  _vm.imagesURL[index] != null
+                    ? _c("a", { attrs: { href: _vm.imagesURL[index] } }, [
+                        _vm._v(_vm._s(_vm.imagesURL[index]))
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.imagesURL[index] != null &&
+                  _vm.imagesURL[index] != undefined
+                    ? _c("img", { attrs: { src: _vm.imagesURL[index] } })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "content_body_text" }, [
+                    _vm._v(
+                      "\n            " +
+                        _vm._s(_vm.excerpt[index]) +
+                        "\n          "
+                    )
+                  ])
+                ])
+              : _vm._e()
+          }),
+          0
+        )
       ])
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -40471,16 +40610,16 @@ if (inBrowser && window.Vue) {
 
 /***/ }),
 
-/***/ "./node_modules/vue/dist/vue.common.js":
-/*!*********************************************!*\
-  !*** ./node_modules/vue/dist/vue.common.js ***!
-  \*********************************************/
+/***/ "./node_modules/vue/dist/vue.common.dev.js":
+/*!*************************************************!*\
+  !*** ./node_modules/vue/dist/vue.common.dev.js ***!
+  \*************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global, setImmediate) {/*!
- * Vue.js v2.5.22
+ * Vue.js v2.6.5
  * (c) 2014-2019 Evan You
  * Released under the MIT License.
  */
@@ -40559,13 +40698,21 @@ function isValidArrayIndex (val) {
   return n >= 0 && Math.floor(n) === n && isFinite(val)
 }
 
+function isPromise (val) {
+  return (
+    isDef(val) &&
+    typeof val.then === 'function' &&
+    typeof val.catch === 'function'
+  )
+}
+
 /**
  * Convert a value to a string that is actually rendered.
  */
 function toString (val) {
   return val == null
     ? ''
-    : typeof val === 'object'
+    : Array.isArray(val) || (isPlainObject(val) && val.toString === _toString)
       ? JSON.stringify(val, null, 2)
       : String(val)
 }
@@ -40841,7 +40988,8 @@ var LIFECYCLE_HOOKS = [
   'destroyed',
   'activated',
   'deactivated',
-  'errorCaptured'
+  'errorCaptured',
+  'serverPrefetch'
 ];
 
 /*  */
@@ -40945,6 +41093,13 @@ var config = ({
 /*  */
 
 /**
+ * unicode letters used for parsing html tags, component names and property paths.
+ * using https://www.w3.org/TR/html53/semantics-scripting.html#potentialcustomelementname
+ * skipping \u10000-\uEFFFF due to it freezing up PhantomJS
+ */
+var unicodeLetters = 'a-zA-Z\u00B7\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u037D\u037F-\u1FFF\u200C-\u200D\u203F-\u2040\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD';
+
+/**
  * Check if a string starts with $ or _
  */
 function isReserved (str) {
@@ -40967,7 +41122,7 @@ function def (obj, key, val, enumerable) {
 /**
  * Parse simple path.
  */
-var bailRE = /[^\w.$]/;
+var bailRE = new RegExp(("[^" + unicodeLetters + ".$_\\d]"));
 function parsePath (path) {
   if (bailRE.test(path)) {
     return
@@ -40998,6 +41153,8 @@ var isEdge = UA && UA.indexOf('edge/') > 0;
 var isAndroid = (UA && UA.indexOf('android') > 0) || (weexPlatform === 'android');
 var isIOS = (UA && /iphone|ipad|ipod|ios/.test(UA)) || (weexPlatform === 'ios');
 var isChrome = UA && /chrome\/\d+/.test(UA) && !isEdge;
+var isPhantomJS = UA && /phantomjs/.test(UA);
+var isFF = UA && UA.match(/firefox\/(\d+)/);
 
 // Firefox has a "watch" function on Object.prototype...
 var nativeWatch = ({}).watch;
@@ -41077,7 +41234,7 @@ var tip = noop;
 var generateComponentTrace = (noop); // work around flow check
 var formatComponentName = (noop);
 
-if (true) {
+{
   var hasConsole = typeof console !== 'undefined';
   var classifyRE = /(?:^|[-_])(\w)/g;
   var classify = function (str) { return str
@@ -41194,7 +41351,7 @@ Dep.prototype.depend = function depend () {
 Dep.prototype.notify = function notify () {
   // stabilize the subscriber list first
   var subs = this.subs.slice();
-  if ( true && !config.async) {
+  if (!config.async) {
     // subs aren't sorted in scheduler if not running async
     // we need to sort them now to make sure they fire in correct
     // order
@@ -41515,7 +41672,7 @@ function defineReactive$$1 (
         return
       }
       /* eslint-enable no-self-compare */
-      if ( true && customSetter) {
+      if (customSetter) {
         customSetter();
       }
       // #7981: for accessor properties without setter
@@ -41537,8 +41694,7 @@ function defineReactive$$1 (
  * already exist.
  */
 function set (target, key, val) {
-  if ( true &&
-    (isUndef(target) || isPrimitive(target))
+  if (isUndef(target) || isPrimitive(target)
   ) {
     warn(("Cannot set reactive property on undefined, null, or primitive value: " + ((target))));
   }
@@ -41553,7 +41709,7 @@ function set (target, key, val) {
   }
   var ob = (target).__ob__;
   if (target._isVue || (ob && ob.vmCount)) {
-     true && warn(
+    warn(
       'Avoid adding reactive properties to a Vue instance or its root $data ' +
       'at runtime - declare it upfront in the data option.'
     );
@@ -41572,8 +41728,7 @@ function set (target, key, val) {
  * Delete a property and trigger change if necessary.
  */
 function del (target, key) {
-  if ( true &&
-    (isUndef(target) || isPrimitive(target))
+  if (isUndef(target) || isPrimitive(target)
   ) {
     warn(("Cannot delete reactive property on undefined, null, or primitive value: " + ((target))));
   }
@@ -41583,7 +41738,7 @@ function del (target, key) {
   }
   var ob = (target).__ob__;
   if (target._isVue || (ob && ob.vmCount)) {
-     true && warn(
+    warn(
       'Avoid deleting properties on a Vue instance or its root $data ' +
       '- just set it to null.'
     );
@@ -41625,7 +41780,7 @@ var strats = config.optionMergeStrategies;
 /**
  * Options with restrictions
  */
-if (true) {
+{
   strats.el = strats.propsData = function (parent, child, vm, key) {
     if (!vm) {
       warn(
@@ -41643,9 +41798,15 @@ if (true) {
 function mergeData (to, from) {
   if (!from) { return to }
   var key, toVal, fromVal;
-  var keys = Object.keys(from);
+
+  var keys = hasSymbol
+    ? Reflect.ownKeys(from)
+    : Object.keys(from);
+
   for (var i = 0; i < keys.length; i++) {
     key = keys[i];
+    // in case the object is already observed...
+    if (key === '__ob__') { continue }
     toVal = to[key];
     fromVal = from[key];
     if (!hasOwn(to, key)) {
@@ -41713,7 +41874,7 @@ strats.data = function (
 ) {
   if (!vm) {
     if (childVal && typeof childVal !== 'function') {
-       true && warn(
+      warn(
         'The "data" option should be a function ' +
         'that returns a per-instance value in component ' +
         'definitions.',
@@ -41776,7 +41937,7 @@ function mergeAssets (
 ) {
   var res = Object.create(parentVal || null);
   if (childVal) {
-     true && assertObjectType(key, childVal, vm);
+    assertObjectType(key, childVal, vm);
     return extend(res, childVal)
   } else {
     return res
@@ -41804,7 +41965,7 @@ strats.watch = function (
   if (childVal === nativeWatch) { childVal = undefined; }
   /* istanbul ignore if */
   if (!childVal) { return Object.create(parentVal || null) }
-  if (true) {
+  {
     assertObjectType(key, childVal, vm);
   }
   if (!parentVal) { return childVal }
@@ -41865,11 +42026,10 @@ function checkComponents (options) {
 }
 
 function validateComponentName (name) {
-  if (!/^[a-zA-Z][\w-]*$/.test(name)) {
+  if (!new RegExp(("^[a-zA-Z][\\-\\.0-9_" + unicodeLetters + "]*$")).test(name)) {
     warn(
       'Invalid component name: "' + name + '". Component names ' +
-      'can only contain alphanumeric characters and the hyphen, ' +
-      'and must start with a letter.'
+      'should conform to valid custom element name in html5 specification.'
     );
   }
   if (isBuiltInTag(name) || config.isReservedTag(name)) {
@@ -41896,7 +42056,7 @@ function normalizeProps (options, vm) {
       if (typeof val === 'string') {
         name = camelize(val);
         res[name] = { type: null };
-      } else if (true) {
+      } else {
         warn('props must be strings when using array syntax.');
       }
     }
@@ -41908,7 +42068,7 @@ function normalizeProps (options, vm) {
         ? val
         : { type: val };
     }
-  } else if (true) {
+  } else {
     warn(
       "Invalid value for option \"props\": expected an Array or an Object, " +
       "but got " + (toRawType(props)) + ".",
@@ -41936,7 +42096,7 @@ function normalizeInject (options, vm) {
         ? extend({ from: key }, val)
         : { from: val };
     }
-  } else if (true) {
+  } else {
     warn(
       "Invalid value for option \"inject\": expected an Array or an Object, " +
       "but got " + (toRawType(inject)) + ".",
@@ -41952,9 +42112,9 @@ function normalizeDirectives (options) {
   var dirs = options.directives;
   if (dirs) {
     for (var key in dirs) {
-      var def = dirs[key];
-      if (typeof def === 'function') {
-        dirs[key] = { bind: def, update: def };
+      var def$$1 = dirs[key];
+      if (typeof def$$1 === 'function') {
+        dirs[key] = { bind: def$$1, update: def$$1 };
       }
     }
   }
@@ -41979,7 +42139,7 @@ function mergeOptions (
   child,
   vm
 ) {
-  if (true) {
+  {
     checkComponents(child);
   }
 
@@ -42047,7 +42207,7 @@ function resolveAsset (
   if (hasOwn(assets, PascalCaseId)) { return assets[PascalCaseId] }
   // fallback to prototype chain
   var res = assets[id] || assets[camelizedId] || assets[PascalCaseId];
-  if ( true && warnMissing && !res) {
+  if (warnMissing && !res) {
     warn(
       'Failed to resolve ' + type.slice(0, -1) + ': ' + id,
       options
@@ -42093,9 +42253,7 @@ function validateProp (
     observe(value);
     toggleObserving(prevShouldObserve);
   }
-  if (
-    true
-  ) {
+  {
     assertProp(prop, key, value, vm, absent);
   }
   return value
@@ -42111,7 +42269,7 @@ function getPropDefaultValue (vm, prop, key) {
   }
   var def = prop.default;
   // warn against non-factory defaults for Object & Array
-  if ( true && isObject(def)) {
+  if (isObject(def)) {
     warn(
       'Invalid default value for prop "' + key + '": ' +
       'Props with type Object/Array must use a factory function ' +
@@ -42302,19 +42460,42 @@ function handleError (err, vm, info) {
   globalHandleError(err, vm, info);
 }
 
+function invokeWithErrorHandling (
+  handler,
+  context,
+  args,
+  vm,
+  info
+) {
+  var res;
+  try {
+    res = args ? handler.apply(context, args) : handler.call(context);
+    if (res && !res._isVue && isPromise(res)) {
+      res.catch(function (e) { return handleError(e, vm, info + " (Promise/async)"); });
+    }
+  } catch (e) {
+    handleError(e, vm, info);
+  }
+  return res
+}
+
 function globalHandleError (err, vm, info) {
   if (config.errorHandler) {
     try {
       return config.errorHandler.call(null, err, vm, info)
     } catch (e) {
-      logError(e, null, 'config.errorHandler');
+      // if the user intentionally throws the original error in the handler,
+      // do not log it twice
+      if (e !== err) {
+        logError(e, null, 'config.errorHandler');
+      }
     }
   }
   logError(err, vm, info);
 }
 
 function logError (err, vm, info) {
-  if (true) {
+  {
     warn(("Error in " + info + ": \"" + (err.toString()) + "\""), vm);
   }
   /* istanbul ignore else */
@@ -42326,6 +42507,8 @@ function logError (err, vm, info) {
 }
 
 /*  */
+
+var isUsingMicroTask = false;
 
 var callbacks = [];
 var pending = false;
@@ -42339,76 +42522,69 @@ function flushCallbacks () {
   }
 }
 
-// Here we have async deferring wrappers using both microtasks and (macro) tasks.
-// In < 2.4 we used microtasks everywhere, but there are some scenarios where
-// microtasks have too high a priority and fire in between supposedly
-// sequential events (e.g. #4521, #6690) or even between bubbling of the same
-// event (#6566). However, using (macro) tasks everywhere also has subtle problems
-// when state is changed right before repaint (e.g. #6813, out-in transitions).
-// Here we use microtask by default, but expose a way to force (macro) task when
-// needed (e.g. in event handlers attached by v-on).
-var microTimerFunc;
-var macroTimerFunc;
-var useMacroTask = false;
+// Here we have async deferring wrappers using microtasks.
+// In 2.5 we used (macro) tasks (in combination with microtasks).
+// However, it has subtle problems when state is changed right before repaint
+// (e.g. #6813, out-in transitions).
+// Also, using (macro) tasks in event handler would cause some weird behaviors
+// that cannot be circumvented (e.g. #7109, #7153, #7546, #7834, #8109).
+// So we now use microtasks everywhere, again.
+// A major drawback of this tradeoff is that there are some scenarios
+// where microtasks have too high a priority and fire in between supposedly
+// sequential events (e.g. #4521, #6690, which have workarounds)
+// or even between bubbling of the same event (#6566).
+var timerFunc;
 
-// Determine (macro) task defer implementation.
-// Technically setImmediate should be the ideal choice, but it's only available
-// in IE. The only polyfill that consistently queues the callback after all DOM
-// events triggered in the same loop is by using MessageChannel.
-/* istanbul ignore if */
-if (typeof setImmediate !== 'undefined' && isNative(setImmediate)) {
-  macroTimerFunc = function () {
-    setImmediate(flushCallbacks);
-  };
-} else if (typeof MessageChannel !== 'undefined' && (
-  isNative(MessageChannel) ||
-  // PhantomJS
-  MessageChannel.toString() === '[object MessageChannelConstructor]'
-)) {
-  var channel = new MessageChannel();
-  var port = channel.port2;
-  channel.port1.onmessage = flushCallbacks;
-  macroTimerFunc = function () {
-    port.postMessage(1);
-  };
-} else {
-  /* istanbul ignore next */
-  macroTimerFunc = function () {
-    setTimeout(flushCallbacks, 0);
-  };
-}
-
-// Determine microtask defer implementation.
+// The nextTick behavior leverages the microtask queue, which can be accessed
+// via either native Promise.then or MutationObserver.
+// MutationObserver has wider support, however it is seriously bugged in
+// UIWebView in iOS >= 9.3.3 when triggered in touch event handlers. It
+// completely stops working after triggering a few times... so, if native
+// Promise is available, we will use it:
 /* istanbul ignore next, $flow-disable-line */
 if (typeof Promise !== 'undefined' && isNative(Promise)) {
   var p = Promise.resolve();
-  microTimerFunc = function () {
+  timerFunc = function () {
     p.then(flushCallbacks);
-    // in problematic UIWebViews, Promise.then doesn't completely break, but
+    // In problematic UIWebViews, Promise.then doesn't completely break, but
     // it can get stuck in a weird state where callbacks are pushed into the
     // microtask queue but the queue isn't being flushed, until the browser
     // needs to do some other work, e.g. handle a timer. Therefore we can
     // "force" the microtask queue to be flushed by adding an empty timer.
     if (isIOS) { setTimeout(noop); }
   };
+  isUsingMicroTask = true;
+} else if (!isIE && typeof MutationObserver !== 'undefined' && (
+  isNative(MutationObserver) ||
+  // PhantomJS and iOS 7.x
+  MutationObserver.toString() === '[object MutationObserverConstructor]'
+)) {
+  // Use MutationObserver where native Promise is not available,
+  // e.g. PhantomJS, iOS7, Android 4.4
+  // (#6466 MutationObserver is unreliable in IE11)
+  var counter = 1;
+  var observer = new MutationObserver(flushCallbacks);
+  var textNode = document.createTextNode(String(counter));
+  observer.observe(textNode, {
+    characterData: true
+  });
+  timerFunc = function () {
+    counter = (counter + 1) % 2;
+    textNode.data = String(counter);
+  };
+  isUsingMicroTask = true;
+} else if (typeof setImmediate !== 'undefined' && isNative(setImmediate)) {
+  // Fallback to setImmediate.
+  // Techinically it leverages the (macro) task queue,
+  // but it is still a better choice than setTimeout.
+  timerFunc = function () {
+    setImmediate(flushCallbacks);
+  };
 } else {
-  // fallback to macro
-  microTimerFunc = macroTimerFunc;
-}
-
-/**
- * Wrap a function so that if any code inside triggers state change,
- * the changes are queued using a (macro) task instead of a microtask.
- */
-function withMacroTask (fn) {
-  return fn._withTask || (fn._withTask = function () {
-    useMacroTask = true;
-    try {
-      return fn.apply(null, arguments)
-    } finally {
-      useMacroTask = false;    
-    }
-  })
+  // Fallback to setTimeout.
+  timerFunc = function () {
+    setTimeout(flushCallbacks, 0);
+  };
 }
 
 function nextTick (cb, ctx) {
@@ -42426,11 +42602,7 @@ function nextTick (cb, ctx) {
   });
   if (!pending) {
     pending = true;
-    if (useMacroTask) {
-      macroTimerFunc();
-    } else {
-      microTimerFunc();
-    }
+    timerFunc();
   }
   // $flow-disable-line
   if (!cb && typeof Promise !== 'undefined') {
@@ -42445,7 +42617,7 @@ function nextTick (cb, ctx) {
 var mark;
 var measure;
 
-if (true) {
+{
   var perf = inBrowser && window.performance;
   /* istanbul ignore if */
   if (
@@ -42460,7 +42632,7 @@ if (true) {
       perf.measure(name, startTag, endTag);
       perf.clearMarks(startTag);
       perf.clearMarks(endTag);
-      perf.clearMeasures(name);
+      // perf.clearMeasures(name)
     };
   }
 }
@@ -42469,7 +42641,7 @@ if (true) {
 
 var initProxy;
 
-if (true) {
+{
   var allowedGlobals = makeMap(
     'Infinity,undefined,NaN,isFinite,isNaN,' +
     'parseFloat,parseInt,decodeURI,decodeURIComponent,encodeURI,encodeURIComponent,' +
@@ -42607,7 +42779,7 @@ var normalizeEvent = cached(function (name) {
   }
 });
 
-function createFnInvoker (fns) {
+function createFnInvoker (fns, vm) {
   function invoker () {
     var arguments$1 = arguments;
 
@@ -42615,11 +42787,11 @@ function createFnInvoker (fns) {
     if (Array.isArray(fns)) {
       var cloned = fns.slice();
       for (var i = 0; i < cloned.length; i++) {
-        cloned[i].apply(null, arguments$1);
+        invokeWithErrorHandling(cloned[i], null, arguments$1, vm, "v-on handler");
       }
     } else {
       // return handler return value for single handlers
-      return fns.apply(null, arguments)
+      return invokeWithErrorHandling(fns, null, arguments, vm, "v-on handler")
     }
   }
   invoker.fns = fns;
@@ -42640,13 +42812,13 @@ function updateListeners (
     old = oldOn[name];
     event = normalizeEvent(name);
     if (isUndef(cur)) {
-       true && warn(
+      warn(
         "Invalid handler for event \"" + (event.name) + "\": got " + String(cur),
         vm
       );
     } else if (isUndef(old)) {
       if (isUndef(cur.fns)) {
-        cur = on[name] = createFnInvoker(cur);
+        cur = on[name] = createFnInvoker(cur, vm);
       }
       if (isTrue(event.once)) {
         cur = on[name] = createOnceHandler(event.name, cur, event.capture);
@@ -42720,7 +42892,7 @@ function extractPropsFromVNodeData (
   if (isDef(attrs) || isDef(props)) {
     for (var key in propOptions) {
       var altKey = hyphenate(key);
-      if (true) {
+      {
         var keyInLowerCase = key.toLowerCase();
         if (
           key !== keyInLowerCase &&
@@ -42857,6 +43029,1152 @@ function normalizeArrayChildren (children, nestedIndex) {
 
 /*  */
 
+function initProvide (vm) {
+  var provide = vm.$options.provide;
+  if (provide) {
+    vm._provided = typeof provide === 'function'
+      ? provide.call(vm)
+      : provide;
+  }
+}
+
+function initInjections (vm) {
+  var result = resolveInject(vm.$options.inject, vm);
+  if (result) {
+    toggleObserving(false);
+    Object.keys(result).forEach(function (key) {
+      /* istanbul ignore else */
+      {
+        defineReactive$$1(vm, key, result[key], function () {
+          warn(
+            "Avoid mutating an injected value directly since the changes will be " +
+            "overwritten whenever the provided component re-renders. " +
+            "injection being mutated: \"" + key + "\"",
+            vm
+          );
+        });
+      }
+    });
+    toggleObserving(true);
+  }
+}
+
+function resolveInject (inject, vm) {
+  if (inject) {
+    // inject is :any because flow is not smart enough to figure out cached
+    var result = Object.create(null);
+    var keys = hasSymbol
+      ? Reflect.ownKeys(inject)
+      : Object.keys(inject);
+
+    for (var i = 0; i < keys.length; i++) {
+      var key = keys[i];
+      // #6574 in case the inject object is observed...
+      if (key === '__ob__') { continue }
+      var provideKey = inject[key].from;
+      var source = vm;
+      while (source) {
+        if (source._provided && hasOwn(source._provided, provideKey)) {
+          result[key] = source._provided[provideKey];
+          break
+        }
+        source = source.$parent;
+      }
+      if (!source) {
+        if ('default' in inject[key]) {
+          var provideDefault = inject[key].default;
+          result[key] = typeof provideDefault === 'function'
+            ? provideDefault.call(vm)
+            : provideDefault;
+        } else {
+          warn(("Injection \"" + key + "\" not found"), vm);
+        }
+      }
+    }
+    return result
+  }
+}
+
+/*  */
+
+
+
+/**
+ * Runtime helper for resolving raw children VNodes into a slot object.
+ */
+function resolveSlots (
+  children,
+  context
+) {
+  if (!children || !children.length) {
+    return {}
+  }
+  var slots = {};
+  for (var i = 0, l = children.length; i < l; i++) {
+    var child = children[i];
+    var data = child.data;
+    // remove slot attribute if the node is resolved as a Vue slot node
+    if (data && data.attrs && data.attrs.slot) {
+      delete data.attrs.slot;
+    }
+    // named slots should only be respected if the vnode was rendered in the
+    // same context.
+    if ((child.context === context || child.fnContext === context) &&
+      data && data.slot != null
+    ) {
+      var name = data.slot;
+      var slot = (slots[name] || (slots[name] = []));
+      if (child.tag === 'template') {
+        slot.push.apply(slot, child.children || []);
+      } else {
+        slot.push(child);
+      }
+    } else {
+      (slots.default || (slots.default = [])).push(child);
+    }
+  }
+  // ignore slots that contains only whitespace
+  for (var name$1 in slots) {
+    if (slots[name$1].every(isWhitespace)) {
+      delete slots[name$1];
+    }
+  }
+  return slots
+}
+
+function isWhitespace (node) {
+  return (node.isComment && !node.asyncFactory) || node.text === ' '
+}
+
+/*  */
+
+function normalizeScopedSlots (
+  slots,
+  normalSlots,
+  prevSlots
+) {
+  var res;
+  if (!slots) {
+    res = {};
+  } else if (slots._normalized) {
+    // fast path 1: child component re-render only, parent did not change
+    return slots._normalized
+  } else if (
+    slots.$stable &&
+    prevSlots &&
+    prevSlots !== emptyObject &&
+    Object.keys(normalSlots).length === 0
+  ) {
+    // fast path 2: stable scoped slots w/ no normal slots to proxy,
+    // only need to normalize once
+    return prevSlots
+  } else {
+    res = {};
+    for (var key in slots) {
+      if (slots[key] && key[0] !== '$') {
+        res[key] = normalizeScopedSlot(normalSlots, key, slots[key]);
+      }
+    }
+  }
+  // expose normal slots on scopedSlots
+  for (var key$1 in normalSlots) {
+    if (!(key$1 in res)) {
+      res[key$1] = proxyNormalSlot(normalSlots, key$1);
+    }
+  }
+  // avoriaz seems to mock a non-extensible $scopedSlots object
+  // and when that is passed down this would cause an error
+  if (slots && Object.isExtensible(slots)) {
+    (slots)._normalized = res;
+  }
+  def(res, '$stable', slots ? !!slots.$stable : true);
+  return res
+}
+
+function normalizeScopedSlot(normalSlots, key, fn) {
+  var normalized = function () {
+    var res = arguments.length ? fn.apply(null, arguments) : fn({});
+    res = res && typeof res === 'object' && !Array.isArray(res)
+      ? [res] // single vnode
+      : normalizeChildren(res);
+    return res && res.length === 0
+      ? undefined
+      : res
+  };
+  // this is a slot using the new v-slot syntax without scope. although it is
+  // compiled as a scoped slot, render fn users would expect it to be present
+  // on this.$slots because the usage is semantically a normal slot.
+  if (fn.proxy) {
+    Object.defineProperty(normalSlots, key, {
+      get: normalized,
+      enumerable: true,
+      configurable: true
+    });
+  }
+  return normalized
+}
+
+function proxyNormalSlot(slots, key) {
+  return function () { return slots[key]; }
+}
+
+/*  */
+
+/**
+ * Runtime helper for rendering v-for lists.
+ */
+function renderList (
+  val,
+  render
+) {
+  var ret, i, l, keys, key;
+  if (Array.isArray(val) || typeof val === 'string') {
+    ret = new Array(val.length);
+    for (i = 0, l = val.length; i < l; i++) {
+      ret[i] = render(val[i], i);
+    }
+  } else if (typeof val === 'number') {
+    ret = new Array(val);
+    for (i = 0; i < val; i++) {
+      ret[i] = render(i + 1, i);
+    }
+  } else if (isObject(val)) {
+    if (hasSymbol && val[Symbol.iterator]) {
+      ret = [];
+      var iterator = val[Symbol.iterator]();
+      var result = iterator.next();
+      while (!result.done) {
+        ret.push(render(result.value, ret.length));
+        result = iterator.next();
+      }
+    } else {
+      keys = Object.keys(val);
+      ret = new Array(keys.length);
+      for (i = 0, l = keys.length; i < l; i++) {
+        key = keys[i];
+        ret[i] = render(val[key], key, i);
+      }
+    }
+  }
+  if (!isDef(ret)) {
+    ret = [];
+  }
+  (ret)._isVList = true;
+  return ret
+}
+
+/*  */
+
+/**
+ * Runtime helper for rendering <slot>
+ */
+function renderSlot (
+  name,
+  fallback,
+  props,
+  bindObject
+) {
+  var scopedSlotFn = this.$scopedSlots[name];
+  var nodes;
+  if (scopedSlotFn) { // scoped slot
+    props = props || {};
+    if (bindObject) {
+      if (!isObject(bindObject)) {
+        warn(
+          'slot v-bind without argument expects an Object',
+          this
+        );
+      }
+      props = extend(extend({}, bindObject), props);
+    }
+    nodes = scopedSlotFn(props) || fallback;
+  } else {
+    nodes = this.$slots[name] || fallback;
+  }
+
+  var target = props && props.slot;
+  if (target) {
+    return this.$createElement('template', { slot: target }, nodes)
+  } else {
+    return nodes
+  }
+}
+
+/*  */
+
+/**
+ * Runtime helper for resolving filters
+ */
+function resolveFilter (id) {
+  return resolveAsset(this.$options, 'filters', id, true) || identity
+}
+
+/*  */
+
+function isKeyNotMatch (expect, actual) {
+  if (Array.isArray(expect)) {
+    return expect.indexOf(actual) === -1
+  } else {
+    return expect !== actual
+  }
+}
+
+/**
+ * Runtime helper for checking keyCodes from config.
+ * exposed as Vue.prototype._k
+ * passing in eventKeyName as last argument separately for backwards compat
+ */
+function checkKeyCodes (
+  eventKeyCode,
+  key,
+  builtInKeyCode,
+  eventKeyName,
+  builtInKeyName
+) {
+  var mappedKeyCode = config.keyCodes[key] || builtInKeyCode;
+  if (builtInKeyName && eventKeyName && !config.keyCodes[key]) {
+    return isKeyNotMatch(builtInKeyName, eventKeyName)
+  } else if (mappedKeyCode) {
+    return isKeyNotMatch(mappedKeyCode, eventKeyCode)
+  } else if (eventKeyName) {
+    return hyphenate(eventKeyName) !== key
+  }
+}
+
+/*  */
+
+/**
+ * Runtime helper for merging v-bind="object" into a VNode's data.
+ */
+function bindObjectProps (
+  data,
+  tag,
+  value,
+  asProp,
+  isSync
+) {
+  if (value) {
+    if (!isObject(value)) {
+      warn(
+        'v-bind without argument expects an Object or Array value',
+        this
+      );
+    } else {
+      if (Array.isArray(value)) {
+        value = toObject(value);
+      }
+      var hash;
+      var loop = function ( key ) {
+        if (
+          key === 'class' ||
+          key === 'style' ||
+          isReservedAttribute(key)
+        ) {
+          hash = data;
+        } else {
+          var type = data.attrs && data.attrs.type;
+          hash = asProp || config.mustUseProp(tag, type, key)
+            ? data.domProps || (data.domProps = {})
+            : data.attrs || (data.attrs = {});
+        }
+        var camelizedKey = camelize(key);
+        if (!(key in hash) && !(camelizedKey in hash)) {
+          hash[key] = value[key];
+
+          if (isSync) {
+            var on = data.on || (data.on = {});
+            on[("update:" + camelizedKey)] = function ($event) {
+              value[key] = $event;
+            };
+          }
+        }
+      };
+
+      for (var key in value) loop( key );
+    }
+  }
+  return data
+}
+
+/*  */
+
+/**
+ * Runtime helper for rendering static trees.
+ */
+function renderStatic (
+  index,
+  isInFor
+) {
+  var cached = this._staticTrees || (this._staticTrees = []);
+  var tree = cached[index];
+  // if has already-rendered static tree and not inside v-for,
+  // we can reuse the same tree.
+  if (tree && !isInFor) {
+    return tree
+  }
+  // otherwise, render a fresh tree.
+  tree = cached[index] = this.$options.staticRenderFns[index].call(
+    this._renderProxy,
+    null,
+    this // for render fns generated for functional component templates
+  );
+  markStatic(tree, ("__static__" + index), false);
+  return tree
+}
+
+/**
+ * Runtime helper for v-once.
+ * Effectively it means marking the node as static with a unique key.
+ */
+function markOnce (
+  tree,
+  index,
+  key
+) {
+  markStatic(tree, ("__once__" + index + (key ? ("_" + key) : "")), true);
+  return tree
+}
+
+function markStatic (
+  tree,
+  key,
+  isOnce
+) {
+  if (Array.isArray(tree)) {
+    for (var i = 0; i < tree.length; i++) {
+      if (tree[i] && typeof tree[i] !== 'string') {
+        markStaticNode(tree[i], (key + "_" + i), isOnce);
+      }
+    }
+  } else {
+    markStaticNode(tree, key, isOnce);
+  }
+}
+
+function markStaticNode (node, key, isOnce) {
+  node.isStatic = true;
+  node.key = key;
+  node.isOnce = isOnce;
+}
+
+/*  */
+
+function bindObjectListeners (data, value) {
+  if (value) {
+    if (!isPlainObject(value)) {
+      warn(
+        'v-on without argument expects an Object value',
+        this
+      );
+    } else {
+      var on = data.on = data.on ? extend({}, data.on) : {};
+      for (var key in value) {
+        var existing = on[key];
+        var ours = value[key];
+        on[key] = existing ? [].concat(existing, ours) : ours;
+      }
+    }
+  }
+  return data
+}
+
+/*  */
+
+function resolveScopedSlots (
+  fns, // see flow/vnode
+  hasDynamicKeys,
+  res
+) {
+  res = res || { $stable: !hasDynamicKeys };
+  for (var i = 0; i < fns.length; i++) {
+    var slot = fns[i];
+    if (Array.isArray(slot)) {
+      resolveScopedSlots(slot, hasDynamicKeys, res);
+    } else if (slot) {
+      // marker for reverse proxying v-slot without scope on this.$slots
+      if (slot.proxy) {
+        slot.fn.proxy = true;
+      }
+      res[slot.key] = slot.fn;
+    }
+  }
+  return res
+}
+
+/*  */
+
+function bindDynamicKeys (baseObj, values) {
+  for (var i = 0; i < values.length; i += 2) {
+    var key = values[i];
+    if (typeof key === 'string' && key) {
+      baseObj[values[i]] = values[i + 1];
+    } else if (key !== '' && key !== null) {
+      // null is a speical value for explicitly removing a binding
+      warn(
+        ("Invalid value for dynamic directive argument (expected string or null): " + key),
+        this
+      );
+    }
+  }
+  return baseObj
+}
+
+// helper to dynamically append modifier runtime markers to event names.
+// ensure only append when value is already string, otherwise it will be cast
+// to string and cause the type check to miss.
+function prependModifier (value, symbol) {
+  return typeof value === 'string' ? symbol + value : value
+}
+
+/*  */
+
+function installRenderHelpers (target) {
+  target._o = markOnce;
+  target._n = toNumber;
+  target._s = toString;
+  target._l = renderList;
+  target._t = renderSlot;
+  target._q = looseEqual;
+  target._i = looseIndexOf;
+  target._m = renderStatic;
+  target._f = resolveFilter;
+  target._k = checkKeyCodes;
+  target._b = bindObjectProps;
+  target._v = createTextVNode;
+  target._e = createEmptyVNode;
+  target._u = resolveScopedSlots;
+  target._g = bindObjectListeners;
+  target._d = bindDynamicKeys;
+  target._p = prependModifier;
+}
+
+/*  */
+
+function FunctionalRenderContext (
+  data,
+  props,
+  children,
+  parent,
+  Ctor
+) {
+  var this$1 = this;
+
+  var options = Ctor.options;
+  // ensure the createElement function in functional components
+  // gets a unique context - this is necessary for correct named slot check
+  var contextVm;
+  if (hasOwn(parent, '_uid')) {
+    contextVm = Object.create(parent);
+    // $flow-disable-line
+    contextVm._original = parent;
+  } else {
+    // the context vm passed in is a functional context as well.
+    // in this case we want to make sure we are able to get a hold to the
+    // real context instance.
+    contextVm = parent;
+    // $flow-disable-line
+    parent = parent._original;
+  }
+  var isCompiled = isTrue(options._compiled);
+  var needNormalization = !isCompiled;
+
+  this.data = data;
+  this.props = props;
+  this.children = children;
+  this.parent = parent;
+  this.listeners = data.on || emptyObject;
+  this.injections = resolveInject(options.inject, parent);
+  this.slots = function () {
+    if (!this$1.$slots) {
+      normalizeScopedSlots(
+        data.scopedSlots,
+        this$1.$slots = resolveSlots(children, parent)
+      );
+    }
+    return this$1.$slots
+  };
+
+  Object.defineProperty(this, 'scopedSlots', ({
+    enumerable: true,
+    get: function get () {
+      return normalizeScopedSlots(data.scopedSlots, this.slots())
+    }
+  }));
+
+  // support for compiled functional template
+  if (isCompiled) {
+    // exposing $options for renderStatic()
+    this.$options = options;
+    // pre-resolve slots for renderSlot()
+    this.$slots = this.slots();
+    this.$scopedSlots = normalizeScopedSlots(data.scopedSlots, this.$slots);
+  }
+
+  if (options._scopeId) {
+    this._c = function (a, b, c, d) {
+      var vnode = createElement(contextVm, a, b, c, d, needNormalization);
+      if (vnode && !Array.isArray(vnode)) {
+        vnode.fnScopeId = options._scopeId;
+        vnode.fnContext = parent;
+      }
+      return vnode
+    };
+  } else {
+    this._c = function (a, b, c, d) { return createElement(contextVm, a, b, c, d, needNormalization); };
+  }
+}
+
+installRenderHelpers(FunctionalRenderContext.prototype);
+
+function createFunctionalComponent (
+  Ctor,
+  propsData,
+  data,
+  contextVm,
+  children
+) {
+  var options = Ctor.options;
+  var props = {};
+  var propOptions = options.props;
+  if (isDef(propOptions)) {
+    for (var key in propOptions) {
+      props[key] = validateProp(key, propOptions, propsData || emptyObject);
+    }
+  } else {
+    if (isDef(data.attrs)) { mergeProps(props, data.attrs); }
+    if (isDef(data.props)) { mergeProps(props, data.props); }
+  }
+
+  var renderContext = new FunctionalRenderContext(
+    data,
+    props,
+    children,
+    contextVm,
+    Ctor
+  );
+
+  var vnode = options.render.call(null, renderContext._c, renderContext);
+
+  if (vnode instanceof VNode) {
+    return cloneAndMarkFunctionalResult(vnode, data, renderContext.parent, options, renderContext)
+  } else if (Array.isArray(vnode)) {
+    var vnodes = normalizeChildren(vnode) || [];
+    var res = new Array(vnodes.length);
+    for (var i = 0; i < vnodes.length; i++) {
+      res[i] = cloneAndMarkFunctionalResult(vnodes[i], data, renderContext.parent, options, renderContext);
+    }
+    return res
+  }
+}
+
+function cloneAndMarkFunctionalResult (vnode, data, contextVm, options, renderContext) {
+  // #7817 clone node before setting fnContext, otherwise if the node is reused
+  // (e.g. it was from a cached normal slot) the fnContext causes named slots
+  // that should not be matched to match.
+  var clone = cloneVNode(vnode);
+  clone.fnContext = contextVm;
+  clone.fnOptions = options;
+  {
+    (clone.devtoolsMeta = clone.devtoolsMeta || {}).renderContext = renderContext;
+  }
+  if (data.slot) {
+    (clone.data || (clone.data = {})).slot = data.slot;
+  }
+  return clone
+}
+
+function mergeProps (to, from) {
+  for (var key in from) {
+    to[camelize(key)] = from[key];
+  }
+}
+
+/*  */
+
+/*  */
+
+/*  */
+
+/*  */
+
+// inline hooks to be invoked on component VNodes during patch
+var componentVNodeHooks = {
+  init: function init (vnode, hydrating) {
+    if (
+      vnode.componentInstance &&
+      !vnode.componentInstance._isDestroyed &&
+      vnode.data.keepAlive
+    ) {
+      // kept-alive components, treat as a patch
+      var mountedNode = vnode; // work around flow
+      componentVNodeHooks.prepatch(mountedNode, mountedNode);
+    } else {
+      var child = vnode.componentInstance = createComponentInstanceForVnode(
+        vnode,
+        activeInstance
+      );
+      child.$mount(hydrating ? vnode.elm : undefined, hydrating);
+    }
+  },
+
+  prepatch: function prepatch (oldVnode, vnode) {
+    var options = vnode.componentOptions;
+    var child = vnode.componentInstance = oldVnode.componentInstance;
+    updateChildComponent(
+      child,
+      options.propsData, // updated props
+      options.listeners, // updated listeners
+      vnode, // new parent vnode
+      options.children // new children
+    );
+  },
+
+  insert: function insert (vnode) {
+    var context = vnode.context;
+    var componentInstance = vnode.componentInstance;
+    if (!componentInstance._isMounted) {
+      componentInstance._isMounted = true;
+      callHook(componentInstance, 'mounted');
+    }
+    if (vnode.data.keepAlive) {
+      if (context._isMounted) {
+        // vue-router#1212
+        // During updates, a kept-alive component's child components may
+        // change, so directly walking the tree here may call activated hooks
+        // on incorrect children. Instead we push them into a queue which will
+        // be processed after the whole patch process ended.
+        queueActivatedComponent(componentInstance);
+      } else {
+        activateChildComponent(componentInstance, true /* direct */);
+      }
+    }
+  },
+
+  destroy: function destroy (vnode) {
+    var componentInstance = vnode.componentInstance;
+    if (!componentInstance._isDestroyed) {
+      if (!vnode.data.keepAlive) {
+        componentInstance.$destroy();
+      } else {
+        deactivateChildComponent(componentInstance, true /* direct */);
+      }
+    }
+  }
+};
+
+var hooksToMerge = Object.keys(componentVNodeHooks);
+
+function createComponent (
+  Ctor,
+  data,
+  context,
+  children,
+  tag
+) {
+  if (isUndef(Ctor)) {
+    return
+  }
+
+  var baseCtor = context.$options._base;
+
+  // plain options object: turn it into a constructor
+  if (isObject(Ctor)) {
+    Ctor = baseCtor.extend(Ctor);
+  }
+
+  // if at this stage it's not a constructor or an async component factory,
+  // reject.
+  if (typeof Ctor !== 'function') {
+    {
+      warn(("Invalid Component definition: " + (String(Ctor))), context);
+    }
+    return
+  }
+
+  // async component
+  var asyncFactory;
+  if (isUndef(Ctor.cid)) {
+    asyncFactory = Ctor;
+    Ctor = resolveAsyncComponent(asyncFactory, baseCtor);
+    if (Ctor === undefined) {
+      // return a placeholder node for async component, which is rendered
+      // as a comment node but preserves all the raw information for the node.
+      // the information will be used for async server-rendering and hydration.
+      return createAsyncPlaceholder(
+        asyncFactory,
+        data,
+        context,
+        children,
+        tag
+      )
+    }
+  }
+
+  data = data || {};
+
+  // resolve constructor options in case global mixins are applied after
+  // component constructor creation
+  resolveConstructorOptions(Ctor);
+
+  // transform component v-model data into props & events
+  if (isDef(data.model)) {
+    transformModel(Ctor.options, data);
+  }
+
+  // extract props
+  var propsData = extractPropsFromVNodeData(data, Ctor, tag);
+
+  // functional component
+  if (isTrue(Ctor.options.functional)) {
+    return createFunctionalComponent(Ctor, propsData, data, context, children)
+  }
+
+  // extract listeners, since these needs to be treated as
+  // child component listeners instead of DOM listeners
+  var listeners = data.on;
+  // replace with listeners with .native modifier
+  // so it gets processed during parent component patch.
+  data.on = data.nativeOn;
+
+  if (isTrue(Ctor.options.abstract)) {
+    // abstract components do not keep anything
+    // other than props & listeners & slot
+
+    // work around flow
+    var slot = data.slot;
+    data = {};
+    if (slot) {
+      data.slot = slot;
+    }
+  }
+
+  // install component management hooks onto the placeholder node
+  installComponentHooks(data);
+
+  // return a placeholder vnode
+  var name = Ctor.options.name || tag;
+  var vnode = new VNode(
+    ("vue-component-" + (Ctor.cid) + (name ? ("-" + name) : '')),
+    data, undefined, undefined, undefined, context,
+    { Ctor: Ctor, propsData: propsData, listeners: listeners, tag: tag, children: children },
+    asyncFactory
+  );
+
+  return vnode
+}
+
+function createComponentInstanceForVnode (
+  vnode, // we know it's MountedComponentVNode but flow doesn't
+  parent // activeInstance in lifecycle state
+) {
+  var options = {
+    _isComponent: true,
+    _parentVnode: vnode,
+    parent: parent
+  };
+  // check inline-template render functions
+  var inlineTemplate = vnode.data.inlineTemplate;
+  if (isDef(inlineTemplate)) {
+    options.render = inlineTemplate.render;
+    options.staticRenderFns = inlineTemplate.staticRenderFns;
+  }
+  return new vnode.componentOptions.Ctor(options)
+}
+
+function installComponentHooks (data) {
+  var hooks = data.hook || (data.hook = {});
+  for (var i = 0; i < hooksToMerge.length; i++) {
+    var key = hooksToMerge[i];
+    var existing = hooks[key];
+    var toMerge = componentVNodeHooks[key];
+    if (existing !== toMerge && !(existing && existing._merged)) {
+      hooks[key] = existing ? mergeHook$1(toMerge, existing) : toMerge;
+    }
+  }
+}
+
+function mergeHook$1 (f1, f2) {
+  var merged = function (a, b) {
+    // flow complains about extra args which is why we use any
+    f1(a, b);
+    f2(a, b);
+  };
+  merged._merged = true;
+  return merged
+}
+
+// transform component v-model info (value and callback) into
+// prop and event handler respectively.
+function transformModel (options, data) {
+  var prop = (options.model && options.model.prop) || 'value';
+  var event = (options.model && options.model.event) || 'input'
+  ;(data.attrs || (data.attrs = {}))[prop] = data.model.value;
+  var on = data.on || (data.on = {});
+  var existing = on[event];
+  var callback = data.model.callback;
+  if (isDef(existing)) {
+    if (
+      Array.isArray(existing)
+        ? existing.indexOf(callback) === -1
+        : existing !== callback
+    ) {
+      on[event] = [callback].concat(existing);
+    }
+  } else {
+    on[event] = callback;
+  }
+}
+
+/*  */
+
+var SIMPLE_NORMALIZE = 1;
+var ALWAYS_NORMALIZE = 2;
+
+// wrapper function for providing a more flexible interface
+// without getting yelled at by flow
+function createElement (
+  context,
+  tag,
+  data,
+  children,
+  normalizationType,
+  alwaysNormalize
+) {
+  if (Array.isArray(data) || isPrimitive(data)) {
+    normalizationType = children;
+    children = data;
+    data = undefined;
+  }
+  if (isTrue(alwaysNormalize)) {
+    normalizationType = ALWAYS_NORMALIZE;
+  }
+  return _createElement(context, tag, data, children, normalizationType)
+}
+
+function _createElement (
+  context,
+  tag,
+  data,
+  children,
+  normalizationType
+) {
+  if (isDef(data) && isDef((data).__ob__)) {
+    warn(
+      "Avoid using observed data object as vnode data: " + (JSON.stringify(data)) + "\n" +
+      'Always create fresh vnode data objects in each render!',
+      context
+    );
+    return createEmptyVNode()
+  }
+  // object syntax in v-bind
+  if (isDef(data) && isDef(data.is)) {
+    tag = data.is;
+  }
+  if (!tag) {
+    // in case of component :is set to falsy value
+    return createEmptyVNode()
+  }
+  // warn against non-primitive key
+  if (isDef(data) && isDef(data.key) && !isPrimitive(data.key)
+  ) {
+    {
+      warn(
+        'Avoid using non-primitive value as key, ' +
+        'use string/number value instead.',
+        context
+      );
+    }
+  }
+  // support single function children as default scoped slot
+  if (Array.isArray(children) &&
+    typeof children[0] === 'function'
+  ) {
+    data = data || {};
+    data.scopedSlots = { default: children[0] };
+    children.length = 0;
+  }
+  if (normalizationType === ALWAYS_NORMALIZE) {
+    children = normalizeChildren(children);
+  } else if (normalizationType === SIMPLE_NORMALIZE) {
+    children = simpleNormalizeChildren(children);
+  }
+  var vnode, ns;
+  if (typeof tag === 'string') {
+    var Ctor;
+    ns = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag);
+    if (config.isReservedTag(tag)) {
+      // platform built-in elements
+      vnode = new VNode(
+        config.parsePlatformTagName(tag), data, children,
+        undefined, undefined, context
+      );
+    } else if ((!data || !data.pre) && isDef(Ctor = resolveAsset(context.$options, 'components', tag))) {
+      // component
+      vnode = createComponent(Ctor, data, context, children, tag);
+    } else {
+      // unknown or unlisted namespaced elements
+      // check at runtime because it may get assigned a namespace when its
+      // parent normalizes children
+      vnode = new VNode(
+        tag, data, children,
+        undefined, undefined, context
+      );
+    }
+  } else {
+    // direct component options / constructor
+    vnode = createComponent(tag, data, context, children);
+  }
+  if (Array.isArray(vnode)) {
+    return vnode
+  } else if (isDef(vnode)) {
+    if (isDef(ns)) { applyNS(vnode, ns); }
+    if (isDef(data)) { registerDeepBindings(data); }
+    return vnode
+  } else {
+    return createEmptyVNode()
+  }
+}
+
+function applyNS (vnode, ns, force) {
+  vnode.ns = ns;
+  if (vnode.tag === 'foreignObject') {
+    // use default namespace inside foreignObject
+    ns = undefined;
+    force = true;
+  }
+  if (isDef(vnode.children)) {
+    for (var i = 0, l = vnode.children.length; i < l; i++) {
+      var child = vnode.children[i];
+      if (isDef(child.tag) && (
+        isUndef(child.ns) || (isTrue(force) && child.tag !== 'svg'))) {
+        applyNS(child, ns, force);
+      }
+    }
+  }
+}
+
+// ref #5318
+// necessary to ensure parent re-render when deep bindings like :style and
+// :class are used on slot nodes
+function registerDeepBindings (data) {
+  if (isObject(data.style)) {
+    traverse(data.style);
+  }
+  if (isObject(data.class)) {
+    traverse(data.class);
+  }
+}
+
+/*  */
+
+function initRender (vm) {
+  vm._vnode = null; // the root of the child tree
+  vm._staticTrees = null; // v-once cached trees
+  var options = vm.$options;
+  var parentVnode = vm.$vnode = options._parentVnode; // the placeholder node in parent tree
+  var renderContext = parentVnode && parentVnode.context;
+  vm.$slots = resolveSlots(options._renderChildren, renderContext);
+  vm.$scopedSlots = emptyObject;
+  // bind the createElement fn to this instance
+  // so that we get proper render context inside it.
+  // args order: tag, data, children, normalizationType, alwaysNormalize
+  // internal version is used by render functions compiled from templates
+  vm._c = function (a, b, c, d) { return createElement(vm, a, b, c, d, false); };
+  // normalization is always applied for the public version, used in
+  // user-written render functions.
+  vm.$createElement = function (a, b, c, d) { return createElement(vm, a, b, c, d, true); };
+
+  // $attrs & $listeners are exposed for easier HOC creation.
+  // they need to be reactive so that HOCs using them are always updated
+  var parentData = parentVnode && parentVnode.data;
+
+  /* istanbul ignore else */
+  {
+    defineReactive$$1(vm, '$attrs', parentData && parentData.attrs || emptyObject, function () {
+      !isUpdatingChildComponent && warn("$attrs is readonly.", vm);
+    }, true);
+    defineReactive$$1(vm, '$listeners', options._parentListeners || emptyObject, function () {
+      !isUpdatingChildComponent && warn("$listeners is readonly.", vm);
+    }, true);
+  }
+}
+
+var currentRenderingInstance = null;
+
+function renderMixin (Vue) {
+  // install runtime convenience helpers
+  installRenderHelpers(Vue.prototype);
+
+  Vue.prototype.$nextTick = function (fn) {
+    return nextTick(fn, this)
+  };
+
+  Vue.prototype._render = function () {
+    var vm = this;
+    var ref = vm.$options;
+    var render = ref.render;
+    var _parentVnode = ref._parentVnode;
+
+    if (_parentVnode) {
+      vm.$scopedSlots = normalizeScopedSlots(
+        _parentVnode.data.scopedSlots,
+        vm.$slots,
+        vm.$scopedSlots
+      );
+    }
+
+    // set parent vnode. this allows render functions to have access
+    // to the data on the placeholder node.
+    vm.$vnode = _parentVnode;
+    // render self
+    var vnode;
+    try {
+      // There's no need to maintain a stack becaues all render fns are called
+      // separately from one another. Nested component's render fns are called
+      // when parent component is patched.
+      currentRenderingInstance = vm;
+      vnode = render.call(vm._renderProxy, vm.$createElement);
+    } catch (e) {
+      handleError(e, vm, "render");
+      // return error render result,
+      // or previous vnode to prevent render error causing blank component
+      /* istanbul ignore else */
+      if (vm.$options.renderError) {
+        try {
+          vnode = vm.$options.renderError.call(vm._renderProxy, vm.$createElement, e);
+        } catch (e) {
+          handleError(e, vm, "renderError");
+          vnode = vm._vnode;
+        }
+      } else {
+        vnode = vm._vnode;
+      }
+    } finally {
+      currentRenderingInstance = null;
+    }
+    // if the returned array contains only a single node, allow it
+    if (Array.isArray(vnode) && vnode.length === 1) {
+      vnode = vnode[0];
+    }
+    // return empty vnode in case the render function errored out
+    if (!(vnode instanceof VNode)) {
+      if (Array.isArray(vnode)) {
+        warn(
+          'Multiple root nodes returned from render function. Render function ' +
+          'should return a single root node.',
+          vm
+        );
+      }
+      vnode = createEmptyVNode();
+    }
+    // set parent
+    vnode.parent = _parentVnode;
+    return vnode
+  };
+}
+
+/*  */
+
 function ensureCtor (comp, base) {
   if (
     comp.__esModule ||
@@ -42884,8 +44202,7 @@ function createAsyncPlaceholder (
 
 function resolveAsyncComponent (
   factory,
-  baseCtor,
-  context
+  baseCtor
 ) {
   if (isTrue(factory.error) && isDef(factory.errorComp)) {
     return factory.errorComp
@@ -42899,20 +44216,21 @@ function resolveAsyncComponent (
     return factory.loadingComp
   }
 
-  if (isDef(factory.contexts)) {
+  var owner = currentRenderingInstance;
+  if (isDef(factory.owners)) {
     // already pending
-    factory.contexts.push(context);
+    factory.owners.push(owner);
   } else {
-    var contexts = factory.contexts = [context];
+    var owners = factory.owners = [owner];
     var sync = true;
 
     var forceRender = function (renderCompleted) {
-      for (var i = 0, l = contexts.length; i < l; i++) {
-        contexts[i].$forceUpdate();
+      for (var i = 0, l = owners.length; i < l; i++) {
+        (owners[i]).$forceUpdate();
       }
 
       if (renderCompleted) {
-        contexts.length = 0;
+        owners.length = 0;
       }
     };
 
@@ -42924,12 +44242,12 @@ function resolveAsyncComponent (
       if (!sync) {
         forceRender(true);
       } else {
-        contexts.length = 0;
+        owners.length = 0;
       }
     });
 
     var reject = once(function (reason) {
-       true && warn(
+      warn(
         "Failed to resolve async component: " + (String(factory)) +
         (reason ? ("\nReason: " + reason) : '')
       );
@@ -42942,12 +44260,12 @@ function resolveAsyncComponent (
     var res = factory(resolve, reject);
 
     if (isObject(res)) {
-      if (typeof res.then === 'function') {
+      if (isPromise(res)) {
         // () => Promise
         if (isUndef(factory.resolved)) {
           res.then(resolve, reject);
         }
-      } else if (isDef(res.component) && typeof res.component.then === 'function') {
+      } else if (isPromise(res.component)) {
         res.component.then(resolve, reject);
 
         if (isDef(res.error)) {
@@ -42972,9 +44290,7 @@ function resolveAsyncComponent (
           setTimeout(function () {
             if (isUndef(factory.resolved)) {
               reject(
-                 true
-                  ? ("timeout (" + (res.timeout) + "ms)")
-                  : undefined
+                "timeout (" + (res.timeout) + "ms)"
               );
             }
           }, res.timeout);
@@ -43121,7 +44437,7 @@ function eventsMixin (Vue) {
 
   Vue.prototype.$emit = function (event) {
     var vm = this;
-    if (true) {
+    {
       var lowerCaseEvent = event.toLowerCase();
       if (lowerCaseEvent !== event && vm._events[lowerCaseEvent]) {
         tip(
@@ -43137,82 +44453,13 @@ function eventsMixin (Vue) {
     if (cbs) {
       cbs = cbs.length > 1 ? toArray(cbs) : cbs;
       var args = toArray(arguments, 1);
+      var info = "event handler for \"" + event + "\"";
       for (var i = 0, l = cbs.length; i < l; i++) {
-        try {
-          cbs[i].apply(vm, args);
-        } catch (e) {
-          handleError(e, vm, ("event handler for \"" + event + "\""));
-        }
+        invokeWithErrorHandling(cbs[i], vm, args, vm, info);
       }
     }
     return vm
   };
-}
-
-/*  */
-
-
-
-/**
- * Runtime helper for resolving raw children VNodes into a slot object.
- */
-function resolveSlots (
-  children,
-  context
-) {
-  var slots = {};
-  if (!children) {
-    return slots
-  }
-  for (var i = 0, l = children.length; i < l; i++) {
-    var child = children[i];
-    var data = child.data;
-    // remove slot attribute if the node is resolved as a Vue slot node
-    if (data && data.attrs && data.attrs.slot) {
-      delete data.attrs.slot;
-    }
-    // named slots should only be respected if the vnode was rendered in the
-    // same context.
-    if ((child.context === context || child.fnContext === context) &&
-      data && data.slot != null
-    ) {
-      var name = data.slot;
-      var slot = (slots[name] || (slots[name] = []));
-      if (child.tag === 'template') {
-        slot.push.apply(slot, child.children || []);
-      } else {
-        slot.push(child);
-      }
-    } else {
-      (slots.default || (slots.default = [])).push(child);
-    }
-  }
-  // ignore slots that contains only whitespace
-  for (var name$1 in slots) {
-    if (slots[name$1].every(isWhitespace)) {
-      delete slots[name$1];
-    }
-  }
-  return slots
-}
-
-function isWhitespace (node) {
-  return (node.isComment && !node.asyncFactory) || node.text === ' '
-}
-
-function resolveScopedSlots (
-  fns, // see flow/vnode
-  res
-) {
-  res = res || {};
-  for (var i = 0; i < fns.length; i++) {
-    if (Array.isArray(fns[i])) {
-      resolveScopedSlots(fns[i], res);
-    } else {
-      res[fns[i].key] = fns[i].fn;
-    }
-  }
-  return res
 }
 
 /*  */
@@ -43345,7 +44592,7 @@ function mountComponent (
   vm.$el = el;
   if (!vm.$options.render) {
     vm.$options.render = createEmptyVNode;
-    if (true) {
+    {
       /* istanbul ignore if */
       if ((vm.$options.template && vm.$options.template.charAt(0) !== '#') ||
         vm.$options.el || el) {
@@ -43367,7 +44614,7 @@ function mountComponent (
 
   var updateComponent;
   /* istanbul ignore if */
-  if ( true && config.performance && mark) {
+  if (config.performance && mark) {
     updateComponent = function () {
       var name = vm._name;
       var id = vm._uid;
@@ -43418,17 +44665,28 @@ function updateChildComponent (
   parentVnode,
   renderChildren
 ) {
-  if (true) {
+  {
     isUpdatingChildComponent = true;
   }
 
   // determine whether component has slot children
-  // we need to do this before overwriting $options._renderChildren
-  var hasChildren = !!(
+  // we need to do this before overwriting $options._renderChildren.
+
+  // check if there are dynamic scopedSlots (hand-written or compiled but with
+  // dynamic slot names). Static scoped slots compiled from template has the
+  // "$stable" marker.
+  var hasDynamicScopedSlot = !!(
+    (parentVnode.data.scopedSlots && !parentVnode.data.scopedSlots.$stable) ||
+    (vm.$scopedSlots !== emptyObject && !vm.$scopedSlots.$stable)
+  );
+
+  // Any static slot children from the parent may have changed during parent's
+  // update. Dynamic scoped slots may also have changed. In such cases, a forced
+  // update is necessary to ensure correctness.
+  var needsForceUpdate = !!(
     renderChildren ||               // has new static slots
     vm.$options._renderChildren ||  // has old static slots
-    parentVnode.data.scopedSlots || // has new scoped slots
-    vm.$scopedSlots !== emptyObject // has old scoped slots
+    hasDynamicScopedSlot
   );
 
   vm.$options._parentVnode = parentVnode;
@@ -43467,12 +44725,12 @@ function updateChildComponent (
   updateComponentListeners(vm, listeners, oldListeners);
 
   // resolve slots + force update if has children
-  if (hasChildren) {
+  if (needsForceUpdate) {
     vm.$slots = resolveSlots(renderChildren, parentVnode.context);
     vm.$forceUpdate();
   }
 
-  if (true) {
+  {
     isUpdatingChildComponent = false;
   }
 }
@@ -43522,13 +44780,10 @@ function callHook (vm, hook) {
   // #7573 disable dep collection when invoking lifecycle hooks
   pushTarget();
   var handlers = vm.$options[hook];
+  var info = hook + " hook";
   if (handlers) {
     for (var i = 0, j = handlers.length; i < j; i++) {
-      try {
-        handlers[i].call(vm);
-      } catch (e) {
-        handleError(e, vm, (hook + " hook"));
-      }
+      invokeWithErrorHandling(handlers[i], vm, null, vm, info);
     }
   }
   if (vm._hasHookEvent) {
@@ -43555,16 +44810,38 @@ var index = 0;
 function resetSchedulerState () {
   index = queue.length = activatedChildren.length = 0;
   has = {};
-  if (true) {
+  {
     circular = {};
   }
   waiting = flushing = false;
+}
+
+// Async edge case #6566 requires saving the timestamp when event listeners are
+// attached. However, calling performance.now() has a perf overhead especially
+// if the page has thousands of event listeners. Instead, we take a timestamp
+// every time the scheduler flushes and use that for all event listeners
+// attached during that flush.
+var currentFlushTimestamp = 0;
+
+// Async edge case fix requires storing an event listener's attach timestamp.
+var getNow = Date.now;
+
+// Determine what event timestamp the browser is using. Annoyingly, the
+// timestamp can either be hi-res (relative to page load) or low-res
+// (relative to UNIX epoch), so in order to compare time we have to use the
+// same timestamp type when saving the flush timestamp.
+if (inBrowser && getNow() > document.createEvent('Event').timeStamp) {
+  // if the low-res timestamp which is bigger than the event timestamp
+  // (which is evaluated AFTER) it means the event is using a hi-res timestamp,
+  // and we need to use the hi-res version for event listeners as well.
+  getNow = function () { return performance.now(); };
 }
 
 /**
  * Flush both queues and run the watchers.
  */
 function flushSchedulerQueue () {
+  currentFlushTimestamp = getNow();
   flushing = true;
   var watcher, id;
 
@@ -43589,7 +44866,7 @@ function flushSchedulerQueue () {
     has[id] = null;
     watcher.run();
     // in dev build, check and stop circular updates.
-    if ( true && has[id] != null) {
+    if (has[id] != null) {
       circular[id] = (circular[id] || 0) + 1;
       if (circular[id] > MAX_UPDATE_COUNT) {
         warn(
@@ -43675,7 +44952,7 @@ function queueWatcher (watcher) {
     if (!waiting) {
       waiting = true;
 
-      if ( true && !config.async) {
+      if (!config.async) {
         flushSchedulerQueue();
         return
       }
@@ -43688,7 +44965,7 @@ function queueWatcher (watcher) {
 
 
 
-var uid$1 = 0;
+var uid$2 = 0;
 
 /**
  * A watcher parses an expression, collects dependencies,
@@ -43718,16 +44995,14 @@ var Watcher = function Watcher (
     this.deep = this.user = this.lazy = this.sync = false;
   }
   this.cb = cb;
-  this.id = ++uid$1; // uid for batching
+  this.id = ++uid$2; // uid for batching
   this.active = true;
   this.dirty = this.lazy; // for lazy watchers
   this.deps = [];
   this.newDeps = [];
   this.depIds = new _Set();
   this.newDepIds = new _Set();
-  this.expression =  true
-    ? expOrFn.toString()
-    : undefined;
+  this.expression = expOrFn.toString();
   // parse expression for getter
   if (typeof expOrFn === 'function') {
     this.getter = expOrFn;
@@ -43735,7 +45010,7 @@ var Watcher = function Watcher (
     this.getter = parsePath(expOrFn);
     if (!this.getter) {
       this.getter = noop;
-       true && warn(
+      warn(
         "Failed watching path: \"" + expOrFn + "\" " +
         'Watcher only accepts simple dot-delimited paths. ' +
         'For full control, use a function instead.',
@@ -43944,7 +45219,7 @@ function initProps (vm, propsOptions) {
     keys.push(key);
     var value = validateProp(key, propsOptions, propsData, vm);
     /* istanbul ignore else */
-    if (true) {
+    {
       var hyphenatedKey = hyphenate(key);
       if (isReservedAttribute(hyphenatedKey) ||
           config.isReservedAttr(hyphenatedKey)) {
@@ -43964,7 +45239,7 @@ function initProps (vm, propsOptions) {
           );
         }
       });
-    } else {}
+    }
     // static props are already proxied on the component's prototype
     // during Vue.extend(). We only need to proxy props defined at
     // instantiation here.
@@ -43984,7 +45259,7 @@ function initData (vm) {
     : data || {};
   if (!isPlainObject(data)) {
     data = {};
-     true && warn(
+    warn(
       'data functions should return an object:\n' +
       'https://vuejs.org/v2/guide/components.html#data-Must-Be-a-Function',
       vm
@@ -43997,7 +45272,7 @@ function initData (vm) {
   var i = keys.length;
   while (i--) {
     var key = keys[i];
-    if (true) {
+    {
       if (methods && hasOwn(methods, key)) {
         warn(
           ("Method \"" + key + "\" has already been defined as a data property."),
@@ -44006,7 +45281,7 @@ function initData (vm) {
       }
     }
     if (props && hasOwn(props, key)) {
-       true && warn(
+      warn(
         "The data property \"" + key + "\" is already declared as a prop. " +
         "Use prop default value instead.",
         vm
@@ -44043,7 +45318,7 @@ function initComputed (vm, computed) {
   for (var key in computed) {
     var userDef = computed[key];
     var getter = typeof userDef === 'function' ? userDef : userDef.get;
-    if ( true && getter == null) {
+    if (getter == null) {
       warn(
         ("Getter is missing for computed property \"" + key + "\"."),
         vm
@@ -44065,7 +45340,7 @@ function initComputed (vm, computed) {
     // at instantiation here.
     if (!(key in vm)) {
       defineComputed(vm, key, userDef);
-    } else if (true) {
+    } else {
       if (key in vm.$data) {
         warn(("The computed property \"" + key + "\" is already defined in data."), vm);
       } else if (vm.$options.props && key in vm.$options.props) {
@@ -44094,8 +45369,7 @@ function defineComputed (
       : noop;
     sharedPropertyDefinition.set = userDef.set || noop;
   }
-  if ( true &&
-      sharedPropertyDefinition.set === noop) {
+  if (sharedPropertyDefinition.set === noop) {
     sharedPropertyDefinition.set = function () {
       warn(
         ("Computed property \"" + key + "\" was assigned to but it has no setter."),
@@ -44130,7 +45404,7 @@ function createGetterInvoker(fn) {
 function initMethods (vm, methods) {
   var props = vm.$options.props;
   for (var key in methods) {
-    if (true) {
+    {
       if (typeof methods[key] !== 'function') {
         warn(
           "Method \"" + key + "\" has type \"" + (typeof methods[key]) + "\" in the component definition. " +
@@ -44192,7 +45466,7 @@ function stateMixin (Vue) {
   dataDef.get = function () { return this._data };
   var propsDef = {};
   propsDef.get = function () { return this._props };
-  if (true) {
+  {
     dataDef.set = function () {
       warn(
         'Avoid replacing instance root $data. ' +
@@ -44237,938 +45511,6 @@ function stateMixin (Vue) {
 
 /*  */
 
-function initProvide (vm) {
-  var provide = vm.$options.provide;
-  if (provide) {
-    vm._provided = typeof provide === 'function'
-      ? provide.call(vm)
-      : provide;
-  }
-}
-
-function initInjections (vm) {
-  var result = resolveInject(vm.$options.inject, vm);
-  if (result) {
-    toggleObserving(false);
-    Object.keys(result).forEach(function (key) {
-      /* istanbul ignore else */
-      if (true) {
-        defineReactive$$1(vm, key, result[key], function () {
-          warn(
-            "Avoid mutating an injected value directly since the changes will be " +
-            "overwritten whenever the provided component re-renders. " +
-            "injection being mutated: \"" + key + "\"",
-            vm
-          );
-        });
-      } else {}
-    });
-    toggleObserving(true);
-  }
-}
-
-function resolveInject (inject, vm) {
-  if (inject) {
-    // inject is :any because flow is not smart enough to figure out cached
-    var result = Object.create(null);
-    var keys = hasSymbol
-      ? Reflect.ownKeys(inject).filter(function (key) {
-        /* istanbul ignore next */
-        return Object.getOwnPropertyDescriptor(inject, key).enumerable
-      })
-      : Object.keys(inject);
-
-    for (var i = 0; i < keys.length; i++) {
-      var key = keys[i];
-      var provideKey = inject[key].from;
-      var source = vm;
-      while (source) {
-        if (source._provided && hasOwn(source._provided, provideKey)) {
-          result[key] = source._provided[provideKey];
-          break
-        }
-        source = source.$parent;
-      }
-      if (!source) {
-        if ('default' in inject[key]) {
-          var provideDefault = inject[key].default;
-          result[key] = typeof provideDefault === 'function'
-            ? provideDefault.call(vm)
-            : provideDefault;
-        } else if (true) {
-          warn(("Injection \"" + key + "\" not found"), vm);
-        }
-      }
-    }
-    return result
-  }
-}
-
-/*  */
-
-/**
- * Runtime helper for rendering v-for lists.
- */
-function renderList (
-  val,
-  render
-) {
-  var ret, i, l, keys, key;
-  if (Array.isArray(val) || typeof val === 'string') {
-    ret = new Array(val.length);
-    for (i = 0, l = val.length; i < l; i++) {
-      ret[i] = render(val[i], i);
-    }
-  } else if (typeof val === 'number') {
-    ret = new Array(val);
-    for (i = 0; i < val; i++) {
-      ret[i] = render(i + 1, i);
-    }
-  } else if (isObject(val)) {
-    keys = Object.keys(val);
-    ret = new Array(keys.length);
-    for (i = 0, l = keys.length; i < l; i++) {
-      key = keys[i];
-      ret[i] = render(val[key], key, i);
-    }
-  }
-  if (!isDef(ret)) {
-    ret = [];
-  }
-  (ret)._isVList = true;
-  return ret
-}
-
-/*  */
-
-/**
- * Runtime helper for rendering <slot>
- */
-function renderSlot (
-  name,
-  fallback,
-  props,
-  bindObject
-) {
-  var scopedSlotFn = this.$scopedSlots[name];
-  var nodes;
-  if (scopedSlotFn) { // scoped slot
-    props = props || {};
-    if (bindObject) {
-      if ( true && !isObject(bindObject)) {
-        warn(
-          'slot v-bind without argument expects an Object',
-          this
-        );
-      }
-      props = extend(extend({}, bindObject), props);
-    }
-    nodes = scopedSlotFn(props) || fallback;
-  } else {
-    nodes = this.$slots[name] || fallback;
-  }
-
-  var target = props && props.slot;
-  if (target) {
-    return this.$createElement('template', { slot: target }, nodes)
-  } else {
-    return nodes
-  }
-}
-
-/*  */
-
-/**
- * Runtime helper for resolving filters
- */
-function resolveFilter (id) {
-  return resolveAsset(this.$options, 'filters', id, true) || identity
-}
-
-/*  */
-
-function isKeyNotMatch (expect, actual) {
-  if (Array.isArray(expect)) {
-    return expect.indexOf(actual) === -1
-  } else {
-    return expect !== actual
-  }
-}
-
-/**
- * Runtime helper for checking keyCodes from config.
- * exposed as Vue.prototype._k
- * passing in eventKeyName as last argument separately for backwards compat
- */
-function checkKeyCodes (
-  eventKeyCode,
-  key,
-  builtInKeyCode,
-  eventKeyName,
-  builtInKeyName
-) {
-  var mappedKeyCode = config.keyCodes[key] || builtInKeyCode;
-  if (builtInKeyName && eventKeyName && !config.keyCodes[key]) {
-    return isKeyNotMatch(builtInKeyName, eventKeyName)
-  } else if (mappedKeyCode) {
-    return isKeyNotMatch(mappedKeyCode, eventKeyCode)
-  } else if (eventKeyName) {
-    return hyphenate(eventKeyName) !== key
-  }
-}
-
-/*  */
-
-/**
- * Runtime helper for merging v-bind="object" into a VNode's data.
- */
-function bindObjectProps (
-  data,
-  tag,
-  value,
-  asProp,
-  isSync
-) {
-  if (value) {
-    if (!isObject(value)) {
-       true && warn(
-        'v-bind without argument expects an Object or Array value',
-        this
-      );
-    } else {
-      if (Array.isArray(value)) {
-        value = toObject(value);
-      }
-      var hash;
-      var loop = function ( key ) {
-        if (
-          key === 'class' ||
-          key === 'style' ||
-          isReservedAttribute(key)
-        ) {
-          hash = data;
-        } else {
-          var type = data.attrs && data.attrs.type;
-          hash = asProp || config.mustUseProp(tag, type, key)
-            ? data.domProps || (data.domProps = {})
-            : data.attrs || (data.attrs = {});
-        }
-        var camelizedKey = camelize(key);
-        if (!(key in hash) && !(camelizedKey in hash)) {
-          hash[key] = value[key];
-
-          if (isSync) {
-            var on = data.on || (data.on = {});
-            on[("update:" + camelizedKey)] = function ($event) {
-              value[key] = $event;
-            };
-          }
-        }
-      };
-
-      for (var key in value) loop( key );
-    }
-  }
-  return data
-}
-
-/*  */
-
-/**
- * Runtime helper for rendering static trees.
- */
-function renderStatic (
-  index,
-  isInFor
-) {
-  var cached = this._staticTrees || (this._staticTrees = []);
-  var tree = cached[index];
-  // if has already-rendered static tree and not inside v-for,
-  // we can reuse the same tree.
-  if (tree && !isInFor) {
-    return tree
-  }
-  // otherwise, render a fresh tree.
-  tree = cached[index] = this.$options.staticRenderFns[index].call(
-    this._renderProxy,
-    null,
-    this // for render fns generated for functional component templates
-  );
-  markStatic(tree, ("__static__" + index), false);
-  return tree
-}
-
-/**
- * Runtime helper for v-once.
- * Effectively it means marking the node as static with a unique key.
- */
-function markOnce (
-  tree,
-  index,
-  key
-) {
-  markStatic(tree, ("__once__" + index + (key ? ("_" + key) : "")), true);
-  return tree
-}
-
-function markStatic (
-  tree,
-  key,
-  isOnce
-) {
-  if (Array.isArray(tree)) {
-    for (var i = 0; i < tree.length; i++) {
-      if (tree[i] && typeof tree[i] !== 'string') {
-        markStaticNode(tree[i], (key + "_" + i), isOnce);
-      }
-    }
-  } else {
-    markStaticNode(tree, key, isOnce);
-  }
-}
-
-function markStaticNode (node, key, isOnce) {
-  node.isStatic = true;
-  node.key = key;
-  node.isOnce = isOnce;
-}
-
-/*  */
-
-function bindObjectListeners (data, value) {
-  if (value) {
-    if (!isPlainObject(value)) {
-       true && warn(
-        'v-on without argument expects an Object value',
-        this
-      );
-    } else {
-      var on = data.on = data.on ? extend({}, data.on) : {};
-      for (var key in value) {
-        var existing = on[key];
-        var ours = value[key];
-        on[key] = existing ? [].concat(existing, ours) : ours;
-      }
-    }
-  }
-  return data
-}
-
-/*  */
-
-function installRenderHelpers (target) {
-  target._o = markOnce;
-  target._n = toNumber;
-  target._s = toString;
-  target._l = renderList;
-  target._t = renderSlot;
-  target._q = looseEqual;
-  target._i = looseIndexOf;
-  target._m = renderStatic;
-  target._f = resolveFilter;
-  target._k = checkKeyCodes;
-  target._b = bindObjectProps;
-  target._v = createTextVNode;
-  target._e = createEmptyVNode;
-  target._u = resolveScopedSlots;
-  target._g = bindObjectListeners;
-}
-
-/*  */
-
-function FunctionalRenderContext (
-  data,
-  props,
-  children,
-  parent,
-  Ctor
-) {
-  var options = Ctor.options;
-  // ensure the createElement function in functional components
-  // gets a unique context - this is necessary for correct named slot check
-  var contextVm;
-  if (hasOwn(parent, '_uid')) {
-    contextVm = Object.create(parent);
-    // $flow-disable-line
-    contextVm._original = parent;
-  } else {
-    // the context vm passed in is a functional context as well.
-    // in this case we want to make sure we are able to get a hold to the
-    // real context instance.
-    contextVm = parent;
-    // $flow-disable-line
-    parent = parent._original;
-  }
-  var isCompiled = isTrue(options._compiled);
-  var needNormalization = !isCompiled;
-
-  this.data = data;
-  this.props = props;
-  this.children = children;
-  this.parent = parent;
-  this.listeners = data.on || emptyObject;
-  this.injections = resolveInject(options.inject, parent);
-  this.slots = function () { return resolveSlots(children, parent); };
-
-  // support for compiled functional template
-  if (isCompiled) {
-    // exposing $options for renderStatic()
-    this.$options = options;
-    // pre-resolve slots for renderSlot()
-    this.$slots = this.slots();
-    this.$scopedSlots = data.scopedSlots || emptyObject;
-  }
-
-  if (options._scopeId) {
-    this._c = function (a, b, c, d) {
-      var vnode = createElement(contextVm, a, b, c, d, needNormalization);
-      if (vnode && !Array.isArray(vnode)) {
-        vnode.fnScopeId = options._scopeId;
-        vnode.fnContext = parent;
-      }
-      return vnode
-    };
-  } else {
-    this._c = function (a, b, c, d) { return createElement(contextVm, a, b, c, d, needNormalization); };
-  }
-}
-
-installRenderHelpers(FunctionalRenderContext.prototype);
-
-function createFunctionalComponent (
-  Ctor,
-  propsData,
-  data,
-  contextVm,
-  children
-) {
-  var options = Ctor.options;
-  var props = {};
-  var propOptions = options.props;
-  if (isDef(propOptions)) {
-    for (var key in propOptions) {
-      props[key] = validateProp(key, propOptions, propsData || emptyObject);
-    }
-  } else {
-    if (isDef(data.attrs)) { mergeProps(props, data.attrs); }
-    if (isDef(data.props)) { mergeProps(props, data.props); }
-  }
-
-  var renderContext = new FunctionalRenderContext(
-    data,
-    props,
-    children,
-    contextVm,
-    Ctor
-  );
-
-  var vnode = options.render.call(null, renderContext._c, renderContext);
-
-  if (vnode instanceof VNode) {
-    return cloneAndMarkFunctionalResult(vnode, data, renderContext.parent, options, renderContext)
-  } else if (Array.isArray(vnode)) {
-    var vnodes = normalizeChildren(vnode) || [];
-    var res = new Array(vnodes.length);
-    for (var i = 0; i < vnodes.length; i++) {
-      res[i] = cloneAndMarkFunctionalResult(vnodes[i], data, renderContext.parent, options, renderContext);
-    }
-    return res
-  }
-}
-
-function cloneAndMarkFunctionalResult (vnode, data, contextVm, options, renderContext) {
-  // #7817 clone node before setting fnContext, otherwise if the node is reused
-  // (e.g. it was from a cached normal slot) the fnContext causes named slots
-  // that should not be matched to match.
-  var clone = cloneVNode(vnode);
-  clone.fnContext = contextVm;
-  clone.fnOptions = options;
-  if (true) {
-    (clone.devtoolsMeta = clone.devtoolsMeta || {}).renderContext = renderContext;
-  }
-  if (data.slot) {
-    (clone.data || (clone.data = {})).slot = data.slot;
-  }
-  return clone
-}
-
-function mergeProps (to, from) {
-  for (var key in from) {
-    to[camelize(key)] = from[key];
-  }
-}
-
-/*  */
-
-/*  */
-
-/*  */
-
-/*  */
-
-// inline hooks to be invoked on component VNodes during patch
-var componentVNodeHooks = {
-  init: function init (vnode, hydrating) {
-    if (
-      vnode.componentInstance &&
-      !vnode.componentInstance._isDestroyed &&
-      vnode.data.keepAlive
-    ) {
-      // kept-alive components, treat as a patch
-      var mountedNode = vnode; // work around flow
-      componentVNodeHooks.prepatch(mountedNode, mountedNode);
-    } else {
-      var child = vnode.componentInstance = createComponentInstanceForVnode(
-        vnode,
-        activeInstance
-      );
-      child.$mount(hydrating ? vnode.elm : undefined, hydrating);
-    }
-  },
-
-  prepatch: function prepatch (oldVnode, vnode) {
-    var options = vnode.componentOptions;
-    var child = vnode.componentInstance = oldVnode.componentInstance;
-    updateChildComponent(
-      child,
-      options.propsData, // updated props
-      options.listeners, // updated listeners
-      vnode, // new parent vnode
-      options.children // new children
-    );
-  },
-
-  insert: function insert (vnode) {
-    var context = vnode.context;
-    var componentInstance = vnode.componentInstance;
-    if (!componentInstance._isMounted) {
-      componentInstance._isMounted = true;
-      callHook(componentInstance, 'mounted');
-    }
-    if (vnode.data.keepAlive) {
-      if (context._isMounted) {
-        // vue-router#1212
-        // During updates, a kept-alive component's child components may
-        // change, so directly walking the tree here may call activated hooks
-        // on incorrect children. Instead we push them into a queue which will
-        // be processed after the whole patch process ended.
-        queueActivatedComponent(componentInstance);
-      } else {
-        activateChildComponent(componentInstance, true /* direct */);
-      }
-    }
-  },
-
-  destroy: function destroy (vnode) {
-    var componentInstance = vnode.componentInstance;
-    if (!componentInstance._isDestroyed) {
-      if (!vnode.data.keepAlive) {
-        componentInstance.$destroy();
-      } else {
-        deactivateChildComponent(componentInstance, true /* direct */);
-      }
-    }
-  }
-};
-
-var hooksToMerge = Object.keys(componentVNodeHooks);
-
-function createComponent (
-  Ctor,
-  data,
-  context,
-  children,
-  tag
-) {
-  if (isUndef(Ctor)) {
-    return
-  }
-
-  var baseCtor = context.$options._base;
-
-  // plain options object: turn it into a constructor
-  if (isObject(Ctor)) {
-    Ctor = baseCtor.extend(Ctor);
-  }
-
-  // if at this stage it's not a constructor or an async component factory,
-  // reject.
-  if (typeof Ctor !== 'function') {
-    if (true) {
-      warn(("Invalid Component definition: " + (String(Ctor))), context);
-    }
-    return
-  }
-
-  // async component
-  var asyncFactory;
-  if (isUndef(Ctor.cid)) {
-    asyncFactory = Ctor;
-    Ctor = resolveAsyncComponent(asyncFactory, baseCtor, context);
-    if (Ctor === undefined) {
-      // return a placeholder node for async component, which is rendered
-      // as a comment node but preserves all the raw information for the node.
-      // the information will be used for async server-rendering and hydration.
-      return createAsyncPlaceholder(
-        asyncFactory,
-        data,
-        context,
-        children,
-        tag
-      )
-    }
-  }
-
-  data = data || {};
-
-  // resolve constructor options in case global mixins are applied after
-  // component constructor creation
-  resolveConstructorOptions(Ctor);
-
-  // transform component v-model data into props & events
-  if (isDef(data.model)) {
-    transformModel(Ctor.options, data);
-  }
-
-  // extract props
-  var propsData = extractPropsFromVNodeData(data, Ctor, tag);
-
-  // functional component
-  if (isTrue(Ctor.options.functional)) {
-    return createFunctionalComponent(Ctor, propsData, data, context, children)
-  }
-
-  // extract listeners, since these needs to be treated as
-  // child component listeners instead of DOM listeners
-  var listeners = data.on;
-  // replace with listeners with .native modifier
-  // so it gets processed during parent component patch.
-  data.on = data.nativeOn;
-
-  if (isTrue(Ctor.options.abstract)) {
-    // abstract components do not keep anything
-    // other than props & listeners & slot
-
-    // work around flow
-    var slot = data.slot;
-    data = {};
-    if (slot) {
-      data.slot = slot;
-    }
-  }
-
-  // install component management hooks onto the placeholder node
-  installComponentHooks(data);
-
-  // return a placeholder vnode
-  var name = Ctor.options.name || tag;
-  var vnode = new VNode(
-    ("vue-component-" + (Ctor.cid) + (name ? ("-" + name) : '')),
-    data, undefined, undefined, undefined, context,
-    { Ctor: Ctor, propsData: propsData, listeners: listeners, tag: tag, children: children },
-    asyncFactory
-  );
-
-  return vnode
-}
-
-function createComponentInstanceForVnode (
-  vnode, // we know it's MountedComponentVNode but flow doesn't
-  parent // activeInstance in lifecycle state
-) {
-  var options = {
-    _isComponent: true,
-    _parentVnode: vnode,
-    parent: parent
-  };
-  // check inline-template render functions
-  var inlineTemplate = vnode.data.inlineTemplate;
-  if (isDef(inlineTemplate)) {
-    options.render = inlineTemplate.render;
-    options.staticRenderFns = inlineTemplate.staticRenderFns;
-  }
-  return new vnode.componentOptions.Ctor(options)
-}
-
-function installComponentHooks (data) {
-  var hooks = data.hook || (data.hook = {});
-  for (var i = 0; i < hooksToMerge.length; i++) {
-    var key = hooksToMerge[i];
-    var existing = hooks[key];
-    var toMerge = componentVNodeHooks[key];
-    if (existing !== toMerge && !(existing && existing._merged)) {
-      hooks[key] = existing ? mergeHook$1(toMerge, existing) : toMerge;
-    }
-  }
-}
-
-function mergeHook$1 (f1, f2) {
-  var merged = function (a, b) {
-    // flow complains about extra args which is why we use any
-    f1(a, b);
-    f2(a, b);
-  };
-  merged._merged = true;
-  return merged
-}
-
-// transform component v-model info (value and callback) into
-// prop and event handler respectively.
-function transformModel (options, data) {
-  var prop = (options.model && options.model.prop) || 'value';
-  var event = (options.model && options.model.event) || 'input'
-  ;(data.props || (data.props = {}))[prop] = data.model.value;
-  var on = data.on || (data.on = {});
-  var existing = on[event];
-  var callback = data.model.callback;
-  if (isDef(existing)) {
-    if (
-      Array.isArray(existing)
-        ? existing.indexOf(callback) === -1
-        : existing !== callback
-    ) {
-      on[event] = [callback].concat(existing);
-    }
-  } else {
-    on[event] = callback;
-  }
-}
-
-/*  */
-
-var SIMPLE_NORMALIZE = 1;
-var ALWAYS_NORMALIZE = 2;
-
-// wrapper function for providing a more flexible interface
-// without getting yelled at by flow
-function createElement (
-  context,
-  tag,
-  data,
-  children,
-  normalizationType,
-  alwaysNormalize
-) {
-  if (Array.isArray(data) || isPrimitive(data)) {
-    normalizationType = children;
-    children = data;
-    data = undefined;
-  }
-  if (isTrue(alwaysNormalize)) {
-    normalizationType = ALWAYS_NORMALIZE;
-  }
-  return _createElement(context, tag, data, children, normalizationType)
-}
-
-function _createElement (
-  context,
-  tag,
-  data,
-  children,
-  normalizationType
-) {
-  if (isDef(data) && isDef((data).__ob__)) {
-     true && warn(
-      "Avoid using observed data object as vnode data: " + (JSON.stringify(data)) + "\n" +
-      'Always create fresh vnode data objects in each render!',
-      context
-    );
-    return createEmptyVNode()
-  }
-  // object syntax in v-bind
-  if (isDef(data) && isDef(data.is)) {
-    tag = data.is;
-  }
-  if (!tag) {
-    // in case of component :is set to falsy value
-    return createEmptyVNode()
-  }
-  // warn against non-primitive key
-  if ( true &&
-    isDef(data) && isDef(data.key) && !isPrimitive(data.key)
-  ) {
-    {
-      warn(
-        'Avoid using non-primitive value as key, ' +
-        'use string/number value instead.',
-        context
-      );
-    }
-  }
-  // support single function children as default scoped slot
-  if (Array.isArray(children) &&
-    typeof children[0] === 'function'
-  ) {
-    data = data || {};
-    data.scopedSlots = { default: children[0] };
-    children.length = 0;
-  }
-  if (normalizationType === ALWAYS_NORMALIZE) {
-    children = normalizeChildren(children);
-  } else if (normalizationType === SIMPLE_NORMALIZE) {
-    children = simpleNormalizeChildren(children);
-  }
-  var vnode, ns;
-  if (typeof tag === 'string') {
-    var Ctor;
-    ns = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag);
-    if (config.isReservedTag(tag)) {
-      // platform built-in elements
-      vnode = new VNode(
-        config.parsePlatformTagName(tag), data, children,
-        undefined, undefined, context
-      );
-    } else if ((!data || !data.pre) && isDef(Ctor = resolveAsset(context.$options, 'components', tag))) {
-      // component
-      vnode = createComponent(Ctor, data, context, children, tag);
-    } else {
-      // unknown or unlisted namespaced elements
-      // check at runtime because it may get assigned a namespace when its
-      // parent normalizes children
-      vnode = new VNode(
-        tag, data, children,
-        undefined, undefined, context
-      );
-    }
-  } else {
-    // direct component options / constructor
-    vnode = createComponent(tag, data, context, children);
-  }
-  if (Array.isArray(vnode)) {
-    return vnode
-  } else if (isDef(vnode)) {
-    if (isDef(ns)) { applyNS(vnode, ns); }
-    if (isDef(data)) { registerDeepBindings(data); }
-    return vnode
-  } else {
-    return createEmptyVNode()
-  }
-}
-
-function applyNS (vnode, ns, force) {
-  vnode.ns = ns;
-  if (vnode.tag === 'foreignObject') {
-    // use default namespace inside foreignObject
-    ns = undefined;
-    force = true;
-  }
-  if (isDef(vnode.children)) {
-    for (var i = 0, l = vnode.children.length; i < l; i++) {
-      var child = vnode.children[i];
-      if (isDef(child.tag) && (
-        isUndef(child.ns) || (isTrue(force) && child.tag !== 'svg'))) {
-        applyNS(child, ns, force);
-      }
-    }
-  }
-}
-
-// ref #5318
-// necessary to ensure parent re-render when deep bindings like :style and
-// :class are used on slot nodes
-function registerDeepBindings (data) {
-  if (isObject(data.style)) {
-    traverse(data.style);
-  }
-  if (isObject(data.class)) {
-    traverse(data.class);
-  }
-}
-
-/*  */
-
-function initRender (vm) {
-  vm._vnode = null; // the root of the child tree
-  vm._staticTrees = null; // v-once cached trees
-  var options = vm.$options;
-  var parentVnode = vm.$vnode = options._parentVnode; // the placeholder node in parent tree
-  var renderContext = parentVnode && parentVnode.context;
-  vm.$slots = resolveSlots(options._renderChildren, renderContext);
-  vm.$scopedSlots = emptyObject;
-  // bind the createElement fn to this instance
-  // so that we get proper render context inside it.
-  // args order: tag, data, children, normalizationType, alwaysNormalize
-  // internal version is used by render functions compiled from templates
-  vm._c = function (a, b, c, d) { return createElement(vm, a, b, c, d, false); };
-  // normalization is always applied for the public version, used in
-  // user-written render functions.
-  vm.$createElement = function (a, b, c, d) { return createElement(vm, a, b, c, d, true); };
-
-  // $attrs & $listeners are exposed for easier HOC creation.
-  // they need to be reactive so that HOCs using them are always updated
-  var parentData = parentVnode && parentVnode.data;
-
-  /* istanbul ignore else */
-  if (true) {
-    defineReactive$$1(vm, '$attrs', parentData && parentData.attrs || emptyObject, function () {
-      !isUpdatingChildComponent && warn("$attrs is readonly.", vm);
-    }, true);
-    defineReactive$$1(vm, '$listeners', options._parentListeners || emptyObject, function () {
-      !isUpdatingChildComponent && warn("$listeners is readonly.", vm);
-    }, true);
-  } else {}
-}
-
-function renderMixin (Vue) {
-  // install runtime convenience helpers
-  installRenderHelpers(Vue.prototype);
-
-  Vue.prototype.$nextTick = function (fn) {
-    return nextTick(fn, this)
-  };
-
-  Vue.prototype._render = function () {
-    var vm = this;
-    var ref = vm.$options;
-    var render = ref.render;
-    var _parentVnode = ref._parentVnode;
-
-    if (_parentVnode) {
-      vm.$scopedSlots = _parentVnode.data.scopedSlots || emptyObject;
-    }
-
-    // set parent vnode. this allows render functions to have access
-    // to the data on the placeholder node.
-    vm.$vnode = _parentVnode;
-    // render self
-    var vnode;
-    try {
-      vnode = render.call(vm._renderProxy, vm.$createElement);
-    } catch (e) {
-      handleError(e, vm, "render");
-      // return error render result,
-      // or previous vnode to prevent render error causing blank component
-      /* istanbul ignore else */
-      if ( true && vm.$options.renderError) {
-        try {
-          vnode = vm.$options.renderError.call(vm._renderProxy, vm.$createElement, e);
-        } catch (e) {
-          handleError(e, vm, "renderError");
-          vnode = vm._vnode;
-        }
-      } else {
-        vnode = vm._vnode;
-      }
-    }
-    // return empty vnode in case the render function errored out
-    if (!(vnode instanceof VNode)) {
-      if ( true && Array.isArray(vnode)) {
-        warn(
-          'Multiple root nodes returned from render function. Render function ' +
-          'should return a single root node.',
-          vm
-        );
-      }
-      vnode = createEmptyVNode();
-    }
-    // set parent
-    vnode.parent = _parentVnode;
-    return vnode
-  };
-}
-
-/*  */
-
 var uid$3 = 0;
 
 function initMixin (Vue) {
@@ -45179,7 +45521,7 @@ function initMixin (Vue) {
 
     var startTag, endTag;
     /* istanbul ignore if */
-    if ( true && config.performance && mark) {
+    if (config.performance && mark) {
       startTag = "vue-perf-start:" + (vm._uid);
       endTag = "vue-perf-end:" + (vm._uid);
       mark(startTag);
@@ -45201,9 +45543,9 @@ function initMixin (Vue) {
       );
     }
     /* istanbul ignore else */
-    if (true) {
+    {
       initProxy(vm);
-    } else {}
+    }
     // expose real self
     vm._self = vm;
     initLifecycle(vm);
@@ -45216,7 +45558,7 @@ function initMixin (Vue) {
     callHook(vm, 'created');
 
     /* istanbul ignore if */
-    if ( true && config.performance && mark) {
+    if (config.performance && mark) {
       vm._name = formatComponentName(vm, false);
       mark(endTag);
       measure(("vue " + (vm._name) + " init"), startTag, endTag);
@@ -45285,8 +45627,7 @@ function resolveModifiedOptions (Ctor) {
 }
 
 function Vue (options) {
-  if ( true &&
-    !(this instanceof Vue)
+  if (!(this instanceof Vue)
   ) {
     warn('Vue is a constructor and should be called with the `new` keyword');
   }
@@ -45354,7 +45695,7 @@ function initExtend (Vue) {
     }
 
     var name = extendOptions.name || Super.options.name;
-    if ( true && name) {
+    if (name) {
       validateComponentName(name);
     }
 
@@ -45437,7 +45778,7 @@ function initAssetRegisters (Vue) {
         return this.options[type + 's'][id]
       } else {
         /* istanbul ignore if */
-        if ( true && type === 'component') {
+        if (type === 'component') {
           validateComponentName(id);
         }
         if (type === 'component' && isPlainObject(definition)) {
@@ -45594,7 +45935,7 @@ function initGlobalAPI (Vue) {
   // config
   var configDef = {};
   configDef.get = function () { return config; };
-  if (true) {
+  {
     configDef.set = function () {
       warn(
         'Do not replace the Vue.config object, set individual fields instead.'
@@ -45616,6 +45957,12 @@ function initGlobalAPI (Vue) {
   Vue.set = set;
   Vue.delete = del;
   Vue.nextTick = nextTick;
+
+  // 2.6 explicit observable API
+  Vue.observable = function (obj) {
+    observe(obj);
+    return obj
+  };
 
   Vue.options = Object.create(null);
   ASSET_TYPES.forEach(function (type) {
@@ -45652,7 +45999,7 @@ Object.defineProperty(Vue, 'FunctionalRenderContext', {
   value: FunctionalRenderContext
 });
 
-Vue.version = '2.5.22';
+Vue.version = '2.6.5';
 
 /*  */
 
@@ -45672,6 +46019,17 @@ var mustUseProp = function (tag, type, attr) {
 };
 
 var isEnumeratedAttr = makeMap('contenteditable,draggable,spellcheck');
+
+var isValidContentEditableValue = makeMap('events,caret,typing,plaintext-only');
+
+var convertEnumeratedValue = function (key, value) {
+  return isFalsyAttrValue(value) || value === 'false'
+    ? 'false'
+    // allow arbitrary string value for contenteditable
+    : key === 'contenteditable' && isValidContentEditableValue(value)
+      ? value
+      : 'true'
+};
 
 var isBooleanAttr = makeMap(
   'allowfullscreen,async,autofocus,autoplay,checked,compact,controls,declare,' +
@@ -45861,7 +46219,7 @@ function query (el) {
   if (typeof el === 'string') {
     var selected = document.querySelector(el);
     if (!selected) {
-       true && warn(
+      warn(
         'Cannot find element: ' + el
       );
       return document.createElement('div')
@@ -46123,7 +46481,7 @@ function createPatchFunction (backend) {
     var children = vnode.children;
     var tag = vnode.tag;
     if (isDef(tag)) {
-      if (true) {
+      {
         if (data && data.pre) {
           creatingElmInVPre++;
         }
@@ -46151,7 +46509,7 @@ function createPatchFunction (backend) {
         insert(parentElm, vnode.elm, refElm);
       }
 
-      if ( true && data && data.pre) {
+      if (data && data.pre) {
         creatingElmInVPre--;
       }
     } else if (isTrue(vnode.isComment)) {
@@ -46239,7 +46597,7 @@ function createPatchFunction (backend) {
 
   function createChildren (vnode, children, insertedVnodeQueue) {
     if (Array.isArray(children)) {
-      if (true) {
+      {
         checkDuplicateKeys(children);
       }
       for (var i = 0; i < children.length; ++i) {
@@ -46373,7 +46731,7 @@ function createPatchFunction (backend) {
     // during leaving transitions
     var canMove = !removeOnly;
 
-    if (true) {
+    {
       checkDuplicateKeys(newCh);
     }
 
@@ -46511,7 +46869,7 @@ function createPatchFunction (backend) {
       if (isDef(oldCh) && isDef(ch)) {
         if (oldCh !== ch) { updateChildren(elm, oldCh, ch, insertedVnodeQueue, removeOnly); }
       } else if (isDef(ch)) {
-        if (true) {
+        {
           checkDuplicateKeys(ch);
         }
         if (isDef(oldVnode.text)) { nodeOps.setTextContent(elm, ''); }
@@ -46562,7 +46920,7 @@ function createPatchFunction (backend) {
       return true
     }
     // assert node match
-    if (true) {
+    {
       if (!assertNodeMatch(elm, vnode, inVPre)) {
         return false
       }
@@ -46585,8 +46943,7 @@ function createPatchFunction (backend) {
           if (isDef(i = data) && isDef(i = i.domProps) && isDef(i = i.innerHTML)) {
             if (i !== elm.innerHTML) {
               /* istanbul ignore if */
-              if ( true &&
-                typeof console !== 'undefined' &&
+              if (typeof console !== 'undefined' &&
                 !hydrationBailed
               ) {
                 hydrationBailed = true;
@@ -46611,8 +46968,7 @@ function createPatchFunction (backend) {
             // longer than the virtual children list.
             if (!childrenMatch || childNode) {
               /* istanbul ignore if */
-              if ( true &&
-                typeof console !== 'undefined' &&
+              if (typeof console !== 'undefined' &&
                 !hydrationBailed
               ) {
                 hydrationBailed = true;
@@ -46686,7 +47042,7 @@ function createPatchFunction (backend) {
             if (hydrate(oldVnode, vnode, insertedVnodeQueue)) {
               invokeInsertHook(vnode, insertedVnodeQueue, true);
               return oldVnode
-            } else if (true) {
+            } else {
               warn(
                 'The client-side rendered virtual DOM tree is not matching ' +
                 'server-rendered content. This is likely caused by incorrect ' +
@@ -46798,6 +47154,7 @@ function _update (oldVnode, vnode) {
     } else {
       // existing directive, update
       dir.oldValue = oldDir.value;
+      dir.oldArg = oldDir.arg;
       callHook$1(dir, 'update', vnode, oldVnode);
       if (dir.def && dir.def.componentUpdated) {
         dirsWithPostpatch.push(dir);
@@ -46941,7 +47298,7 @@ function setAttr (el, key, value) {
       el.setAttribute(key, value);
     }
   } else if (isEnumeratedAttr(key)) {
-    el.setAttribute(key, isFalsyAttrValue(value) || value === 'false' ? 'false' : 'true');
+    el.setAttribute(key, convertEnumeratedValue(key, value));
   } else if (isXlink(key)) {
     if (isFalsyAttrValue(value)) {
       el.removeAttributeNS(xlinkNS, getXlinkProp(key));
@@ -46963,8 +47320,8 @@ function baseSetAttr (el, key, value) {
     /* istanbul ignore if */
     if (
       isIE && !isIE9 &&
-      (el.tagName === 'TEXTAREA' || el.tagName === 'INPUT') &&
-      key === 'placeholder' && !el.__ieph
+      el.tagName === 'TEXTAREA' &&
+      key === 'placeholder' && value !== '' && !el.__ieph
     ) {
       var blocker = function (e) {
         e.stopImmediatePropagation();
@@ -47121,9 +47478,13 @@ function wrapFilter (exp, filter) {
 
 /*  */
 
-function baseWarn (msg) {
+
+
+/* eslint-disable no-unused-vars */
+function baseWarn (msg, range) {
   console.error(("[Vue compiler]: " + msg));
 }
+/* eslint-enable no-unused-vars */
 
 function pluckModuleFunction (
   modules,
@@ -47134,20 +47495,23 @@ function pluckModuleFunction (
     : []
 }
 
-function addProp (el, name, value) {
-  (el.props || (el.props = [])).push({ name: name, value: value });
+function addProp (el, name, value, range, dynamic) {
+  (el.props || (el.props = [])).push(rangeSetItem({ name: name, value: value, dynamic: dynamic }, range));
   el.plain = false;
 }
 
-function addAttr (el, name, value) {
-  (el.attrs || (el.attrs = [])).push({ name: name, value: value });
+function addAttr (el, name, value, range, dynamic) {
+  var attrs = dynamic
+    ? (el.dynamicAttrs || (el.dynamicAttrs = []))
+    : (el.attrs || (el.attrs = []));
+  attrs.push(rangeSetItem({ name: name, value: value, dynamic: dynamic }, range));
   el.plain = false;
 }
 
 // add a raw attr (use this in preTransforms)
-function addRawAttr (el, name, value) {
+function addRawAttr (el, name, value, range) {
   el.attrsMap[name] = value;
-  el.attrsList.push({ name: name, value: value });
+  el.attrsList.push(rangeSetItem({ name: name, value: value }, range));
 }
 
 function addDirective (
@@ -47156,10 +47520,25 @@ function addDirective (
   rawName,
   value,
   arg,
-  modifiers
+  isDynamicArg,
+  modifiers,
+  range
 ) {
-  (el.directives || (el.directives = [])).push({ name: name, rawName: rawName, value: value, arg: arg, modifiers: modifiers });
+  (el.directives || (el.directives = [])).push(rangeSetItem({
+    name: name,
+    rawName: rawName,
+    value: value,
+    arg: arg,
+    isDynamicArg: isDynamicArg,
+    modifiers: modifiers
+  }, range));
   el.plain = false;
+}
+
+function prependModifierMarker (symbol, name, dynamic) {
+  return dynamic
+    ? ("_p(" + name + ",\"" + symbol + "\")")
+    : symbol + name // mark the event as captured
 }
 
 function addHandler (
@@ -47168,29 +47547,38 @@ function addHandler (
   value,
   modifiers,
   important,
-  warn
+  warn,
+  range,
+  dynamic
 ) {
   modifiers = modifiers || emptyObject;
   // warn prevent and passive modifier
   /* istanbul ignore if */
   if (
-     true && warn &&
+    warn &&
     modifiers.prevent && modifiers.passive
   ) {
     warn(
       'passive and prevent can\'t be used together. ' +
-      'Passive handler can\'t prevent default event.'
+      'Passive handler can\'t prevent default event.',
+      range
     );
   }
 
   // normalize click.right and click.middle since they don't actually fire
   // this is technically browser-specific, but at least for now browsers are
   // the only target envs that have right/middle clicks.
-  if (name === 'click') {
-    if (modifiers.right) {
+  if (modifiers.right) {
+    if (dynamic) {
+      name = "(" + name + ")==='click'?'contextmenu':(" + name + ")";
+    } else if (name === 'click') {
       name = 'contextmenu';
       delete modifiers.right;
-    } else if (modifiers.middle) {
+    }
+  } else if (modifiers.middle) {
+    if (dynamic) {
+      name = "(" + name + ")==='click'?'mouseup':(" + name + ")";
+    } else if (name === 'click') {
       name = 'mouseup';
     }
   }
@@ -47198,16 +47586,16 @@ function addHandler (
   // check capture modifier
   if (modifiers.capture) {
     delete modifiers.capture;
-    name = '!' + name; // mark the event as captured
+    name = prependModifierMarker('!', name, dynamic);
   }
   if (modifiers.once) {
     delete modifiers.once;
-    name = '~' + name; // mark the event as once
+    name = prependModifierMarker('~', name, dynamic);
   }
   /* istanbul ignore if */
   if (modifiers.passive) {
     delete modifiers.passive;
-    name = '&' + name; // mark the event as passive
+    name = prependModifierMarker('&', name, dynamic);
   }
 
   var events;
@@ -47218,9 +47606,7 @@ function addHandler (
     events = el.events || (el.events = {});
   }
 
-  var newHandler = {
-    value: value.trim()
-  };
+  var newHandler = rangeSetItem({ value: value.trim(), dynamic: dynamic }, range);
   if (modifiers !== emptyObject) {
     newHandler.modifiers = modifiers;
   }
@@ -47236,6 +47622,15 @@ function addHandler (
   }
 
   el.plain = false;
+}
+
+function getRawBindingAttr (
+  el,
+  name
+) {
+  return el.rawAttrsMap[':' + name] ||
+    el.rawAttrsMap['v-bind:' + name] ||
+    el.rawAttrsMap[name]
 }
 
 function getBindingAttr (
@@ -47279,6 +47674,35 @@ function getAndRemoveAttr (
     delete el.attrsMap[name];
   }
   return val
+}
+
+function getAndRemoveAttrByRegex (
+  el,
+  name
+) {
+  var list = el.attrsList;
+  for (var i = 0, l = list.length; i < l; i++) {
+    var attr = list[i];
+    if (name.test(attr.name)) {
+      list.splice(i, 1);
+      return attr
+    }
+  }
+}
+
+function rangeSetItem (
+  item,
+  range
+) {
+  if (range) {
+    if (range.start != null) {
+      item.start = range.start;
+    }
+    if (range.end != null) {
+      item.end = range.end;
+    }
+  }
+  return item
 }
 
 /*  */
@@ -47449,13 +47873,14 @@ function model (
   var tag = el.tag;
   var type = el.attrsMap.type;
 
-  if (true) {
+  {
     // inputs with type="file" are read only and setting the input's
     // value will throw an error.
     if (tag === 'input' && type === 'file') {
       warn$1(
         "<" + (el.tag) + " v-model=\"" + value + "\" type=\"file\">:\n" +
-        "File inputs are read only. Use a v-on:change listener instead."
+        "File inputs are read only. Use a v-on:change listener instead.",
+        el.rawAttrsMap['v-model']
       );
     }
   }
@@ -47476,12 +47901,13 @@ function model (
     genComponentModel(el, value, modifiers);
     // component v-model doesn't need extra runtime
     return false
-  } else if (true) {
+  } else {
     warn$1(
       "<" + (el.tag) + " v-model=\"" + value + "\">: " +
       "v-model is not supported on this element type. " +
       'If you are working with contenteditable, it\'s recommended to ' +
-      'wrap a library dedicated for that purpose inside a custom component.'
+      'wrap a library dedicated for that purpose inside a custom component.',
+      el.rawAttrsMap['v-model']
     );
   }
 
@@ -47558,14 +47984,15 @@ function genDefaultModel (
 
   // warn if v-bind:value conflicts with v-model
   // except for inputs with v-bind:type
-  if (true) {
+  {
     var value$1 = el.attrsMap['v-bind:value'] || el.attrsMap[':value'];
     var typeBinding = el.attrsMap['v-bind:type'] || el.attrsMap[':type'];
     if (value$1 && !typeBinding) {
       var binding = el.attrsMap['v-bind:value'] ? 'v-bind:value' : ':value';
       warn$1(
         binding + "=\"" + value$1 + "\" conflicts with v-model on the same element " +
-        'because the latter already expands to a value binding internally'
+        'because the latter already expands to a value binding internally',
+        el.rawAttrsMap[binding]
       );
     }
   }
@@ -47636,15 +48063,47 @@ function createOnceHandler$1 (event, handler, capture) {
   }
 }
 
+// #9446: Firefox <= 53 (in particular, ESR 52) has incorrect Event.timeStamp
+// implementation and does not fire microtasks in between event propagation, so
+// safe to exclude.
+var useMicrotaskFix = isUsingMicroTask && !(isFF && Number(isFF[1]) <= 53);
+
 function add$1 (
-  event,
+  name,
   handler,
   capture,
   passive
 ) {
-  handler = withMacroTask(handler);
+  // async edge case #6566: inner click event triggers patch, event handler
+  // attached to outer element during patch, and triggered again. This
+  // happens because browsers fire microtask ticks between event propagation.
+  // the solution is simple: we save the timestamp when a handler is attached,
+  // and the handler would only fire if the event passed to it was fired
+  // AFTER it was attached.
+  if (useMicrotaskFix) {
+    var attachedTimestamp = currentFlushTimestamp;
+    var original = handler;
+    handler = original._wrapper = function (e) {
+      if (
+        // no bubbling, should always fire.
+        // this is just a safety net in case event.timeStamp is unreliable in
+        // certain weird environments...
+        e.target === e.currentTarget ||
+        // event is fired after handler attachment
+        e.timeStamp >= attachedTimestamp ||
+        // #9462 bail for iOS 9 bug: event.timeStamp is 0 after history.pushState
+        e.timeStamp === 0 ||
+        // #9448 bail if event is fired in another document in a multi-page
+        // electron/nw.js app, since event.timeStamp will be using a different
+        // starting reference
+        e.target.ownerDocument !== document
+      ) {
+        return original.apply(this, arguments)
+      }
+    };
+  }
   target$1.addEventListener(
-    event,
+    name,
     handler,
     supportsPassive
       ? { capture: capture, passive: passive }
@@ -47653,14 +48112,14 @@ function add$1 (
 }
 
 function remove$2 (
-  event,
+  name,
   handler,
   capture,
   _target
 ) {
   (_target || target$1).removeEventListener(
-    event,
-    handler._withTask || handler,
+    name,
+    handler._wrapper || handler,
     capture
   );
 }
@@ -47683,6 +48142,8 @@ var events = {
 };
 
 /*  */
+
+var svgContainer;
 
 function updateDOMProps (oldVnode, vnode) {
   if (isUndef(oldVnode.data.domProps) && isUndef(vnode.data.domProps)) {
@@ -47717,6 +48178,14 @@ function updateDOMProps (oldVnode, vnode) {
       }
     }
 
+    // skip the update if old and new VDOM state is the same.
+    // the only exception is `value` where the DOM value may be temporarily
+    // out of sync with VDOM state due to focus, composition and modifiers.
+    // This also covers #4521 by skipping the unnecesarry `checked` update.
+    if (key !== 'value' && cur === oldProps[key]) {
+      continue
+    }
+
     if (key === 'value') {
       // store value as _value as well since
       // non-string values will be stringified
@@ -47725,6 +48194,17 @@ function updateDOMProps (oldVnode, vnode) {
       var strCur = isUndef(cur) ? '' : String(cur);
       if (shouldUpdateValue(elm, strCur)) {
         elm.value = strCur;
+      }
+    } else if (key === 'innerHTML' && isSVG(elm.tagName) && isUndef(elm.innerHTML)) {
+      // IE doesn't support innerHTML for SVG elements
+      svgContainer = svgContainer || document.createElement('div');
+      svgContainer.innerHTML = "<svg>" + cur + "</svg>";
+      var svg = svgContainer.firstChild;
+      while (elm.firstChild) {
+        elm.removeChild(elm.firstChild);
+      }
+      while (svg.firstChild) {
+        elm.appendChild(svg.firstChild);
       }
     } else {
       elm[key] = cur;
@@ -47757,10 +48237,6 @@ function isDirtyWithModifiers (elm, newVal) {
   var value = elm.value;
   var modifiers = elm._vModifiers; // injected by v-model runtime
   if (isDef(modifiers)) {
-    if (modifiers.lazy) {
-      // inputs with lazy should only be updated when not in focus
-      return false
-    }
     if (modifiers.number) {
       return toNumber(value) !== toNumber(newVal)
     }
@@ -47855,7 +48331,7 @@ var setProp = function (el, name, val) {
   if (cssVarRE.test(name)) {
     el.style.setProperty(name, val);
   } else if (importantRE.test(val)) {
-    el.style.setProperty(name, val.replace(importantRE, ''), 'important');
+    el.style.setProperty(hyphenate(name), val.replace(importantRE, ''), 'important');
   } else {
     var normalizedName = normalize(name);
     if (Array.isArray(val)) {
@@ -48271,7 +48747,7 @@ function enter (vnode, toggleDisplay) {
       : duration
   );
 
-  if ( true && explicitEnterDuration != null) {
+  if (explicitEnterDuration != null) {
     checkDuration(explicitEnterDuration, 'enter', vnode);
   }
 
@@ -48379,7 +48855,7 @@ function leave (vnode, rm) {
       : duration
   );
 
-  if ( true && isDef(explicitLeaveDuration)) {
+  if (isDef(explicitLeaveDuration)) {
     checkDuration(explicitLeaveDuration, 'leave', vnode);
   }
 
@@ -48606,7 +49082,7 @@ function actuallySetSelected (el, binding, vm) {
   var value = binding.value;
   var isMultiple = el.multiple;
   if (isMultiple && !Array.isArray(value)) {
-     true && warn(
+    warn(
       "<select multiple v-model=\"" + (binding.expression) + "\"> " +
       "expects an Array value for its binding, but got " + (Object.prototype.toString.call(value).slice(8, -1)),
       vm
@@ -48823,7 +49299,7 @@ var Transition = {
     }
 
     // warn multiple elements
-    if ( true && children.length > 1) {
+    if (children.length > 1) {
       warn(
         '<transition> can only be used on a single element. Use ' +
         '<transition-group> for lists.',
@@ -48834,8 +49310,7 @@ var Transition = {
     var mode = this.mode;
 
     // warn invalid mode
-    if ( true &&
-      mode && mode !== 'in-out' && mode !== 'out-in'
+    if (mode && mode !== 'in-out' && mode !== 'out-in'
     ) {
       warn(
         'invalid <transition> mode: ' + mode,
@@ -48967,7 +49442,7 @@ var TransitionGroup = {
           children.push(c);
           map[c.key] = c
           ;(c.data || (c.data = {})).transition = transitionData;
-        } else if (true) {
+        } else {
           var opts = c.componentOptions;
           var name = opts ? (opts.Ctor.options.name || opts.tag || '') : c.tag;
           warn(("<transition-group> children must be keyed: <" + name + ">"));
@@ -49127,18 +49602,14 @@ if (inBrowser) {
     if (config.devtools) {
       if (devtools) {
         devtools.emit('init', Vue);
-      } else if (
-         true &&
-        isChrome
-      ) {
+      } else {
         console[console.info ? 'info' : 'log'](
           'Download the Vue Devtools extension for a better development experience:\n' +
           'https://github.com/vuejs/vue-devtools'
         );
       }
     }
-    if ( true &&
-      config.productionTip !== false &&
+    if (config.productionTip !== false &&
       typeof console !== 'undefined'
     ) {
       console[console.info ? 'info' : 'log'](
@@ -49203,14 +49674,15 @@ function parseText (
 function transformNode (el, options) {
   var warn = options.warn || baseWarn;
   var staticClass = getAndRemoveAttr(el, 'class');
-  if ( true && staticClass) {
+  if (staticClass) {
     var res = parseText(staticClass, options.delimiters);
     if (res) {
       warn(
         "class=\"" + staticClass + "\": " +
         'Interpolation inside attributes has been removed. ' +
         'Use v-bind or the colon shorthand instead. For example, ' +
-        'instead of <div class="{{ val }}">, use <div :class="val">.'
+        'instead of <div class="{{ val }}">, use <div :class="val">.',
+        el.rawAttrsMap['class']
       );
     }
   }
@@ -49247,14 +49719,15 @@ function transformNode$1 (el, options) {
   var staticStyle = getAndRemoveAttr(el, 'style');
   if (staticStyle) {
     /* istanbul ignore if */
-    if (true) {
+    {
       var res = parseText(staticStyle, options.delimiters);
       if (res) {
         warn(
           "style=\"" + staticStyle + "\": " +
           'Interpolation inside attributes has been removed. ' +
           'Use v-bind or the colon shorthand instead. For example, ' +
-          'instead of <div style="{{ val }}">, use <div :style="val">.'
+          'instead of <div style="{{ val }}">, use <div :style="val">.',
+          el.rawAttrsMap['style']
         );
       }
     }
@@ -49325,9 +49798,8 @@ var isNonPhrasingTag = makeMap(
 
 // Regular Expressions for parsing tags and attributes
 var attribute = /^\s*([^\s"'<>\/=]+)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s"'=<>`]+)))?/;
-// could use https://www.w3.org/TR/1999/REC-xml-names-19990114/#NT-QName
-// but for Vue templates we can enforce a simple charset
-var ncname = '[a-zA-Z_][\\w\\-\\.]*';
+var dynamicArgAttribute = /^\s*((?:v-[\w-]+:|@|:|#)\[[^=]+\][^\s"'<>\/=]*)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s"'=<>`]+)))?/;
+var ncname = "[a-zA-Z_][\\-\\.0-9_a-zA-Z" + unicodeLetters + "]*";
 var qnameCapture = "((?:" + ncname + "\\:)?" + ncname + ")";
 var startTagOpen = new RegExp(("^<" + qnameCapture));
 var startTagClose = /^\s*(\/?)>/;
@@ -49347,10 +49819,11 @@ var decodingMap = {
   '&quot;': '"',
   '&amp;': '&',
   '&#10;': '\n',
-  '&#9;': '\t'
+  '&#9;': '\t',
+  '&#39;': "'"
 };
-var encodedAttr = /&(?:lt|gt|quot|amp);/g;
-var encodedAttrWithNewLines = /&(?:lt|gt|quot|amp|#10|#9);/g;
+var encodedAttr = /&(?:lt|gt|quot|amp|#39);/g;
+var encodedAttrWithNewLines = /&(?:lt|gt|quot|amp|#39|#10|#9);/g;
 
 // #5992
 var isIgnoreNewlineTag = makeMap('pre,textarea', true);
@@ -49380,7 +49853,7 @@ function parseHTML (html, options) {
 
           if (commentEnd >= 0) {
             if (options.shouldKeepComment) {
-              options.comment(html.substring(4, commentEnd));
+              options.comment(html.substring(4, commentEnd), index, index + commentEnd + 3);
             }
             advance(commentEnd + 3);
             continue
@@ -49440,16 +49913,18 @@ function parseHTML (html, options) {
           rest = html.slice(textEnd);
         }
         text = html.substring(0, textEnd);
-        advance(textEnd);
       }
 
       if (textEnd < 0) {
         text = html;
-        html = '';
+      }
+
+      if (text) {
+        advance(text.length);
       }
 
       if (options.chars && text) {
-        options.chars(text);
+        options.chars(text, index - text.length, index);
       }
     } else {
       var endTagLength = 0;
@@ -49477,8 +49952,8 @@ function parseHTML (html, options) {
 
     if (html === last) {
       options.chars && options.chars(html);
-      if ( true && !stack.length && options.warn) {
-        options.warn(("Mal-formatted tag at end of template: \"" + html + "\""));
+      if (!stack.length && options.warn) {
+        options.warn(("Mal-formatted tag at end of template: \"" + html + "\""), { start: index + html.length });
       }
       break
     }
@@ -49502,8 +49977,10 @@ function parseHTML (html, options) {
       };
       advance(start[0].length);
       var end, attr;
-      while (!(end = html.match(startTagClose)) && (attr = html.match(attribute))) {
+      while (!(end = html.match(startTagClose)) && (attr = html.match(dynamicArgAttribute) || html.match(attribute))) {
+        attr.start = index;
         advance(attr[0].length);
+        attr.end = index;
         match.attrs.push(attr);
       }
       if (end) {
@@ -49542,10 +50019,14 @@ function parseHTML (html, options) {
         name: args[1],
         value: decodeAttr(value, shouldDecodeNewlines)
       };
+      if (options.outputSourceRange) {
+        attrs[i].start = args.start + args[0].match(/^\s*/).length;
+        attrs[i].end = args.end;
+      }
     }
 
     if (!unary) {
-      stack.push({ tag: tagName, lowerCasedTag: tagName.toLowerCase(), attrs: attrs });
+      stack.push({ tag: tagName, lowerCasedTag: tagName.toLowerCase(), attrs: attrs, start: match.start, end: match.end });
       lastTag = tagName;
     }
 
@@ -49575,12 +50056,12 @@ function parseHTML (html, options) {
     if (pos >= 0) {
       // Close all the open elements, up the stack
       for (var i = stack.length - 1; i >= pos; i--) {
-        if ( true &&
-          (i > pos || !tagName) &&
+        if (i > pos || !tagName &&
           options.warn
         ) {
           options.warn(
-            ("tag <" + (stack[i].tag) + "> has no matching end tag.")
+            ("tag <" + (stack[i].tag) + "> has no matching end tag."),
+            { start: stack[i].start }
           );
         }
         if (options.end) {
@@ -49613,12 +50094,22 @@ var dirRE = /^v-|^@|^:/;
 var forAliasRE = /([\s\S]*?)\s+(?:in|of)\s+([\s\S]*)/;
 var forIteratorRE = /,([^,\}\]]*)(?:,([^,\}\]]*))?$/;
 var stripParensRE = /^\(|\)$/g;
+var dynamicArgRE = /^\[.*\]$/;
 
 var argRE = /:(.*)$/;
-var bindRE = /^:|^v-bind:/;
+var bindRE = /^:|^\.|^v-bind:/;
 var modifierRE = /\.[^.]+/g;
 
+var slotRE = /^v-slot(:|$)|^#/;
+
+var lineBreakRE = /[\r\n]/;
+var whitespaceRE$1 = /\s+/g;
+
+var invalidAttributeRE = /[\s"'<>\/=]/;
+
 var decodeHTMLCached = cached(he.decode);
+
+var emptySlotScopeToken = "_empty_";
 
 // configurable state
 var warn$2;
@@ -49629,8 +50120,7 @@ var postTransforms;
 var platformIsPreTag;
 var platformMustUseProp;
 var platformGetTagNamespace;
-
-
+var maybeComponent;
 
 function createASTElement (
   tag,
@@ -49642,6 +50132,7 @@ function createASTElement (
     tag: tag,
     attrsList: attrs,
     attrsMap: makeAttrsMap(attrs),
+    rawAttrsMap: {},
     parent: parent,
     children: []
   }
@@ -49659,6 +50150,8 @@ function parse (
   platformIsPreTag = options.isPreTag || no;
   platformMustUseProp = options.mustUseProp || no;
   platformGetTagNamespace = options.getTagNamespace || no;
+  var isReservedTag = options.isReservedTag || no;
+  maybeComponent = function (el) { return !!el.component || !isReservedTag(el.tag); };
 
   transforms = pluckModuleFunction(options.modules, 'transformNode');
   preTransforms = pluckModuleFunction(options.modules, 'preTransformNode');
@@ -49668,20 +50161,67 @@ function parse (
 
   var stack = [];
   var preserveWhitespace = options.preserveWhitespace !== false;
+  var whitespaceOption = options.whitespace;
   var root;
   var currentParent;
   var inVPre = false;
   var inPre = false;
   var warned = false;
 
-  function warnOnce (msg) {
+  function warnOnce (msg, range) {
     if (!warned) {
       warned = true;
-      warn$2(msg);
+      warn$2(msg, range);
     }
   }
 
   function closeElement (element) {
+    trimEndingWhitespace(element);
+    if (!inVPre && !element.processed) {
+      element = processElement(element, options);
+    }
+    // tree management
+    if (!stack.length && element !== root) {
+      // allow root elements with v-if, v-else-if and v-else
+      if (root.if && (element.elseif || element.else)) {
+        {
+          checkRootConstraints(element);
+        }
+        addIfCondition(root, {
+          exp: element.elseif,
+          block: element
+        });
+      } else {
+        warnOnce(
+          "Component template should contain exactly one root element. " +
+          "If you are using v-if on multiple elements, " +
+          "use v-else-if to chain them instead.",
+          { start: element.start }
+        );
+      }
+    }
+    if (currentParent && !element.forbidden) {
+      if (element.elseif || element.else) {
+        processIfConditions(element, currentParent);
+      } else {
+        if (element.slotScope) {
+          // scoped slot
+          // keep it in the children list so that v-else(-if) conditions can
+          // find it as the prev node.
+          var name = element.slotTarget || '"default"'
+          ;(currentParent.scopedSlots || (currentParent.scopedSlots = {}))[name] = element;
+        }
+        currentParent.children.push(element);
+        element.parent = currentParent;
+      }
+    }
+
+    // final children cleanup
+    // filter out scoped slots
+    element.children = element.children.filter(function (c) { return !(c).slotScope; });
+    // remove trailing whitespace node again
+    trimEndingWhitespace(element);
+
     // check pre state
     if (element.pre) {
       inVPre = false;
@@ -49695,6 +50235,37 @@ function parse (
     }
   }
 
+  function trimEndingWhitespace (el) {
+    // remove trailing whitespace node
+    if (!inPre) {
+      var lastNode;
+      while (
+        (lastNode = el.children[el.children.length - 1]) &&
+        lastNode.type === 3 &&
+        lastNode.text === ' '
+      ) {
+        el.children.pop();
+      }
+    }
+  }
+
+  function checkRootConstraints (el) {
+    if (el.tag === 'slot' || el.tag === 'template') {
+      warnOnce(
+        "Cannot use <" + (el.tag) + "> as component root element because it may " +
+        'contain multiple nodes.',
+        { start: el.start }
+      );
+    }
+    if (el.attrsMap.hasOwnProperty('v-for')) {
+      warnOnce(
+        'Cannot use v-for on stateful component root element because ' +
+        'it renders multiple elements.',
+        el.rawAttrsMap['v-for']
+      );
+    }
+  }
+
   parseHTML(template, {
     warn: warn$2,
     expectHTML: options.expectHTML,
@@ -49703,7 +50274,8 @@ function parse (
     shouldDecodeNewlines: options.shouldDecodeNewlines,
     shouldDecodeNewlinesForHref: options.shouldDecodeNewlinesForHref,
     shouldKeepComment: options.comments,
-    start: function start (tag, attrs, unary) {
+    outputSourceRange: options.outputSourceRange,
+    start: function start (tag, attrs, unary, start$1) {
       // check namespace.
       // inherit parent ns if there is one
       var ns = (currentParent && currentParent.ns) || platformGetTagNamespace(tag);
@@ -49719,12 +50291,35 @@ function parse (
         element.ns = ns;
       }
 
+      {
+        if (options.outputSourceRange) {
+          element.start = start$1;
+          element.rawAttrsMap = element.attrsList.reduce(function (cumulated, attr) {
+            cumulated[attr.name] = attr;
+            return cumulated
+          }, {});
+        }
+        attrs.forEach(function (attr) {
+          if (invalidAttributeRE.test(attr.name)) {
+            warn$2(
+              "Invalid dynamic argument expression: attribute names cannot contain " +
+              "spaces, quotes, <, >, / or =.",
+              {
+                start: attr.start + attr.name.indexOf("["),
+                end: attr.start + attr.name.length
+              }
+            );
+          }
+        });
+      }
+
       if (isForbiddenTag(element) && !isServerRendering()) {
         element.forbidden = true;
-         true && warn$2(
+        warn$2(
           'Templates should only be responsible for mapping the state to the ' +
           'UI. Avoid placing tags with side-effects in your templates, such as ' +
-          "<" + tag + ">" + ', as they will not be parsed.'
+          "<" + tag + ">" + ', as they will not be parsed.',
+          { start: element.start }
         );
       }
 
@@ -49749,59 +50344,15 @@ function parse (
         processFor(element);
         processIf(element);
         processOnce(element);
-        // element-scope stuff
-        processElement(element, options);
       }
 
-      function checkRootConstraints (el) {
-        if (true) {
-          if (el.tag === 'slot' || el.tag === 'template') {
-            warnOnce(
-              "Cannot use <" + (el.tag) + "> as component root element because it may " +
-              'contain multiple nodes.'
-            );
-          }
-          if (el.attrsMap.hasOwnProperty('v-for')) {
-            warnOnce(
-              'Cannot use v-for on stateful component root element because ' +
-              'it renders multiple elements.'
-            );
-          }
-        }
-      }
-
-      // tree management
       if (!root) {
         root = element;
-        checkRootConstraints(root);
-      } else if (!stack.length) {
-        // allow root elements with v-if, v-else-if and v-else
-        if (root.if && (element.elseif || element.else)) {
-          checkRootConstraints(element);
-          addIfCondition(root, {
-            exp: element.elseif,
-            block: element
-          });
-        } else if (true) {
-          warnOnce(
-            "Component template should contain exactly one root element. " +
-            "If you are using v-if on multiple elements, " +
-            "use v-else-if to chain them instead."
-          );
+        {
+          checkRootConstraints(root);
         }
       }
-      if (currentParent && !element.forbidden) {
-        if (element.elseif || element.else) {
-          processIfConditions(element, currentParent);
-        } else if (element.slotScope) { // scoped slot
-          currentParent.plain = false;
-          var name = element.slotTarget || '"default"'
-          ;(currentParent.scopedSlots || (currentParent.scopedSlots = {}))[name] = element;
-        } else {
-          currentParent.children.push(element);
-          element.parent = currentParent;
-        }
-      }
+
       if (!unary) {
         currentParent = element;
         stack.push(element);
@@ -49810,29 +50361,29 @@ function parse (
       }
     },
 
-    end: function end () {
-      // remove trailing whitespace
+    end: function end (tag, start, end$1) {
       var element = stack[stack.length - 1];
-      var lastNode = element.children[element.children.length - 1];
-      if (lastNode && lastNode.type === 3 && lastNode.text === ' ' && !inPre) {
-        element.children.pop();
-      }
       // pop stack
       stack.length -= 1;
       currentParent = stack[stack.length - 1];
+      if (options.outputSourceRange) {
+        element.end = end$1;
+      }
       closeElement(element);
     },
 
-    chars: function chars (text) {
+    chars: function chars (text, start, end) {
       if (!currentParent) {
-        if (true) {
+        {
           if (text === template) {
             warnOnce(
-              'Component template requires a root element, rather than just text.'
+              'Component template requires a root element, rather than just text.',
+              { start: start }
             );
           } else if ((text = text.trim())) {
             warnOnce(
-              ("text \"" + text + "\" outside root element will be ignored.")
+              ("text \"" + text + "\" outside root element will be ignored."),
+              { start: start }
             );
           }
         }
@@ -49847,33 +50398,66 @@ function parse (
         return
       }
       var children = currentParent.children;
-      text = inPre || text.trim()
-        ? isTextTag(currentParent) ? text : decodeHTMLCached(text)
-        // only preserve whitespace if its not right after a starting tag
-        : preserveWhitespace && children.length ? ' ' : '';
+      if (inPre || text.trim()) {
+        text = isTextTag(currentParent) ? text : decodeHTMLCached(text);
+      } else if (!children.length) {
+        // remove the whitespace-only node right after an opening tag
+        text = '';
+      } else if (whitespaceOption) {
+        if (whitespaceOption === 'condense') {
+          // in condense mode, remove the whitespace node if it contains
+          // line break, otherwise condense to a single space
+          text = lineBreakRE.test(text) ? '' : ' ';
+        } else {
+          text = ' ';
+        }
+      } else {
+        text = preserveWhitespace ? ' ' : '';
+      }
       if (text) {
+        if (whitespaceOption === 'condense') {
+          // condense consecutive whitespaces into single space
+          text = text.replace(whitespaceRE$1, ' ');
+        }
         var res;
+        var child;
         if (!inVPre && text !== ' ' && (res = parseText(text, delimiters))) {
-          children.push({
+          child = {
             type: 2,
             expression: res.expression,
             tokens: res.tokens,
             text: text
-          });
+          };
         } else if (text !== ' ' || !children.length || children[children.length - 1].text !== ' ') {
-          children.push({
+          child = {
             type: 3,
             text: text
-          });
+          };
+        }
+        if (child) {
+          if (options.outputSourceRange) {
+            child.start = start;
+            child.end = end;
+          }
+          children.push(child);
         }
       }
     },
-    comment: function comment (text) {
-      currentParent.children.push({
-        type: 3,
-        text: text,
-        isComment: true
-      });
+    comment: function comment (text, start, end) {
+      // adding anyting as a sibling to the root node is forbidden
+      // comments should still be allowed, but ignored
+      if (currentParent) {
+        var child = {
+          type: 3,
+          text: text,
+          isComment: true
+        };
+        if (options.outputSourceRange) {
+          child.start = start;
+          child.end = end;
+        }
+        currentParent.children.push(child);
+      }
     }
   });
   return root
@@ -49886,14 +50470,19 @@ function processPre (el) {
 }
 
 function processRawAttrs (el) {
-  var l = el.attrsList.length;
-  if (l) {
-    var attrs = el.attrs = new Array(l);
-    for (var i = 0; i < l; i++) {
+  var list = el.attrsList;
+  var len = list.length;
+  if (len) {
+    var attrs = el.attrs = new Array(len);
+    for (var i = 0; i < len; i++) {
       attrs[i] = {
-        name: el.attrsList[i].name,
-        value: JSON.stringify(el.attrsList[i].value)
+        name: list[i].name,
+        value: JSON.stringify(list[i].value)
       };
+      if (list[i].start != null) {
+        attrs[i].start = list[i].start;
+        attrs[i].end = list[i].end;
+      }
     }
   } else if (!el.pre) {
     // non root node in pre blocks with no attributes
@@ -49901,28 +50490,40 @@ function processRawAttrs (el) {
   }
 }
 
-function processElement (element, options) {
+function processElement (
+  element,
+  options
+) {
   processKey(element);
 
   // determine whether this is a plain element after
   // removing structural attributes
-  element.plain = !element.key && !element.attrsList.length;
+  element.plain = (
+    !element.key &&
+    !element.scopedSlots &&
+    !element.attrsList.length
+  );
 
   processRef(element);
-  processSlot(element);
+  processSlotContent(element);
+  processSlotOutlet(element);
   processComponent(element);
   for (var i = 0; i < transforms.length; i++) {
     element = transforms[i](element, options) || element;
   }
   processAttrs(element);
+  return element
 }
 
 function processKey (el) {
   var exp = getBindingAttr(el, 'key');
   if (exp) {
-    if (true) {
+    {
       if (el.tag === 'template') {
-        warn$2("<template> cannot be keyed. Place the key on real elements instead.");
+        warn$2(
+          "<template> cannot be keyed. Place the key on real elements instead.",
+          getRawBindingAttr(el, 'key')
+        );
       }
       if (el.for) {
         var iterator = el.iterator2 || el.iterator1;
@@ -49930,7 +50531,9 @@ function processKey (el) {
         if (iterator && iterator === exp && parent && parent.tag === 'transition-group') {
           warn$2(
             "Do not use v-for index as key on <transition-group> children, " +
-            "this is the same as not using keys."
+            "this is the same as not using keys.",
+            getRawBindingAttr(el, 'key'),
+            true /* tip */
           );
         }
       }
@@ -49953,9 +50556,10 @@ function processFor (el) {
     var res = parseFor(exp);
     if (res) {
       extend(el, res);
-    } else if (true) {
+    } else {
       warn$2(
-        ("Invalid v-for expression: " + exp)
+        ("Invalid v-for expression: " + exp),
+        el.rawAttrsMap['v-for']
       );
     }
   }
@@ -50008,10 +50612,11 @@ function processIfConditions (el, parent) {
       exp: el.elseif,
       block: el
     });
-  } else if (true) {
+  } else {
     warn$2(
       "v-" + (el.elseif ? ('else-if="' + el.elseif + '"') : 'else') + " " +
-      "used on element <" + (el.tag) + "> without corresponding v-if."
+      "used on element <" + (el.tag) + "> without corresponding v-if.",
+      el.rawAttrsMap[el.elseif ? 'v-else-if' : 'v-else']
     );
   }
 }
@@ -50022,10 +50627,11 @@ function findPrevElement (children) {
     if (children[i].type === 1) {
       return children[i]
     } else {
-      if ( true && children[i].text !== ' ') {
+      if (children[i].text !== ' ') {
         warn$2(
           "text \"" + (children[i].text.trim()) + "\" between v-if and v-else(-if) " +
-          "will be ignored."
+          "will be ignored.",
+          children[i]
         );
       }
       children.pop();
@@ -50047,51 +50653,157 @@ function processOnce (el) {
   }
 }
 
-function processSlot (el) {
+// handle content being passed to a component as slot,
+// e.g. <template slot="xxx">, <div slot-scope="xxx">
+function processSlotContent (el) {
+  var slotScope;
+  if (el.tag === 'template') {
+    slotScope = getAndRemoveAttr(el, 'scope');
+    /* istanbul ignore if */
+    if (slotScope) {
+      warn$2(
+        "the \"scope\" attribute for scoped slots have been deprecated and " +
+        "replaced by \"slot-scope\" since 2.5. The new \"slot-scope\" attribute " +
+        "can also be used on plain elements in addition to <template> to " +
+        "denote scoped slots.",
+        el.rawAttrsMap['scope'],
+        true
+      );
+    }
+    el.slotScope = slotScope || getAndRemoveAttr(el, 'slot-scope');
+  } else if ((slotScope = getAndRemoveAttr(el, 'slot-scope'))) {
+    /* istanbul ignore if */
+    if (el.attrsMap['v-for']) {
+      warn$2(
+        "Ambiguous combined usage of slot-scope and v-for on <" + (el.tag) + "> " +
+        "(v-for takes higher priority). Use a wrapper <template> for the " +
+        "scoped slot to make it clearer.",
+        el.rawAttrsMap['slot-scope'],
+        true
+      );
+    }
+    el.slotScope = slotScope;
+  }
+
+  // slot="xxx"
+  var slotTarget = getBindingAttr(el, 'slot');
+  if (slotTarget) {
+    el.slotTarget = slotTarget === '""' ? '"default"' : slotTarget;
+    el.slotTargetDynamic = !!(el.attrsMap[':slot'] || el.attrsMap['v-bind:slot']);
+    // preserve slot as an attribute for native shadow DOM compat
+    // only for non-scoped slots.
+    if (el.tag !== 'template' && !el.slotScope) {
+      addAttr(el, 'slot', slotTarget, getRawBindingAttr(el, 'slot'));
+    }
+  }
+
+  // 2.6 v-slot syntax
+  {
+    if (el.tag === 'template') {
+      // v-slot on <template>
+      var slotBinding = getAndRemoveAttrByRegex(el, slotRE);
+      if (slotBinding) {
+        {
+          if (el.slotTarget || el.slotScope) {
+            warn$2(
+              "Unexpected mixed usage of different slot syntaxes.",
+              el
+            );
+          }
+          if (el.parent && !maybeComponent(el.parent)) {
+            warn$2(
+              "<template v-slot> can only appear at the root level inside " +
+              "the receiving the component",
+              el
+            );
+          }
+        }
+        var ref = getSlotName(slotBinding);
+        var name = ref.name;
+        var dynamic = ref.dynamic;
+        el.slotTarget = name;
+        el.slotTargetDynamic = dynamic;
+        el.slotScope = slotBinding.value || emptySlotScopeToken; // force it into a scoped slot for perf
+      }
+    } else {
+      // v-slot on component, denotes default slot
+      var slotBinding$1 = getAndRemoveAttrByRegex(el, slotRE);
+      if (slotBinding$1) {
+        {
+          if (!maybeComponent(el)) {
+            warn$2(
+              "v-slot can only be used on components or <template>.",
+              slotBinding$1
+            );
+          }
+          if (el.slotScope || el.slotTarget) {
+            warn$2(
+              "Unexpected mixed usage of different slot syntaxes.",
+              el
+            );
+          }
+          if (el.scopedSlots) {
+            warn$2(
+              "To avoid scope ambiguity, the default slot should also use " +
+              "<template> syntax when there are other named slots.",
+              slotBinding$1
+            );
+          }
+        }
+        // add the component's children to its default slot
+        var slots = el.scopedSlots || (el.scopedSlots = {});
+        var ref$1 = getSlotName(slotBinding$1);
+        var name$1 = ref$1.name;
+        var dynamic$1 = ref$1.dynamic;
+        var slotContainer = slots[name$1] = createASTElement('template', [], el);
+        slotContainer.slotTarget = name$1;
+        slotContainer.slotTargetDynamic = dynamic$1;
+        slotContainer.children = el.children.filter(function (c) {
+          if (!c.slotScope) {
+            c.parent = slotContainer;
+            return true
+          }
+        });
+        slotContainer.slotScope = slotBinding$1.value || emptySlotScopeToken;
+        // remove children as they are returned from scopedSlots now
+        el.children = [];
+        // mark el non-plain so data gets generated
+        el.plain = false;
+      }
+    }
+  }
+}
+
+function getSlotName (binding) {
+  var name = binding.name.replace(slotRE, '');
+  if (!name) {
+    if (binding.name[0] !== '#') {
+      name = 'default';
+    } else {
+      warn$2(
+        "v-slot shorthand syntax requires a slot name.",
+        binding
+      );
+    }
+  }
+  return dynamicArgRE.test(name)
+    // dynamic [name]
+    ? { name: name.slice(1, -1), dynamic: true }
+    // static name
+    : { name: ("\"" + name + "\""), dynamic: false }
+}
+
+// handle <slot/> outlets
+function processSlotOutlet (el) {
   if (el.tag === 'slot') {
     el.slotName = getBindingAttr(el, 'name');
-    if ( true && el.key) {
+    if (el.key) {
       warn$2(
         "`key` does not work on <slot> because slots are abstract outlets " +
         "and can possibly expand into multiple elements. " +
-        "Use the key on a wrapping element instead."
+        "Use the key on a wrapping element instead.",
+        getRawBindingAttr(el, 'key')
       );
-    }
-  } else {
-    var slotScope;
-    if (el.tag === 'template') {
-      slotScope = getAndRemoveAttr(el, 'scope');
-      /* istanbul ignore if */
-      if ( true && slotScope) {
-        warn$2(
-          "the \"scope\" attribute for scoped slots have been deprecated and " +
-          "replaced by \"slot-scope\" since 2.5. The new \"slot-scope\" attribute " +
-          "can also be used on plain elements in addition to <template> to " +
-          "denote scoped slots.",
-          true
-        );
-      }
-      el.slotScope = slotScope || getAndRemoveAttr(el, 'slot-scope');
-    } else if ((slotScope = getAndRemoveAttr(el, 'slot-scope'))) {
-      /* istanbul ignore if */
-      if ( true && el.attrsMap['v-for']) {
-        warn$2(
-          "Ambiguous combined usage of slot-scope and v-for on <" + (el.tag) + "> " +
-          "(v-for takes higher priority). Use a wrapper <template> for the " +
-          "scoped slot to make it clearer.",
-          true
-        );
-      }
-      el.slotScope = slotScope;
-    }
-    var slotTarget = getBindingAttr(el, 'slot');
-    if (slotTarget) {
-      el.slotTarget = slotTarget === '""' ? '"default"' : slotTarget;
-      // preserve slot as an attribute for native shadow DOM compat
-      // only for non-scoped slots.
-      if (el.tag !== 'template' && !el.slotScope) {
-        addAttr(el, 'slot', slotTarget);
-      }
     }
   }
 }
@@ -50108,7 +50820,7 @@ function processComponent (el) {
 
 function processAttrs (el) {
   var list = el.attrsList;
-  var i, l, name, rawName, value, modifiers, isProp;
+  var i, l, name, rawName, value, modifiers, syncGen, isDynamic;
   for (i = 0, l = list.length; i < l; i++) {
     name = rawName = list[i].name;
     value = list[i].value;
@@ -50116,16 +50828,19 @@ function processAttrs (el) {
       // mark element as dynamic
       el.hasBindings = true;
       // modifiers
-      modifiers = parseModifiers(name);
+      modifiers = parseModifiers(name.replace(dirRE, ''));
+      // support .foo shorthand syntax for the .prop modifier
       if (modifiers) {
         name = name.replace(modifierRE, '');
       }
       if (bindRE.test(name)) { // v-bind
         name = name.replace(bindRE, '');
         value = parseFilters(value);
-        isProp = false;
+        isDynamic = dynamicArgRE.test(name);
+        if (isDynamic) {
+          name = name.slice(1, -1);
+        }
         if (
-           true &&
           value.trim().length === 0
         ) {
           warn$2(
@@ -50133,65 +50848,104 @@ function processAttrs (el) {
           );
         }
         if (modifiers) {
-          if (modifiers.prop) {
-            isProp = true;
+          if (modifiers.prop && !isDynamic) {
             name = camelize(name);
             if (name === 'innerHtml') { name = 'innerHTML'; }
           }
-          if (modifiers.camel) {
+          if (modifiers.camel && !isDynamic) {
             name = camelize(name);
           }
           if (modifiers.sync) {
-            addHandler(
-              el,
-              ("update:" + (camelize(name))),
-              genAssignmentCode(value, "$event")
-            );
+            syncGen = genAssignmentCode(value, "$event");
+            if (!isDynamic) {
+              addHandler(
+                el,
+                ("update:" + (camelize(name))),
+                syncGen,
+                null,
+                false,
+                warn$2,
+                list[i]
+              );
+              if (hyphenate(name) !== camelize(name)) {
+                addHandler(
+                  el,
+                  ("update:" + (hyphenate(name))),
+                  syncGen,
+                  null,
+                  false,
+                  warn$2,
+                  list[i]
+                );
+              }
+            } else {
+              // handler w/ dynamic event name
+              addHandler(
+                el,
+                ("\"update:\"+(" + name + ")"),
+                syncGen,
+                null,
+                false,
+                warn$2,
+                list[i],
+                true // dynamic
+              );
+            }
           }
         }
-        if (isProp || (
+        if ((modifiers && modifiers.prop) || (
           !el.component && platformMustUseProp(el.tag, el.attrsMap.type, name)
         )) {
-          addProp(el, name, value);
+          addProp(el, name, value, list[i], isDynamic);
         } else {
-          addAttr(el, name, value);
+          addAttr(el, name, value, list[i], isDynamic);
         }
       } else if (onRE.test(name)) { // v-on
         name = name.replace(onRE, '');
-        addHandler(el, name, value, modifiers, false, warn$2);
+        isDynamic = dynamicArgRE.test(name);
+        if (isDynamic) {
+          name = name.slice(1, -1);
+        }
+        addHandler(el, name, value, modifiers, false, warn$2, list[i], isDynamic);
       } else { // normal directives
         name = name.replace(dirRE, '');
         // parse arg
         var argMatch = name.match(argRE);
         var arg = argMatch && argMatch[1];
+        isDynamic = false;
         if (arg) {
           name = name.slice(0, -(arg.length + 1));
+          if (dynamicArgRE.test(arg)) {
+            arg = arg.slice(1, -1);
+            isDynamic = true;
+          }
         }
-        addDirective(el, name, rawName, value, arg, modifiers);
-        if ( true && name === 'model') {
+        addDirective(el, name, rawName, value, arg, isDynamic, modifiers, list[i]);
+        if (name === 'model') {
           checkForAliasModel(el, value);
         }
       }
     } else {
       // literal attribute
-      if (true) {
+      {
         var res = parseText(value, delimiters);
         if (res) {
           warn$2(
             name + "=\"" + value + "\": " +
             'Interpolation inside attributes has been removed. ' +
             'Use v-bind or the colon shorthand instead. For example, ' +
-            'instead of <div id="{{ val }}">, use <div :id="val">.'
+            'instead of <div id="{{ val }}">, use <div :id="val">.',
+            list[i]
           );
         }
       }
-      addAttr(el, name, JSON.stringify(value));
+      addAttr(el, name, JSON.stringify(value), list[i]);
       // #6887 firefox doesn't update muted state if set via attribute
       // even immediately after element creation
       if (!el.component &&
           name === 'muted' &&
           platformMustUseProp(el.tag, el.attrsMap.type, name)) {
-        addProp(el, name, 'true');
+        addProp(el, name, 'true', list[i]);
       }
     }
   }
@@ -50221,10 +50975,9 @@ function makeAttrsMap (attrs) {
   var map = {};
   for (var i = 0, l = attrs.length; i < l; i++) {
     if (
-       true &&
       map[attrs[i].name] && !isIE && !isEdge
     ) {
-      warn$2('duplicate attribute: ' + attrs[i].name);
+      warn$2('duplicate attribute: ' + attrs[i].name, attrs[i]);
     }
     map[attrs[i].name] = attrs[i].value;
   }
@@ -50271,7 +51024,8 @@ function checkForAliasModel (el, value) {
         "You are binding v-model directly to a v-for iteration alias. " +
         "This will not be able to modify the v-for source array because " +
         "writing to the alias is like modifying a function local variable. " +
-        "Consider using an array of objects and use v-model on an object property instead."
+        "Consider using an array of objects and use v-model on an object property instead.",
+        el.rawAttrsMap['v-model']
       );
     }
     _el = _el.parent;
@@ -50360,7 +51114,7 @@ var modules$1 = [
 
 function text (el, dir) {
   if (dir.value) {
-    addProp(el, 'textContent', ("_s(" + (dir.value) + ")"));
+    addProp(el, 'textContent', ("_s(" + (dir.value) + ")"), dir);
   }
 }
 
@@ -50368,7 +51122,7 @@ function text (el, dir) {
 
 function html (el, dir) {
   if (dir.value) {
-    addProp(el, 'innerHTML', ("_s(" + (dir.value) + ")"));
+    addProp(el, 'innerHTML', ("_s(" + (dir.value) + ")"), dir);
   }
 }
 
@@ -50423,7 +51177,7 @@ function optimize (root, options) {
 
 function genStaticKeys$1 (keys) {
   return makeMap(
-    'type,tag,attrsList,attrsMap,plain,parent,children,attrs' +
+    'type,tag,attrsList,attrsMap,plain,parent,children,attrs,start,end,rawAttrsMap' +
     (keys ? ',' + keys : '')
   )
 }
@@ -50523,6 +51277,7 @@ function isDirectChildOfTemplateFor (node) {
 /*  */
 
 var fnExpRE = /^([\w$_]+|\([^)]*?\))\s*=>|^function\s*\(/;
+var fnInvokeRE = /\([^)]*?\);*$/;
 var simplePathRE = /^[A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*|\['[^']*?']|\["[^"]*?"]|\[\d+]|\[[A-Za-z_$][\w$]*])*$/;
 
 // KeyboardEvent.keyCode aliases
@@ -50577,33 +51332,43 @@ function genHandlers (
   events,
   isNative
 ) {
-  var res = isNative ? 'nativeOn:{' : 'on:{';
+  var prefix = isNative ? 'nativeOn:' : 'on:';
+  var staticHandlers = "";
+  var dynamicHandlers = "";
   for (var name in events) {
-    res += "\"" + name + "\":" + (genHandler(name, events[name])) + ",";
+    var handlerCode = genHandler(events[name]);
+    if (events[name] && events[name].dynamic) {
+      dynamicHandlers += name + "," + handlerCode + ",";
+    } else {
+      staticHandlers += "\"" + name + "\":" + handlerCode + ",";
+    }
   }
-  return res.slice(0, -1) + '}'
+  staticHandlers = "{" + (staticHandlers.slice(0, -1)) + "}";
+  if (dynamicHandlers) {
+    return prefix + "_d(" + staticHandlers + ",[" + (dynamicHandlers.slice(0, -1)) + "])"
+  } else {
+    return prefix + staticHandlers
+  }
 }
 
-function genHandler (
-  name,
-  handler
-) {
+function genHandler (handler) {
   if (!handler) {
     return 'function(){}'
   }
 
   if (Array.isArray(handler)) {
-    return ("[" + (handler.map(function (handler) { return genHandler(name, handler); }).join(',')) + "]")
+    return ("[" + (handler.map(function (handler) { return genHandler(handler); }).join(',')) + "]")
   }
 
   var isMethodPath = simplePathRE.test(handler.value);
   var isFunctionExpression = fnExpRE.test(handler.value);
+  var isFunctionInvocation = simplePathRE.test(handler.value.replace(fnInvokeRE, ''));
 
   if (!handler.modifiers) {
     if (isMethodPath || isFunctionExpression) {
       return handler.value
     }
-    return ("function($event){" + (handler.value) + "}") // inline statement
+    return ("function($event){" + (isFunctionInvocation ? ("return " + (handler.value)) : handler.value) + "}") // inline statement
   } else {
     var code = '';
     var genModifierCode = '';
@@ -50638,13 +51403,15 @@ function genHandler (
       ? ("return " + (handler.value) + "($event)")
       : isFunctionExpression
         ? ("return (" + (handler.value) + ")($event)")
-        : handler.value;
+        : isFunctionInvocation
+          ? ("return " + (handler.value))
+          : handler.value;
     return ("function($event){" + code + handlerCode + "}")
   }
 }
 
 function genKeyFilter (keys) {
-  return ("if(!('button' in $event)&&" + (keys.map(genFilterCode).join('&&')) + ")return null;")
+  return ("if(('keyCode' in $event)&&" + (keys.map(genFilterCode).join('&&')) + ")return null;")
 }
 
 function genFilterCode (key) {
@@ -50667,7 +51434,7 @@ function genFilterCode (key) {
 /*  */
 
 function on (el, dir) {
-  if ( true && dir.modifiers) {
+  if (dir.modifiers) {
     warn("v-on without argument does not support modifiers.");
   }
   el.wrapListeners = function (code) { return ("_g(" + code + "," + (dir.value) + ")"); };
@@ -50702,7 +51469,7 @@ var CodegenState = function CodegenState (options) {
   this.dataGenFns = pluckModuleFunction(options.modules, 'genData');
   this.directives = extend(extend({}, baseDirectives), options.directives);
   var isReservedTag = options.isReservedTag || no;
-  this.maybeComponent = function (el) { return !(isReservedTag(el.tag) && !el.component); };
+  this.maybeComponent = function (el) { return !!el.component || !isReservedTag(el.tag); };
   this.onceId = 0;
   this.staticRenderFns = [];
   this.pre = false;
@@ -50792,8 +51559,9 @@ function genOnce (el, state) {
       parent = parent.parent;
     }
     if (!key) {
-       true && state.warn(
-        "v-once can only be used inside v-for that is keyed. "
+      state.warn(
+        "v-once can only be used inside v-for that is keyed. ",
+        el.rawAttrsMap['v-once']
       );
       return genElement(el, state)
     }
@@ -50851,8 +51619,7 @@ function genFor (
   var iterator1 = el.iterator1 ? ("," + (el.iterator1)) : '';
   var iterator2 = el.iterator2 ? ("," + (el.iterator2)) : '';
 
-  if ( true &&
-    state.maybeComponent(el) &&
+  if (state.maybeComponent(el) &&
     el.tag !== 'slot' &&
     el.tag !== 'template' &&
     !el.key
@@ -50861,6 +51628,7 @@ function genFor (
       "<" + (el.tag) + " v-for=\"" + alias + " in " + exp + "\">: component lists rendered with " +
       "v-for should have explicit keys. " +
       "See https://vuejs.org/guide/list.html#key for more info.",
+      el.rawAttrsMap['v-for'],
       true /* tip */
     );
   }
@@ -50905,11 +51673,11 @@ function genData$2 (el, state) {
   }
   // attributes
   if (el.attrs) {
-    data += "attrs:{" + (genProps(el.attrs)) + "},";
+    data += "attrs:" + (genProps(el.attrs)) + ",";
   }
   // DOM props
   if (el.props) {
-    data += "domProps:{" + (genProps(el.props)) + "},";
+    data += "domProps:" + (genProps(el.props)) + ",";
   }
   // event handlers
   if (el.events) {
@@ -50925,7 +51693,7 @@ function genData$2 (el, state) {
   }
   // scoped slots
   if (el.scopedSlots) {
-    data += (genScopedSlots(el.scopedSlots, state)) + ",";
+    data += (genScopedSlots(el, el.scopedSlots, state)) + ",";
   }
   // component v-model
   if (el.model) {
@@ -50939,6 +51707,12 @@ function genData$2 (el, state) {
     }
   }
   data = data.replace(/,$/, '') + '}';
+  // v-bind dynamic argument wrap
+  // v-bind with dynamic arguments must be applied using the same v-bind object
+  // merge helper so that class/style/mustUseProp attrs are handled correctly.
+  if (el.dynamicAttrs) {
+    data = "_b(" + data + ",\"" + (el.tag) + "\"," + (genProps(el.dynamicAttrs)) + ")";
+  }
   // v-bind data wrap
   if (el.wrapData) {
     data = el.wrapData(data);
@@ -50967,7 +51741,7 @@ function genDirectives (el, state) {
     }
     if (needRuntime) {
       hasRuntime = true;
-      res += "{name:\"" + (dir.name) + "\",rawName:\"" + (dir.rawName) + "\"" + (dir.value ? (",value:(" + (dir.value) + "),expression:" + (JSON.stringify(dir.value))) : '') + (dir.arg ? (",arg:\"" + (dir.arg) + "\"") : '') + (dir.modifiers ? (",modifiers:" + (JSON.stringify(dir.modifiers))) : '') + "},";
+      res += "{name:\"" + (dir.name) + "\",rawName:\"" + (dir.rawName) + "\"" + (dir.value ? (",value:(" + (dir.value) + "),expression:" + (JSON.stringify(dir.value))) : '') + (dir.arg ? (",arg:" + (dir.isDynamicArg ? dir.arg : ("\"" + (dir.arg) + "\""))) : '') + (dir.modifiers ? (",modifiers:" + (JSON.stringify(dir.modifiers))) : '') + "},";
     }
   }
   if (hasRuntime) {
@@ -50977,57 +51751,72 @@ function genDirectives (el, state) {
 
 function genInlineTemplate (el, state) {
   var ast = el.children[0];
-  if ( true && (
-    el.children.length !== 1 || ast.type !== 1
-  )) {
-    state.warn('Inline-template components must have exactly one child element.');
+  if (el.children.length !== 1 || ast.type !== 1) {
+    state.warn(
+      'Inline-template components must have exactly one child element.',
+      { start: el.start }
+    );
   }
-  if (ast.type === 1) {
+  if (ast && ast.type === 1) {
     var inlineRenderFns = generate(ast, state.options);
     return ("inlineTemplate:{render:function(){" + (inlineRenderFns.render) + "},staticRenderFns:[" + (inlineRenderFns.staticRenderFns.map(function (code) { return ("function(){" + code + "}"); }).join(',')) + "]}")
   }
 }
 
 function genScopedSlots (
+  el,
   slots,
   state
 ) {
+  // by default scoped slots are considered "stable", this allows child
+  // components with only scoped slots to skip forced updates from parent.
+  // but in some cases we have to bail-out of this optimization
+  // for example if the slot contains dynamic names, has v-if or v-for on them...
+  var needsForceUpdate = Object.keys(slots).some(function (key) {
+    var slot = slots[key];
+    return slot.slotTargetDynamic || slot.if || slot.for
+  });
+  // OR when it is inside another scoped slot (the reactivity is disconnected)
+  // #9438
+  if (!needsForceUpdate) {
+    var parent = el.parent;
+    while (parent) {
+      if (parent.slotScope && parent.slotScope !== emptySlotScopeToken) {
+        needsForceUpdate = true;
+        break
+      }
+      parent = parent.parent;
+    }
+  }
+
   return ("scopedSlots:_u([" + (Object.keys(slots).map(function (key) {
-      return genScopedSlot(key, slots[key], state)
-    }).join(',')) + "])")
+      return genScopedSlot(slots[key], state)
+    }).join(',')) + "]" + (needsForceUpdate ? ",true" : "") + ")")
 }
 
 function genScopedSlot (
-  key,
   el,
   state
 ) {
-  if (el.for && !el.forProcessed) {
-    return genForScopedSlot(key, el, state)
+  var isLegacySyntax = el.attrsMap['slot-scope'];
+  if (el.if && !el.ifProcessed && !isLegacySyntax) {
+    return genIf(el, state, genScopedSlot, "null")
   }
-  var fn = "function(" + (String(el.slotScope)) + "){" +
+  if (el.for && !el.forProcessed) {
+    return genFor(el, state, genScopedSlot)
+  }
+  var slotScope = el.slotScope === emptySlotScopeToken
+    ? ""
+    : String(el.slotScope);
+  var fn = "function(" + slotScope + "){" +
     "return " + (el.tag === 'template'
-      ? el.if
+      ? el.if && isLegacySyntax
         ? ("(" + (el.if) + ")?" + (genChildren(el, state) || 'undefined') + ":undefined")
         : genChildren(el, state) || 'undefined'
       : genElement(el, state)) + "}";
-  return ("{key:" + key + ",fn:" + fn + "}")
-}
-
-function genForScopedSlot (
-  key,
-  el,
-  state
-) {
-  var exp = el.for;
-  var alias = el.alias;
-  var iterator1 = el.iterator1 ? ("," + (el.iterator1)) : '';
-  var iterator2 = el.iterator2 ? ("," + (el.iterator2)) : '';
-  el.forProcessed = true; // avoid recursion
-  return "_l((" + exp + ")," +
-    "function(" + alias + iterator1 + iterator2 + "){" +
-      "return " + (genScopedSlot(key, el, state)) +
-    '})'
+  // reverse proxy v-slot without scope on this.$slots
+  var reverseProxy = slotScope ? "" : ",proxy:true";
+  return ("{key:" + (el.slotTarget || "\"default\"") + ",fn:" + fn + reverseProxy + "}")
 }
 
 function genChildren (
@@ -51114,7 +51903,14 @@ function genSlot (el, state) {
   var slotName = el.slotName || '"default"';
   var children = genChildren(el, state);
   var res = "_t(" + slotName + (children ? ("," + children) : '');
-  var attrs = el.attrs && ("{" + (el.attrs.map(function (a) { return ((camelize(a.name)) + ":" + (a.value)); }).join(',')) + "}");
+  var attrs = el.attrs || el.dynamicAttrs
+    ? genProps((el.attrs || []).concat(el.dynamicAttrs || []).map(function (attr) { return ({
+        // slot props are camelized
+        name: camelize(attr.name),
+        value: attr.value,
+        dynamic: attr.dynamic
+      }); }))
+    : null;
   var bind$$1 = el.attrsMap['v-bind'];
   if ((attrs || bind$$1) && !children) {
     res += ",null";
@@ -51139,15 +51935,23 @@ function genComponent (
 }
 
 function genProps (props) {
-  var res = '';
+  var staticProps = "";
+  var dynamicProps = "";
   for (var i = 0; i < props.length; i++) {
     var prop = props[i];
-    /* istanbul ignore if */
-    {
-      res += "\"" + (prop.name) + "\":" + (transformSpecialNewlines(prop.value)) + ",";
+    var value = transformSpecialNewlines(prop.value);
+    if (prop.dynamic) {
+      dynamicProps += (prop.name) + "," + value + ",";
+    } else {
+      staticProps += "\"" + (prop.name) + "\":" + value + ",";
     }
   }
-  return res.slice(0, -1)
+  staticProps = "{" + (staticProps.slice(0, -1)) + "}";
+  if (dynamicProps) {
+    return ("_d(" + staticProps + ",[" + (dynamicProps.slice(0, -1)) + "])")
+  } else {
+    return staticProps
+  }
 }
 
 // #3895, #4268
@@ -51158,6 +51962,8 @@ function transformSpecialNewlines (text) {
 }
 
 /*  */
+
+
 
 // these keywords should not appear inside expressions, but operators like
 // typeof, instanceof and in are allowed
@@ -51176,92 +51982,147 @@ var unaryOperatorsRE = new RegExp('\\b' + (
 var stripStringRE = /'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|`(?:[^`\\]|\\.)*\$\{|\}(?:[^`\\]|\\.)*`|`(?:[^`\\]|\\.)*`/g;
 
 // detect problematic expressions in a template
-function detectErrors (ast) {
-  var errors = [];
+function detectErrors (ast, warn) {
   if (ast) {
-    checkNode(ast, errors);
+    checkNode(ast, warn);
   }
-  return errors
 }
 
-function checkNode (node, errors) {
+function checkNode (node, warn) {
   if (node.type === 1) {
     for (var name in node.attrsMap) {
       if (dirRE.test(name)) {
         var value = node.attrsMap[name];
         if (value) {
+          var range = node.rawAttrsMap[name];
           if (name === 'v-for') {
-            checkFor(node, ("v-for=\"" + value + "\""), errors);
+            checkFor(node, ("v-for=\"" + value + "\""), warn, range);
           } else if (onRE.test(name)) {
-            checkEvent(value, (name + "=\"" + value + "\""), errors);
+            checkEvent(value, (name + "=\"" + value + "\""), warn, range);
           } else {
-            checkExpression(value, (name + "=\"" + value + "\""), errors);
+            checkExpression(value, (name + "=\"" + value + "\""), warn, range);
           }
         }
       }
     }
     if (node.children) {
       for (var i = 0; i < node.children.length; i++) {
-        checkNode(node.children[i], errors);
+        checkNode(node.children[i], warn);
       }
     }
   } else if (node.type === 2) {
-    checkExpression(node.expression, node.text, errors);
+    checkExpression(node.expression, node.text, warn, node);
   }
 }
 
-function checkEvent (exp, text, errors) {
+function checkEvent (exp, text, warn, range) {
   var stipped = exp.replace(stripStringRE, '');
   var keywordMatch = stipped.match(unaryOperatorsRE);
   if (keywordMatch && stipped.charAt(keywordMatch.index - 1) !== '$') {
-    errors.push(
+    warn(
       "avoid using JavaScript unary operator as property name: " +
-      "\"" + (keywordMatch[0]) + "\" in expression " + (text.trim())
+      "\"" + (keywordMatch[0]) + "\" in expression " + (text.trim()),
+      range
     );
   }
-  checkExpression(exp, text, errors);
+  checkExpression(exp, text, warn, range);
 }
 
-function checkFor (node, text, errors) {
-  checkExpression(node.for || '', text, errors);
-  checkIdentifier(node.alias, 'v-for alias', text, errors);
-  checkIdentifier(node.iterator1, 'v-for iterator', text, errors);
-  checkIdentifier(node.iterator2, 'v-for iterator', text, errors);
+function checkFor (node, text, warn, range) {
+  checkExpression(node.for || '', text, warn, range);
+  checkIdentifier(node.alias, 'v-for alias', text, warn, range);
+  checkIdentifier(node.iterator1, 'v-for iterator', text, warn, range);
+  checkIdentifier(node.iterator2, 'v-for iterator', text, warn, range);
 }
 
 function checkIdentifier (
   ident,
   type,
   text,
-  errors
+  warn,
+  range
 ) {
   if (typeof ident === 'string') {
     try {
       new Function(("var " + ident + "=_"));
     } catch (e) {
-      errors.push(("invalid " + type + " \"" + ident + "\" in expression: " + (text.trim())));
+      warn(("invalid " + type + " \"" + ident + "\" in expression: " + (text.trim())), range);
     }
   }
 }
 
-function checkExpression (exp, text, errors) {
+function checkExpression (exp, text, warn, range) {
   try {
     new Function(("return " + exp));
   } catch (e) {
     var keywordMatch = exp.replace(stripStringRE, '').match(prohibitedKeywordRE);
     if (keywordMatch) {
-      errors.push(
+      warn(
         "avoid using JavaScript keyword as property name: " +
-        "\"" + (keywordMatch[0]) + "\"\n  Raw expression: " + (text.trim())
+        "\"" + (keywordMatch[0]) + "\"\n  Raw expression: " + (text.trim()),
+        range
       );
     } else {
-      errors.push(
+      warn(
         "invalid expression: " + (e.message) + " in\n\n" +
         "    " + exp + "\n\n" +
-        "  Raw expression: " + (text.trim()) + "\n"
+        "  Raw expression: " + (text.trim()) + "\n",
+        range
       );
     }
   }
+}
+
+/*  */
+
+var range = 2;
+
+function generateCodeFrame (
+  source,
+  start,
+  end
+) {
+  if ( start === void 0 ) start = 0;
+  if ( end === void 0 ) end = source.length;
+
+  var lines = source.split(/\r?\n/);
+  var count = 0;
+  var res = [];
+  for (var i = 0; i < lines.length; i++) {
+    count += lines[i].length + 1;
+    if (count >= start) {
+      for (var j = i - range; j <= i + range || end > count; j++) {
+        if (j < 0 || j >= lines.length) { continue }
+        res.push(("" + (j + 1) + (repeat$1(" ", 3 - String(j + 1).length)) + "|  " + (lines[j])));
+        var lineLength = lines[j].length;
+        if (j === i) {
+          // push underline
+          var pad = start - (count - lineLength) + 1;
+          var length = end > count ? lineLength - pad : end - start;
+          res.push("   |  " + repeat$1(" ", pad) + repeat$1("^", length));
+        } else if (j > i) {
+          if (end > count) {
+            var length$1 = Math.min(end - count, lineLength);
+            res.push("   |  " + repeat$1("^", length$1));
+          }
+          count += lineLength + 1;
+        }
+      }
+      break
+    }
+  }
+  return res.join('\n')
+}
+
+function repeat$1 (str, n) {
+  var result = '';
+  while (true) { // eslint-disable-line
+    if (n & 1) { result += str; }
+    n >>>= 1;
+    if (n <= 0) { break }
+    str += str;
+  }
+  return result
 }
 
 /*  */
@@ -51290,7 +52151,7 @@ function createCompileToFunctionFn (compile) {
     delete options.warn;
 
     /* istanbul ignore if */
-    if (true) {
+    {
       // detect possible CSP restriction
       try {
         new Function('return 1');
@@ -51319,16 +52180,30 @@ function createCompileToFunctionFn (compile) {
     var compiled = compile(template, options);
 
     // check compilation errors/tips
-    if (true) {
+    {
       if (compiled.errors && compiled.errors.length) {
-        warn$$1(
-          "Error compiling template:\n\n" + template + "\n\n" +
-          compiled.errors.map(function (e) { return ("- " + e); }).join('\n') + '\n',
-          vm
-        );
+        if (options.outputSourceRange) {
+          compiled.errors.forEach(function (e) {
+            warn$$1(
+              "Error compiling template:\n\n" + (e.msg) + "\n\n" +
+              generateCodeFrame(template, e.start, e.end),
+              vm
+            );
+          });
+        } else {
+          warn$$1(
+            "Error compiling template:\n\n" + template + "\n\n" +
+            compiled.errors.map(function (e) { return ("- " + e); }).join('\n') + '\n',
+            vm
+          );
+        }
       }
       if (compiled.tips && compiled.tips.length) {
-        compiled.tips.forEach(function (msg) { return tip(msg, vm); });
+        if (options.outputSourceRange) {
+          compiled.tips.forEach(function (e) { return tip(e.msg, vm); });
+        } else {
+          compiled.tips.forEach(function (msg) { return tip(msg, vm); });
+        }
       }
     }
 
@@ -51344,7 +52219,7 @@ function createCompileToFunctionFn (compile) {
     // this should only happen if there is a bug in the compiler itself.
     // mostly for codegen development use
     /* istanbul ignore if */
-    if (true) {
+    {
       if ((!compiled.errors || !compiled.errors.length) && fnGenErrors.length) {
         warn$$1(
           "Failed to generate render function:\n\n" +
@@ -51374,11 +52249,29 @@ function createCompilerCreator (baseCompile) {
       var finalOptions = Object.create(baseOptions);
       var errors = [];
       var tips = [];
-      finalOptions.warn = function (msg, tip) {
+
+      var warn = function (msg, range, tip) {
         (tip ? tips : errors).push(msg);
       };
 
       if (options) {
+        if (options.outputSourceRange) {
+          // $flow-disable-line
+          var leadingSpaceLength = template.match(/^\s*/)[0].length;
+
+          warn = function (msg, range, tip) {
+            var data = { msg: msg };
+            if (range) {
+              if (range.start != null) {
+                data.start = range.start + leadingSpaceLength;
+              }
+              if (range.end != null) {
+                data.end = range.end + leadingSpaceLength;
+              }
+            }
+            (tip ? tips : errors).push(data);
+          };
+        }
         // merge custom modules
         if (options.modules) {
           finalOptions.modules =
@@ -51399,9 +52292,11 @@ function createCompilerCreator (baseCompile) {
         }
       }
 
-      var compiled = baseCompile(template, finalOptions);
-      if (true) {
-        errors.push.apply(errors, detectErrors(compiled.ast));
+      finalOptions.warn = warn;
+
+      var compiled = baseCompile(template.trim(), finalOptions);
+      {
+        detectErrors(compiled.ast, warn);
       }
       compiled.errors = errors;
       compiled.tips = tips;
@@ -51473,7 +52368,7 @@ Vue.prototype.$mount = function (
 
   /* istanbul ignore if */
   if (el === document.body || el === document.documentElement) {
-     true && warn(
+    warn(
       "Do not mount Vue to <html> or <body> - mount to normal elements instead."
     );
     return this
@@ -51488,7 +52383,7 @@ Vue.prototype.$mount = function (
         if (template.charAt(0) === '#') {
           template = idToTemplate(template);
           /* istanbul ignore if */
-          if ( true && !template) {
+          if (!template) {
             warn(
               ("Template element not found or is empty: " + (options.template)),
               this
@@ -51498,7 +52393,7 @@ Vue.prototype.$mount = function (
       } else if (template.nodeType) {
         template = template.innerHTML;
       } else {
-        if (true) {
+        {
           warn('invalid template option:' + template, this);
         }
         return this
@@ -51508,11 +52403,12 @@ Vue.prototype.$mount = function (
     }
     if (template) {
       /* istanbul ignore if */
-      if ( true && config.performance && mark) {
+      if (config.performance && mark) {
         mark('compile');
       }
 
       var ref = compileToFunctions(template, {
+        outputSourceRange: "development" !== 'production',
         shouldDecodeNewlines: shouldDecodeNewlines,
         shouldDecodeNewlinesForHref: shouldDecodeNewlinesForHref,
         delimiters: options.delimiters,
@@ -51524,7 +52420,7 @@ Vue.prototype.$mount = function (
       options.staticRenderFns = staticRenderFns;
 
       /* istanbul ignore if */
-      if ( true && config.performance && mark) {
+      if (config.performance && mark) {
         mark('compile end');
         measure(("vue " + (this._name) + " compile"), 'compile', 'compile end');
       }
@@ -51552,6 +52448,20 @@ Vue.compile = compileToFunctions;
 module.exports = Vue;
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js"), __webpack_require__(/*! ./../../timers-browserify/main.js */ "./node_modules/timers-browserify/main.js").setImmediate))
+
+/***/ }),
+
+/***/ "./node_modules/vue/dist/vue.common.js":
+/*!*********************************************!*\
+  !*** ./node_modules/vue/dist/vue.common.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+if (false) {} else {
+  module.exports = __webpack_require__(/*! ./vue.common.dev.js */ "./node_modules/vue/dist/vue.common.dev.js")
+}
+
 
 /***/ }),
 
@@ -51740,9 +52650,11 @@ if (token) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _about_vue_vue_type_template_id_0b0aedd2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./about.vue?vue&type=template&id=0b0aedd2& */ "./resources/js/components/about.vue?vue&type=template&id=0b0aedd2&");
+/* harmony import */ var _about_vue_vue_type_template_id_0b0aedd2_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./about.vue?vue&type=template&id=0b0aedd2&scoped=true& */ "./resources/js/components/about.vue?vue&type=template&id=0b0aedd2&scoped=true&");
 /* harmony import */ var _about_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./about.vue?vue&type=script&lang=js& */ "./resources/js/components/about.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _about_vue_vue_type_style_index_0_id_0b0aedd2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./about.vue?vue&type=style&index=0&id=0b0aedd2&scoped=true&lang=css& */ "./resources/js/components/about.vue?vue&type=style&index=0&id=0b0aedd2&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -51750,13 +52662,13 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _about_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _about_vue_vue_type_template_id_0b0aedd2___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _about_vue_vue_type_template_id_0b0aedd2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _about_vue_vue_type_template_id_0b0aedd2_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _about_vue_vue_type_template_id_0b0aedd2_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  null,
+  "0b0aedd2",
   null
   
 )
@@ -51782,19 +52694,35 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/about.vue?vue&type=template&id=0b0aedd2&":
-/*!**************************************************************************!*\
-  !*** ./resources/js/components/about.vue?vue&type=template&id=0b0aedd2& ***!
-  \**************************************************************************/
+/***/ "./resources/js/components/about.vue?vue&type=style&index=0&id=0b0aedd2&scoped=true&lang=css&":
+/*!****************************************************************************************************!*\
+  !*** ./resources/js/components/about.vue?vue&type=style&index=0&id=0b0aedd2&scoped=true&lang=css& ***!
+  \****************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_about_vue_vue_type_style_index_0_id_0b0aedd2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader!../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./about.vue?vue&type=style&index=0&id=0b0aedd2&scoped=true&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/about.vue?vue&type=style&index=0&id=0b0aedd2&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_about_vue_vue_type_style_index_0_id_0b0aedd2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_about_vue_vue_type_style_index_0_id_0b0aedd2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_about_vue_vue_type_style_index_0_id_0b0aedd2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_about_vue_vue_type_style_index_0_id_0b0aedd2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_about_vue_vue_type_style_index_0_id_0b0aedd2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/js/components/about.vue?vue&type=template&id=0b0aedd2&scoped=true&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/about.vue?vue&type=template&id=0b0aedd2&scoped=true& ***!
+  \**************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_about_vue_vue_type_template_id_0b0aedd2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./about.vue?vue&type=template&id=0b0aedd2& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/about.vue?vue&type=template&id=0b0aedd2&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_about_vue_vue_type_template_id_0b0aedd2___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_about_vue_vue_type_template_id_0b0aedd2_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./about.vue?vue&type=template&id=0b0aedd2&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/about.vue?vue&type=template&id=0b0aedd2&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_about_vue_vue_type_template_id_0b0aedd2_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_about_vue_vue_type_template_id_0b0aedd2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_about_vue_vue_type_template_id_0b0aedd2_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -51978,15 +52906,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!**********************************************!*\
   !*** ./resources/js/components/projects.vue ***!
   \**********************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _projects_vue_vue_type_template_id_49700cc5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./projects.vue?vue&type=template&id=49700cc5& */ "./resources/js/components/projects.vue?vue&type=template&id=49700cc5&");
 /* harmony import */ var _projects_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./projects.vue?vue&type=script&lang=js& */ "./resources/js/components/projects.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _projects_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _projects_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -52016,7 +52943,7 @@ component.options.__file = "resources/js/components/projects.vue"
 /*!***********************************************************************!*\
   !*** ./resources/js/components/projects.vue?vue&type=script&lang=js& ***!
   \***********************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
