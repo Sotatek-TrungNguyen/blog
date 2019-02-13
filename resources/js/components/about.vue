@@ -6,10 +6,9 @@
       <div class="list-item">
         <div
         v-if="index <6"
-        v-for="(item,index) in rawData"
+        v-for="(item,index) in rawPostsData"
         class="items">
           <h3>{{item.title}}</h3>
-          <p>{{content[index]}}</p>
           <a :href="item.URL">{{item.URL}}</a>
           <a v-if="imagesURL[index]!=null" :href="imagesURL[index]">{{imagesURL[index]}}</a>
           <img v-if="imagesURL[index]!=null && imagesURL[index]!=undefined":src="imagesURL[index]"/>
@@ -29,48 +28,55 @@
     name: "about",
     data() {
       return{
-        rawData:null,
-        content:[],
-        imagesURL:[],
-        excerpt:[]
+        
+          rawPostsData:null,
+          content:[],
+          imagesURL:[],
+          excerpt:[],
+        
       }
     },
 
     created() {
-      fetch ('https://public-api.wordpress.com/rest/v1.1/sites/yesyes248369263.wordpress.com/posts/',{
-        method: 'get',})
+      fetch ('https://public-api.wordpress.com/rest/v1.1/sites/yesyes248369263.wordpress.com/posts?order_by=modified', //(order by modified time)
+        {method: 'get',})
 
         .then ( response => { return response.json()})
 
         .then(response=> {
-          this.rawData = response.posts;
+          this.rawPostsData = response.posts;
 
           for(var x=0;x<6;x++){
-            this.excerpt[x]= this.rawData[x].excerpt.slice(3,-5);
-            this.content[x]= this.rawData[x].content;
 
-            var imagesCount =0;
-            var imageLink;
-            var imagesOrder=this.content[x].indexOf("<img");
-            console.log(imagesOrder);
-            if(imagesOrder>0){
-              this.imageLink= this.content[x].slice // slice from img just found. try to recognize first img it read and stop there, take src/ url then ignore after that. after read 1 img imgcount may ++.
+            // finalize excerpt. limit 200 words first word only
+            if((this.rawPostsData[x].excerpt).length<210){
+              this.excerpt[x]= this.rawPostsData[x].excerpt.slice(3,-5)+"...";
+            } else{
+              this.excerpt[x]= this.rawPostsData[x].excerpt.slice(3,209)+"...";
             }
-            var startImgPoint=this.content[x].search("data-orig-file");
-            var endImgPoint= this.content[x].search("data-orig-size");
-            var startImgSrc =this.content[x].search("img src");
-            var endImgSrc= this.content[x].search("\" alt");
-            
 
-            if(startImgPoint >0 && endImgPoint >0 && imagesCount==0){
-            this.imagesURL[x]= this.content[x].slice(startImgPoint+16,endImgPoint-2);
+            // finalize imageUrl
+            this.content[x]= this.rawPostsData[x].content;
+
+            /* create mediate link to purify and choose the first (<img /> - self closed html tag) */
+            var firstImgTag=this.content[x].search("<img"); // find the first img tag
+            var imageLinkPureFront= this.content[x].slice(firstImgTag); // cut out from first img to the end
+            var firstImgSelfCloseTag= imageLinkPureFront.search("/>") // search for the first self close tag which belongs to <img tag
+            var imageLinkPureBack = imageLinkPureFront.slice(0,firstImgSelfCloseTag); // reverse cut from the back to the start, start from  />
+            // imageLinkPureBack is the <img/> totally purified
+
+            /* purify <img/> html tag to cut out the src/ data-orig-file source of the image*/
+            var startImgPoint=imageLinkPureBack.search("data-orig-file");
+            var endImgPoint= imageLinkPureBack.search("data-orig-size");
+            var startImgSrc =imageLinkPureBack.search("img src");
+            var endImgSrc= imageLinkPureBack.search("\" alt");
+            if(startImgPoint >0 && endImgPoint >0){
+            this.imagesURL[x]= imageLinkPureBack.slice(startImgPoint+16,endImgPoint-2);
             console.log(this.imagesURL);
-            imagesCount++;
             }
-            if(startImgSrc >0 && endImgSrc >0 && imagesCount==0){
-            this.imagesURL[x]= this.content[x].slice(startImgSrc+9,endImgSrc);
+            if(startImgSrc >0 && endImgSrc >0 ){
+            this.imagesURL[x]= imageLinkPureBack.slice(startImgSrc+9,endImgSrc);
             console.log(this.imagesURL);
-            imagesCount++
             }
           }
         }

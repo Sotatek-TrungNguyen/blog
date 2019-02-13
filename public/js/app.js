@@ -1787,12 +1787,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "about",
   data: function data() {
     return {
-      rawData: null,
+      rawPostsData: null,
       content: [],
       imagesURL: [],
       excerpt: []
@@ -1801,45 +1800,52 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
-    fetch('https://public-api.wordpress.com/rest/v1.1/sites/yesyes248369263.wordpress.com/posts/', {
+    fetch('https://public-api.wordpress.com/rest/v1.1/sites/yesyes248369263.wordpress.com/posts?order_by=modified', //(order by modified time)
+    {
       method: 'get'
     }).then(function (response) {
       return response.json();
     }).then(function (response) {
-      _this.rawData = response.posts;
+      _this.rawPostsData = response.posts;
 
       for (var x = 0; x < 6; x++) {
-        _this.excerpt[x] = _this.rawData[x].excerpt.slice(3, -5);
-        _this.content[x] = _this.rawData[x].content;
-        var imagesCount = 0;
-        var imageLink;
+        // finalize excerpt. limit 200 words first word only
+        if (_this.rawPostsData[x].excerpt.length < 210) {
+          _this.excerpt[x] = _this.rawPostsData[x].excerpt.slice(3, -5) + "...";
+        } else {
+          _this.excerpt[x] = _this.rawPostsData[x].excerpt.slice(3, 209) + "...";
+        } // finalize imageUrl
 
-        var imagesOrder = _this.content[x].indexOf("<img");
 
-        console.log(imagesOrder);
+        _this.content[x] = _this.rawPostsData[x].content;
+        /* create mediate link to purify and choose the first (<img /> - self closed html tag) */
 
-        if (imagesOrder > 0) {
-          _this.imageLink = _this.content[x].slice; // slice from img just found. try to recognize first img it read and stop there, take src/ url then ignore after that. after read 1 img imgcount may ++.
+        var firstImgTag = _this.content[x].search("<img"); // find the first img tag
+
+
+        var imageLinkPureFront = _this.content[x].slice(firstImgTag); // cut out from first img to the end
+
+
+        var firstImgSelfCloseTag = imageLinkPureFront.search("/>"); // search for the first self close tag which belongs to <img tag
+
+        var imageLinkPureBack = imageLinkPureFront.slice(0, firstImgSelfCloseTag); // reverse cut from the back to the start, start from  />
+        // imageLinkPureBack is the <img/> totally purified
+
+        /* purify <img/> html tag to cut out the src/ data-orig-file source of the image*/
+
+        var startImgPoint = imageLinkPureBack.search("data-orig-file");
+        var endImgPoint = imageLinkPureBack.search("data-orig-size");
+        var startImgSrc = imageLinkPureBack.search("img src");
+        var endImgSrc = imageLinkPureBack.search("\" alt");
+
+        if (startImgPoint > 0 && endImgPoint > 0) {
+          _this.imagesURL[x] = imageLinkPureBack.slice(startImgPoint + 16, endImgPoint - 2);
+          console.log(_this.imagesURL);
         }
 
-        var startImgPoint = _this.content[x].search("data-orig-file");
-
-        var endImgPoint = _this.content[x].search("data-orig-size");
-
-        var startImgSrc = _this.content[x].search("img src");
-
-        var endImgSrc = _this.content[x].search("\" alt");
-
-        if (startImgPoint > 0 && endImgPoint > 0 && imagesCount == 0) {
-          _this.imagesURL[x] = _this.content[x].slice(startImgPoint + 16, endImgPoint - 2);
+        if (startImgSrc > 0 && endImgSrc > 0) {
+          _this.imagesURL[x] = imageLinkPureBack.slice(startImgSrc + 9, endImgSrc);
           console.log(_this.imagesURL);
-          imagesCount++;
-        }
-
-        if (startImgSrc > 0 && endImgSrc > 0 && imagesCount == 0) {
-          _this.imagesURL[x] = _this.content[x].slice(startImgSrc + 9, endImgSrc);
-          console.log(_this.imagesURL);
-          imagesCount++;
         }
       }
     });
@@ -37662,12 +37668,10 @@ var render = function() {
         _c(
           "div",
           { staticClass: "list-item" },
-          _vm._l(_vm.rawData, function(item, index) {
+          _vm._l(_vm.rawPostsData, function(item, index) {
             return index < 6
               ? _c("div", { staticClass: "items" }, [
                   _c("h3", [_vm._v(_vm._s(item.title))]),
-                  _vm._v(" "),
-                  _c("p", [_vm._v(_vm._s(_vm.content[index]))]),
                   _vm._v(" "),
                   _c("a", { attrs: { href: item.URL } }, [
                     _vm._v(_vm._s(item.URL))
