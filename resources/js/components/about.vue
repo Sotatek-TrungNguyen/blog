@@ -1,5 +1,6 @@
 <template>
  <div>
+  <button v-on:click="download">DOWNLOAD</button>
   <h1>Testing wordpress api and datas</h1>
    <section class="creator">
     <div class="item_list">
@@ -28,12 +29,23 @@
     name: "about",
     data() {
       return{
-        
           rawPostsData:null,
           content:[],
           imagesURL:[],
           excerpt:[],
         
+      }
+    },
+
+    methods: {
+      download: function(){
+        console.log("Prepare to download");
+        fetch('https://script.google.com/macros/s/AKfycbzMigJ5GMIr_4S4toriKkZqKCz0LLn6z3tcu9Kdyj2EN2GkKmfB/exec',{
+          method: 'get',
+          id:"1zlQ_Ve0b78tcp_jGM58clWH61FUZi_2b"})
+        .then(response=>{
+          console.log("received");
+        })
       }
     },
 

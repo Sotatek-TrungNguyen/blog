@@ -3,7 +3,8 @@ import Router from 'vue-router';
 import landing from '../js/components/landing.vue';
 import about from '../js/components/about.vue';
 import dashboard from '../js/components/dashboard.vue'
-import projects from '../js/components/projects.vue'
+import projects from '../js/components/projects.vue';
+import download from '../js/components/download.vue';
 
 Vue.use(Router)
 
@@ -31,6 +32,12 @@ export default new Router({
       path:'/projects',
       name:'projects',
       component: projects
+    },
+
+     {
+      path:'/download',
+      name:'download',
+      component: download
     }
   ]
 })
